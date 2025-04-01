@@ -94,22 +94,13 @@ export default {
 
   .image-container h1{
     position: absolute;
-    bottom: 14px;
+    bottom: 20px;
     left: 7px;
     background-color: #ffffff;
     font-size: 24px;
     font-weight: 700;
     padding: 5px;
   }
-  /* .content{
-    padding: 0 5px 5px 5px;
-  } */
-
-  /* .content h1 {
-    font-size: 24px;
-    margin-bottom: 0;
-    font-weight: 500;
-  } */
 
   .recipe-details {
     position: absolute;
@@ -155,12 +146,6 @@ export default {
     border-radius: 3px;
     transition: background-color 0.3s ease;
   }
-
-  /* .material-symbols-outlined {
-    color: #FFE500;
-    font-size: 20px;
-    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
-  } */
 
   .material-icons {
     font-size: 16px;

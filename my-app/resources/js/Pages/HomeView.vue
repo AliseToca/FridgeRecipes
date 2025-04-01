@@ -1,23 +1,26 @@
 <template>
-  <div> 
+  <div>
     <Navbar @search="handleSearch" />
-    <br />
-    <br />
-    <br />
-    <br />
-    <main>
-      <RecipeList :recipes="filteredRecipes" :searchQuery="searchQuery" />
-    </main>
+    <div class="main-container">
+      <!-- Sidebar with Fridge -->
+      <FridgeSidebar />
+
+      <!-- Main Content -->
+      <div class="main">
+        <RecipeList :recipes="filteredRecipes" :searchQuery="searchQuery" />
+      </div>
+    </div>
     <Footer />
   </div>
 </template>
 
 <script>
-import RecipeItem from '@/components/RecipeItem.vue';
-import Footer from '@/components/Footer.vue';
-import Navbar from '@/components/Navbar.vue';
-import SearchBar from '@/components/SearchBar.vue';
-import RecipeList from '@/components/RecipeList.vue';
+import RecipeItem from '@/Components/RecipeItem.vue';
+import Footer from '@/Components/Footer.vue';
+import Navbar from '@/Components/Navbar.vue';
+import SearchBar from '@/Components/SearchBar.vue';
+import RecipeList from '@/Components/RecipeList.vue';
+import FridgeSidebar from '@/Components/FridgeSideBar.vue'; // Import Fridge Sidebar
 
 export default {
   components: {
@@ -26,6 +29,7 @@ export default {
     Navbar,
     SearchBar,
     RecipeList,
+    FridgeSidebar, // Add it here
   },
   data() {
     return {
@@ -57,9 +61,16 @@ export default {
 </script>
 
 <style scoped>
- main {
-   padding: 50px 50px 0 50px;
- }
+.main-container {
+  display: flex;
+  margin-top: 50px;
+  padding: 50px;
+  padding-left: 0;
+}
 
+.main {
+  flex: 1;
+  padding-left: 15px;
+}
 
 </style>

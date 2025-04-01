@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import RecipeItem from '@/components/RecipeItem.vue';
+import RecipeItem from '@/Components/RecipeItem.vue';
 
 export default {
   components: {
@@ -49,11 +49,12 @@ export default {
 <style scoped>
 .recipe-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   column-gap: 10px;
   row-gap: 25px;
   justify-items: center;
   padding: 20px;
+  padding-left: 5px;
   min-height: 500px;
 }
 
@@ -66,7 +67,7 @@ export default {
 
 @media (max-width: 1200px) {
   .recipe-container {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
