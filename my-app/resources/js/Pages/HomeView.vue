@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar @search="handleSearch" />
+    <Navbar  :auth="auth" @search="handleSearch" />
     <div class="main-container">
       <!-- Sidebar with Fridge -->
       <FridgeSidebar />
@@ -30,6 +30,9 @@ export default {
     SearchBar,
     RecipeList,
     FridgeSidebar, // Add it here
+  },
+  props: {
+    auth: Object, // Define the auth prop
   },
   data() {
     return {

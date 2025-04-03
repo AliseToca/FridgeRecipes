@@ -4,45 +4,32 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+// Debug route to check authentication user
+Route::get('/debug-auth', function () {
+    return response()->json(Auth::user());
 });
 
+// Home route
 Route::get('/', function () {
-    return Inertia::render('HomeView'); // Render the HomeView page
-})->name('home'); // Named route
+    return Inertia::render('HomeView', [
+        'auth' => [
+            'user' => Auth::user()
+        ],
+    ]);
+})->name('home');
 
+// Other routes
 Route::get('/fridge', function () {
-    return Inertia::render('Fridge'); 
+    return Inertia::render('Fridge');
 })->name('fridge');
 
 Route::get('/about', function () {
     return Inertia::render('About');
-})->name('about'); 
+})->name('about');
 
-
-// Route::get('/login', function () {
-//     return Inertia::render('Auth/Login');
-// })->name('login'); 
-
-
-// Route::get('/register', function () {
-//     return Inertia::render('Auth/Register');
-// })->name('register'); 
-
-
-
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+// Profile routes with controller handling
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

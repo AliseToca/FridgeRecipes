@@ -8,12 +8,15 @@
       <ul class="nav-links" :class="{ active: menuActive }">
         <li><Link href="/Homeview">Recipes</Link></li>
         <li><Link href="/fridge">Fridge</Link></li>
-        <li><Link href="/uhm">About</Link></li>
+        <li><Link href="/about">About</Link></li>
         <li><Link href="/services">Services</Link></li>
-        <li>
-          <Link href="/login">
+        <li v-if="auth.user">
+          <Link href="/profile">
             <span class="material-icons">account_circle</span>
           </Link>
+        </li>
+        <li v-else>
+          <Link href="/login" class="login-btn">Log in</Link>
         </li>
       </ul>
       <div class="hamburger" @click="toggleMenu">
@@ -34,6 +37,12 @@ export default {
     Link,
     SearchBar,
   },
+  props: {
+    auth: {
+      type: Object,
+      default: () => ({ user: null }) // Ensure auth is always defined
+    }
+  },
   data() {
     return {
       menuActive: false,
@@ -53,6 +62,7 @@ export default {
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
+    console.log("Auth Data in Navbar:", this.auth);
   },
   beforeUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
@@ -96,7 +106,7 @@ nav .nav-content {
 }
 
 .material-icons {
-  font-size: 32px;
+  font-size: 36px;
 }
 
 nav .logo a {
@@ -168,5 +178,16 @@ nav .logo a {
   .hamburger {
     display: flex;
   }
+}
+
+.login-btn {
+  padding: 8px 15px;
+  background: #f44040;
+  color: white;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+.login-btn:hover {
+  background: #d32f2f;
 }
 </style>

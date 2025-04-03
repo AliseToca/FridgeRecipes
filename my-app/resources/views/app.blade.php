@@ -17,17 +17,14 @@
    
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
-    <title>RecipePortal</title>
-
+    <title>FridgeRecipes</title>
+    @vite('resources/js/app.js')
     <!-- Scripts -->
     @routes
     @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
     @inertiaHead
 </head>
 <body class="font-sans antialiased">
-@inertia
-</body>
-liased">
 @inertia
 </body>
 </html>

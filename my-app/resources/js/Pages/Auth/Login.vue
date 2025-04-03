@@ -1,4 +1,256 @@
 <script setup>
+    import { useForm } from '@inertiajs/vue3';
+
+    const form = useForm({
+        email: '',
+        password: '',
+        remember: false,
+    });
+
+    const submit = () => {
+        form.post(route('login'), {
+            onFinish: () => form.reset('password'),
+        });
+    };
+</script>
+
+<script>
+    import { Link } from "@inertiajs/vue3";
+
+    export default {
+    components: {
+        Link
+    },
+    }
+</script>
+
+<template>
+    <div class="logo">
+        <Link href="/">FridgeRecipes</Link>
+    </div>
+
+    <div class="background">
+        <div class="login-wrapper">
+            <h1 class="login-title">Log in</h1>
+
+
+
+            <!-- Display status message -->
+            <div v-if="form.errors.email || form.errors.password" class="error-message">
+            Please check your input errors.
+            </div>
+
+            <form @submit.prevent="submit" class="login-form">
+            <!-- Email Input -->
+            <div class="input-group">
+                <label for="email" class="label">Email</label>
+                <input
+                id="email"
+                type="email"
+                v-model="form.email"
+                class="input"
+                required
+                autofocus
+                />
+                <p v-if="form.errors.email" class="error">{{ form.errors.email }}</p>
+            </div>
+
+            <!-- Password Input -->
+            <div class="input-group">
+                <label for="password" class="label">Password</label>
+                <input
+                id="password"
+                type="password"
+                v-model="form.password"
+                class="input"
+                required
+                />
+                <p v-if="form.errors.password" class="error">{{ form.errors.password }}</p>
+            </div>
+
+   
+
+            <!-- Submit Button -->
+            <div class="form-actions">
+                <button
+                type="submit"
+                :disabled="form.processing"
+                class="submit-button"
+                >
+                Log in
+                </button>
+
+                <Link
+                    v-if="canResetPassword"
+                    :href="route('password.request')"
+                    class="forgot-password"
+                >
+                    Forgot your password?
+                </Link>
+            </div>
+
+            
+            <div class="checkbox-group">
+                <div>
+                    <input id="remember" type="checkbox" v-model="form.remember" class="checkbox"/>
+                    <label class="label">
+                            <Checkbox name="remember" v-model:checked="form.remember" />
+                            <span class="ms-2 text-sm text-gray-600">
+                                Remember me
+                            </span>
+                    </label>
+                </div>
+
+
+                <Link
+                    :href="route('register')"
+                    class="register"
+                >
+                    Don't have an account?
+                </Link>
+            </div>
+            </form>
+            </div>
+        </div>
+    <div id="overlay"></div>
+</template>
+
+<style scoped>
+    .logo{
+        font-weight: 600;
+        font-size: 35px;
+        color: #000000;
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 10px;
+        margin-left: 20px;
+    }
+
+    .background {
+        background-image: url('/images/background-food4.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100%;  /* To ensure the image takes the full height of the screen */
+        width: 100%;   /* To ensure it stretches across the entire width */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px;
+        box-sizing: border-box;
+    }
+
+    .login-wrapper {
+        background-color: #fcfcfc;
+        opacity: 0.9;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+    }
+
+    .login-title {
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .login-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .input-group {
+        margin-bottom: 16px;
+    }
+
+    .label {
+        font-size: 14px;
+        color: #333;
+        margin-left: 0;
+    }
+
+    .input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .error {
+        font-size: 12px;
+        color: red;
+        margin-top: 4px;
+    }
+
+    .form-actions{
+        margin-bottom: 15px;
+    }
+
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+
+    .form-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .submit-button {
+        background-color: #f44040;
+        color: white;
+        padding: 10px 20px;
+        width: 100%;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .submit-button:disabled {
+        background-color: #aaa;
+        cursor: not-allowed;
+    }
+
+    .forgot-password {
+        font-size: 14px;
+        color: #3490dc;
+        text-decoration: none;
+    }
+
+    .forgot-password:hover {
+        text-decoration: underline;
+    }
+
+    .register{
+    border-radius: 0.375rem; /* rounded-md */
+    font-size: 0.875rem; /* text-sm */
+    color: #4b5563; /* text-gray-600 */
+    text-decoration: underline; /* underline */
+    }
+
+    /* Hover state */
+    .register:hover {
+        color: #1f2937; /* hover:text-gray-900 */
+    }
+
+    /* Focus state */
+    .register:focus {
+        outline: none; /* focus:outline-none */
+        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5); /* focus:ring-2 focus:ring-indigo-500 */
+        background-color: rgba(99, 102, 241, 0.1); /* focus:ring-offset-2 (light background color) */
+    }
+</style>
+
+
+<!-- <script setup>
 import Checkbox from '@/Components/Checkbox.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
@@ -97,4 +349,4 @@ const submit = () => {
             </div>
         </form>
     </GuestLayout>
-</template>
+</template> -->

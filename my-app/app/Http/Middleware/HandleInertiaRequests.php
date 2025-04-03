@@ -2,38 +2,45 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Illuminate\Http\Request;
-use Inertia\Middleware;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
-class HandleInertiaRequests extends Middleware
+class HandleInertiaRequests
 {
     /**
-     * The root template that is loaded on the first page visit.
+     * Handle an incoming request.
      *
-     * @var string
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
      */
-    protected $rootView = 'app';
-
-    /**
-     * Determine the current asset version.
-     */
-    public function version(Request $request): ?string
+    public function handle(Request $request, Closure $next)
     {
-        return parent::version($request);
+        // You can add other logic here if needed
+
+        return $next($request);
     }
 
     /**
-     * Define the props that are shared by default.
+     * Share data across all Inertia requests.
      *
-     * @return array<string, mixed>
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
      */
     public function share(Request $request): array
     {
         return [
-            ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => Auth::user() ? [
+                    'id' => Auth::user()->id,
+                    'name' => Auth::user()->name,
+                    'email' => Auth::user()->email,
+                ] : null,
             ],
         ];
     }
 }
+
+
