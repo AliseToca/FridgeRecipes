@@ -16,7 +16,7 @@
           </Link>
         </li>
         <li v-else>
-          <Link href="/login" class="login-btn">Log in</Link>
+          <button class="login-button"><Link href="/login">Log in</Link></button>
         </li>
       </ul>
       <div class="hamburger" @click="toggleMenu">
@@ -84,7 +84,7 @@ nav {
   top: 0;
   left: 0;
   width: 100%;
-  padding: 20px;
+  padding: 20px 50px 20px 50px;
   background-color: #ffffff;
   transition: all 0.4s ease;
   z-index: 10;
@@ -98,7 +98,7 @@ nav.sticky {
 
 nav .nav-content {
   height: 100%;
-  max-width: 1200px;
+  width: 100%;
   margin: auto;
   display: flex;
   align-items: center;
@@ -109,10 +109,14 @@ nav .nav-content {
   font-size: 36px;
 }
 
-nav .logo a {
+.logo a {
   font-weight: 600;
   font-size: 35px;
   color: #000000;
+}
+
+.logo{
+  margin-right: 20px;
 }
 
 .nav-content .nav-links {
@@ -122,6 +126,9 @@ nav .logo a {
 .nav-content .nav-links li {
   list-style: none;
   margin: 0 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .nav-links li a {
@@ -152,6 +159,26 @@ nav .logo a {
   transition: all 0.3s ease;
 }
 
+.login-button {
+  background-color: #f44040;
+  border-radius: 4px;
+  padding: 5px ;
+  width: 100px;
+  height: 45px;
+  cursor: pointer;
+}
+
+.login-button a{
+  color: #ffffff !important;
+}
+
+.login-button:hover{
+  background-color: #d32f2f;
+}
+
+.login-button a:hover{
+  color: #ebebeb;
+}
 /* Responsive design */
 @media (max-width: 900px) {
   .nav-content .nav-links {

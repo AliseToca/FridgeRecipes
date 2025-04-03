@@ -25,7 +25,8 @@
 </script>
 
 <template>
-    <div class="logo">
+    <body>
+        <div class="logo">
         <Link href="/">FridgeRecipes</Link>
     </div>
 
@@ -111,9 +112,12 @@
             </div>
         </div>
     <div id="overlay"></div>
+    </body>
+  
 </template>
 
 <style scoped>
+
     .logo{
         font-weight: 600;
         font-size: 35px;
@@ -130,8 +134,8 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        height: 100%;  /* To ensure the image takes the full height of the screen */
-        width: 100%;   /* To ensure it stretches across the entire width */
+        height: 100vh; 
+        width: 100vw;  
         display: flex;
         justify-content: center;
         align-items: center;

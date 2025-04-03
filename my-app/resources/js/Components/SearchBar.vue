@@ -35,12 +35,12 @@ export default {
   display: flex;
   justify-content: center;
   width: 100%;
+  max-width: 600px;
   padding: 10px;
 }
 
 .search-bar input {
   width: 100%;
-  max-width: 500px; /* Max width to prevent it from growing too large */
   padding: 12px;
   font-size: 16px;
   border: 1px solid #ccc;

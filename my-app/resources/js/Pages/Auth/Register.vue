@@ -128,8 +128,8 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        height: 100%;
-        width: 100%;
+        height: 100vh; 
+        width: 100vw;  
         display: flex;
         justify-content: center;
         align-items: center;
