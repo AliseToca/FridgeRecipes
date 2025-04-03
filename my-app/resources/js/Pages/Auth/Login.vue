@@ -68,14 +68,12 @@
                 <p v-if="form.errors.password" class="error">{{ form.errors.password }}</p>
             </div>
 
-   
-
             <!-- Submit Button -->
             <div class="form-actions">
                 <button
-                type="submit"
-                :disabled="form.processing"
-                class="submit-button"
+                    type="submit"
+                    :disabled="form.processing"
+                    class="submit-button"
                 >
                 Log in
                 </button>
