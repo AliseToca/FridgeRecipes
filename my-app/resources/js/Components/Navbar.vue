@@ -105,10 +105,6 @@ nav .nav-content {
   justify-content: space-between;
 }
 
-.material-icons {
-  font-size: 36px;
-}
-
 .logo a {
   font-weight: 600;
   font-size: 35px;
@@ -121,6 +117,7 @@ nav .nav-content {
 
 .nav-content .nav-links {
   display: flex;
+  align-items: center;
 }
 
 .nav-content .nav-links li {
@@ -144,6 +141,11 @@ nav .nav-content {
   color: #f44040;
 }
 
+.material-icons {
+  font-size: 36px;
+}
+
+/*----Mobile nav----*/
 .hamburger {
   display: none;
   flex-direction: column;

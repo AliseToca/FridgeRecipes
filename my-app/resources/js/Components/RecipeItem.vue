@@ -5,7 +5,7 @@
       <img :src="img" alt="">
       <h1>{{ name }}</h1>
       <div class="recipe-details">
-        <span class="material-icons">schedule</span>
+        <span class="material-symbols-outlined">schedule</span>
         <p class="detail-text">{{ minutes }} min</p>
         <StarRating :rating="rating"/>
       </div>
@@ -147,8 +147,9 @@ export default {
     transition: background-color 0.3s ease;
   }
 
-  .material-icons {
-    font-size: 16px;
+  .material-symbols-outlined {
+    font-size: 20px;
+    font-weight: 350;
     color: #9B9B9B;
   }
 </style>

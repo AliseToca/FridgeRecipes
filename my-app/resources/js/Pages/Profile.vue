@@ -9,31 +9,34 @@
       </Link>
     </div> -->
 
-    <div class="logo">
+    <div class="nav-bar">
+      <div class="logo">
         <Link href="/">FridgeRecipes</Link>
+      </div>
+
+      <Link :href="route('logout')" method="post" class="logout-btn"> Log out </Link>
     </div>
+
 
   <div class="profile-page">
     <div class="card">
-      <img
-        class="profile-image"
-        src="/images/test-profile-pic.png"
-        alt="Profile"
-      />
-      <h2 class="name">Test Meow</h2>
-      <p class="bio">
-        Welcome, {{ auth.user.name }}
-      </p>
-      <div class="buttons">
-        <Link :href="route('logout')" method="post" class="logout-btn"> Log out </Link>
-        <!-- <button class="btn secondary">Follow</button> -->
-      </div>
+      <img class="profile-image" src="/images/profile-placeholder-square.png" alt="Profile"/>
+      <h2 class="name">{{auth.user.username}}</h2>
+      <p class="bio"> No bio yet. </p>
+
+      <!-- <div class="buttons">
+        <button class="btn secondary">Follow</button>
+      </div> -->
     </div>
   </div>
 
   <div class="nav-line">
-    <p>Favorites</p> 
-    <span class="material-symbols-outlined">bookmark</span>
+    <p>My Recipes</p>
+    <p class="vertical-line">|</p>
+      <p>Favorites</p> 
+      <span class="material-symbols-outlined">bookmark</span>
+    <p class="vertical-line">|</p>
+    <p>Completed Recipes</p>
   </div>
 
   <div class="recipe-grid">
@@ -63,21 +66,33 @@ import { Link } from '@inertiajs/vue3';
 </script>
   
 <style scoped>
+  .nav-bar{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 50px 20px 50px;
+    background-color: #ffffff;
+    transition: all 0.4s ease;
+  }
+
   .logo{
     font-weight: 600;
-    font-size: 28px;
+    font-size: 32px;
     color: #000000;
     width: 100%;
-    margin: 10px;
-    margin-left: 20px;
-    padding: 10px 30px;
   }
 
   .logout-btn {
+    height: 45px;
+    width: 100px;
     padding: 8px 15px;
     background-color: #f44040;
-    color: white;
     border-radius: 5px;
+
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+
     transition: 0.3s;
   }
   
@@ -118,38 +133,28 @@ import { Link } from '@inertiajs/vue3';
     font-size: 16px;
     margin-bottom: 20px;
   }
-
+/* 
   .buttons {
     display: flex;
     justify-content: center;
     gap: 15px;
+  } */
+
+  .nav-line{
+    padding: 0 0px 10px 30px;
+    width: 90%;
+    display: flex;
+    align-items: center;
   }
 
-  .btn {
-    padding: 10px 20px;
-    font-size: 14px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  .nav-line p{
+    color: #666666;
+    font-size: 18px;
+    margin-right: 5px;
   }
 
-  .btn.primary {
-    background-color: #007bff;
-    color: white;
-  }
-
-  .btn.primary:hover {
-    background-color: #0056b3;
-  }
-
-  .btn.secondary {
-    background-color: #e0e0e0;
-    color: #333;
-  }
-
-  .btn.secondary:hover {
-    background-color: #c5c5c5;
+  .vertical-line{
+    margin-inline: 15px;  
   }
 
   .recipe-grid{
@@ -172,24 +177,12 @@ import { Link } from '@inertiajs/vue3';
     border-radius: 8px;
   }
 
-  .nav-line{
-    padding: 0 0px 10px 30px;
-    width: 90%;
-    display: flex;
-  }
-
-  .nav-line p{
+  .material-symbols-outlined {
     color: #666666;
-    font-size: 18px;
+    padding: 0;
+    margin: 0;
+    font-size: 24px;
   }
-
-
-.material-symbols-outlined {
-  color: #666666;
-  padding: 0;
-  margin: 0;
-  font-size: 28px;
-}
 </style>
 
 

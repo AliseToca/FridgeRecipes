@@ -2,7 +2,8 @@
     import { useForm } from '@inertiajs/vue3';
 
     const form = useForm({
-        email: '',
+        // email: '',
+        email_or_username: '',
         password: '',
         remember: false,
     });
@@ -44,16 +45,16 @@
             <form @submit.prevent="submit" class="login-form">
             <!-- Email Input -->
             <div class="input-group">
-                <label for="email" class="label">Email</label>
+                <label for="username_or_email" class="label">Username or Email</label>
                 <input
-                id="email"
-                type="email"
-                v-model="form.email"
-                class="input"
-                required
-                autofocus
-                />
-                <p v-if="form.errors.email" class="error">{{ form.errors.email }}</p>
+                    id="email_or_username"
+                    type="text"
+                    v-model="form.email_or_username"
+                    class="input"
+                    required
+                    autofocus
+                 />
+                <p v-if="form.errors.email_or_username" class="error">{{ form.errors.email_or_username }}</p>
             </div>
 
             <!-- Password Input -->
@@ -79,18 +80,18 @@
                 Log in
                 </button>
 
-                <Link
+                <!-- <Link
                     v-if="canResetPassword"
                     :href="route('password.request')"
                     class="forgot-password"
                 >
                     Forgot your password?
-                </Link>
+                </Link> -->
             </div>
 
             
             <div class="checkbox-group">
-                <div>
+                <!-- <div>
                     <input id="remember" type="checkbox" v-model="form.remember" class="checkbox"/>
                     <label class="label">
                             <Checkbox name="remember" v-model:checked="form.remember" />
@@ -98,7 +99,7 @@
                                 Remember me
                             </span>
                     </label>
-                </div>
+                </div> -->
 
 
                 <Link

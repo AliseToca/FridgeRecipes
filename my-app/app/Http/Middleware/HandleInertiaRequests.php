@@ -36,6 +36,7 @@ class HandleInertiaRequests
                 'user' => Auth::user() ? [
                     'id' => Auth::user()->id,
                     'name' => Auth::user()->name,
+                    'username' => Auth::user()->username,
                     'email' => Auth::user()->email,
                 ] : null,
             ],

@@ -31,7 +31,7 @@
 
 .material-symbols-outlined {
     font-size: 16px;
-    font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    font-variation-settings: 'FILL' 1;
 }
 
 .filled{

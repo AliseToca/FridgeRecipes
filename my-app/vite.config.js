@@ -16,5 +16,12 @@ export default defineConfig({
                 },
             },
         }),
+        
     ],
+    server: { //when reload page , keeps current page
+        watch: {
+          usePolling: true,
+          interval: 1000,
+        },
+      },
 });

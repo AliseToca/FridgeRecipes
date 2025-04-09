@@ -2,6 +2,7 @@
     import { Head, Link, useForm } from '@inertiajs/vue3';
 
     const form = useForm({
+        username: '',
         name: '',
         email: '',
         password: '',
@@ -36,18 +37,17 @@
 
             <!-- Form Section -->
             <form @submit.prevent="submit" class="register-form">
-                <!-- Name Input -->
                 <div class="input-group">
-                    <label for="name" class="label">Name</label>
+                    <label for="username" class="label">Username</label>
                     <input
-                        id="name"
+                        id="username"
                         type="text"
-                        v-model="form.name"
+                        v-model="form.username"
                         class="input"
                         required
                         autofocus
                     />
-                    <p v-if="form.errors.name" class="error">{{ form.errors.name }}</p>
+                    <p v-if="form.errors.username" class="error">{{ form.errors.username }}</p>
                 </div>
 
                 <!-- Email Input -->
@@ -61,6 +61,20 @@
                         required
                     />
                     <p v-if="form.errors.email" class="error">{{ form.errors.email }}</p>
+                </div>
+
+                <!-- Name Input -->
+                <div class="input-group">
+                    <label for="name" class="label">Name</label>
+                    <input
+                        id="name"
+                        type="text"
+                        v-model="form.name"
+                        class="input"
+                        required
+                        autofocus
+                    />
+                    <p v-if="form.errors.name" class="error">{{ form.errors.name }}</p>
                 </div>
 
                 <!-- Password Input -->
@@ -143,7 +157,7 @@
         padding: 30px;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        max-width: 400px;
+        max-width: 450px;
         width: 100%;
     }
 
