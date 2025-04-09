@@ -24,7 +24,7 @@ import FridgeSidebar from '@/Components/FridgeSideBar.vue'; // Import Fridge Sid
 
 export default {
   components: {
-    RecipeItem,
+    // RecipeItem,
     Footer,
     Navbar,
     SearchBar,
