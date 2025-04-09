@@ -2,7 +2,6 @@
     import { useForm } from '@inertiajs/vue3';
 
     const form = useForm({
-        // email: '',
         email_or_username: '',
         password: '',
         remember: false,
@@ -45,7 +44,7 @@
             <form @submit.prevent="submit" class="login-form">
             <!-- Email Input -->
             <div class="input-group">
-                <label for="username_or_email" class="label">Username or Email</label>
+                <label for="email_or_username" class="label">Email or Username</label>
                 <input
                     id="email_or_username"
                     type="text"
