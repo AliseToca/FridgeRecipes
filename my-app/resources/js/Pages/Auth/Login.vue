@@ -231,10 +231,10 @@
     }
 
     .register{
-    border-radius: 0.375rem; /* rounded-md */
-    font-size: 0.875rem; /* text-sm */
-    color: #4b5563; /* text-gray-600 */
-    text-decoration: underline; /* underline */
+        border-radius: 0.375rem; /* rounded-md */
+        font-size: 0.875rem; /* text-sm */
+        color: #4b5563; /* text-gray-600 */
+        text-decoration: underline; /* underline */
     }
 
     /* Hover state */

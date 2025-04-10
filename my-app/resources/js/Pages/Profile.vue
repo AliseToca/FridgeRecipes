@@ -30,24 +30,27 @@
     </div>
   </div>
 
-  <div class="nav-line">
-    <p>My Recipes</p>
-    <p class="vertical-line">|</p>
-      <p>Favorites</p> 
-      <span class="material-symbols-outlined">bookmark</span>
-    <p class="vertical-line">|</p>
-    <p>Completed Recipes</p>
-  </div>
+  <div class="recipe-grid-container">
+    <div class="nav-line">
+      <p>My Recipes</p>
+      <p class="vertical-line">|</p>
+        <p>Favorites</p> 
+        <span class="material-symbols-outlined">bookmark</span>
+      <p class="vertical-line">|</p>
+      <p>Completed Recipes</p>
+    </div>
 
-  <div class="recipe-grid">
-    <div class="placeholder"></div>
-    <div class="placeholder"></div>
-    <div class="placeholder"></div>
-    <div class="placeholder"></div>
-    <div class="placeholder"></div>
-    <div class="placeholder"></div>
-    <div class="placeholder"></div>
-    <div class="placeholder"></div>
+
+    <div class="recipe-grid">
+      <div class="placeholder"></div>
+      <div class="placeholder"></div>
+      <div class="placeholder"></div>
+      <div class="placeholder"></div>
+      <div class="placeholder"></div>
+      <div class="placeholder"></div>
+      <div class="placeholder"></div>
+      <div class="placeholder"></div>
+    </div>
   </div>
 
 </template>
@@ -85,9 +88,10 @@ import { Link } from '@inertiajs/vue3';
   .logout-btn {
     height: 45px;
     width: 100px;
-    padding: 8px 15px;
+
     background-color: #f44040;
     border-radius: 5px;
+    padding: 5px ;
 
     color: white;
     font-size: 18px;
@@ -157,32 +161,81 @@ import { Link } from '@inertiajs/vue3';
     margin-inline: 15px;  
   }
 
-  .recipe-grid{
-    width: 90%;
-    border-top: 2px solid #d4d4d4;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    column-gap: 10px;
-    row-gap: 25px;
-    justify-items: center;
-    padding: 20px;
-    padding-left: 5px;
-    min-height: 500px;
-  }
-
-  .placeholder{
-    width: 300px;
-    height: 350px;
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 8px;
-  }
-
   .material-symbols-outlined {
     color: #666666;
     padding: 0;
     margin: 0;
     font-size: 24px;
   }
+
+  .recipe-grid-container{
+    width: 90%;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .recipe-grid {
+    width: 100%;
+    border-top: 2px solid #d4d4d4;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    justify-items: center;
+    padding: 20px;
+    padding-left: 5px;
+    min-height: 500px;
+  }
+
+  .placeholder {
+    width: 100%;
+    max-width: 250px;
+    height: 0;
+    padding-top: 133.33%; /* 4/3 ratio (height = width * 4/3) */
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+  }
+
+  @media (max-width: 1024px) {
+    .recipe-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .placeholder {
+      min-width: 60%;
+      padding-top: 133.33%; /* Maintain 3:4 ratio */
+    }
+  }
+
+  @media (max-width: 768px) {
+    .nav-bar{
+      padding-inline: 30px;
+    }
+    .recipe-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .placeholder {
+      min-width: 30%;
+      padding-top: 133.33%; /* Maintain 3:4 ratio */
+    }
+  }
+
+  @media (max-width: 480px) {
+    .recipe-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+    }
+
+    .placeholder {
+      min-width: 30%;
+      padding-top: 133.33%; /* Maintain 3:4 ratio */
+    }
+  }
+
 </style>
 
 

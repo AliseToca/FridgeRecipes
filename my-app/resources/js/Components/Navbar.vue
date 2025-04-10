@@ -62,7 +62,6 @@ export default {
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
-    console.log("Auth Data in Navbar:", this.auth);
   },
   beforeUnmount() {
     window.removeEventListener("scroll", this.handleScroll);

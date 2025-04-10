@@ -2,7 +2,7 @@
 <template>
   <div class="recipe-item">
     <div class="image-container">
-      <img :src="img" alt="">
+      <!-- <img :src="img" alt=""> -->
       <h1>{{ name }}</h1>
       <div class="recipe-details">
         <span class="material-symbols-outlined">schedule</span>
