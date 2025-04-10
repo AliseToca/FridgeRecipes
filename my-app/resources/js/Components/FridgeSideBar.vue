@@ -1,14 +1,16 @@
 <template>
     <div class="fridge-sidebar">
-      <h2>Your Fridge</h2>
-      <div class="ingredient-list">
-        <ul>
-          <li v-for="ingredient in fridgeIngredients" :key="ingredient">{{ ingredient }}</li>
-        </ul>
-      </div>
-      <div class="add-ingredient">
-        <input v-model="newIngredient" @keyup.enter="addIngredient" placeholder="Add an ingredient" />
-        <button @click="addIngredient">Add Ingredient</button>
+      <div class="fridge-container">
+        <h2>Your Fridge</h2>
+          <div class="ingredient-list">
+            <ul>
+              <li v-for="ingredient in fridgeIngredients" :key="ingredient">{{ ingredient }}</li>
+            </ul>
+          </div>
+          <div class="add-ingredient">
+            <input v-model="newIngredient" @keyup.enter="addIngredient" placeholder="Add an ingredient" />
+            <button @click="addIngredient">Add Ingredient</button>
+          </div>
       </div>
     </div>
   </template>
@@ -44,6 +46,16 @@
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   }
   
+  .fridge-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 2px;
+  }
+
   h2 {
     align-self: center;
     margin-bottom: 10px;

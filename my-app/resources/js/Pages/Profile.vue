@@ -177,64 +177,61 @@ import { Link } from '@inertiajs/vue3';
   }
 
   .recipe-grid {
-    width: 100%;
-    border-top: 2px solid #d4d4d4;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    justify-items: center;
-    padding: 20px;
-    padding-left: 5px;
-    min-height: 500px;
+  width: 100%;
+  border-top: 2px solid #d4d4d4;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  justify-items: center;
+  padding: 20px;
+  padding-left: 5px;
+  min-height: 500px;
+}
+
+.placeholder {
+  aspect-ratio: 3 / 4;
+  width: 100%;
+  max-width: 250px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+@media (max-width: 1024px) {
+  .recipe-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
   }
 
   .placeholder {
-    width: 100%;
-    max-width: 250px;
-    height: 0;
-    padding-top: 133.33%; /* 4/3 ratio (height = width * 4/3) */
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 8px;
+    min-width: 60%;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-bar {
+    padding-inline: 30px;
   }
 
-  @media (max-width: 1024px) {
-    .recipe-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-
-    .placeholder {
-      min-width: 60%;
-      padding-top: 133.33%; /* Maintain 3:4 ratio */
-    }
+  .recipe-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
   }
 
-  @media (max-width: 768px) {
-    .nav-bar{
-      padding-inline: 30px;
-    }
-    .recipe-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
+  .placeholder {
+    min-width: 30%;
+  }
+}
 
-    .placeholder {
-      min-width: 30%;
-      padding-top: 133.33%; /* Maintain 3:4 ratio */
-    }
+@media (max-width: 480px) {
+  .recipe-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
   }
 
-  @media (max-width: 480px) {
-    .recipe-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 5px;
-    }
-
-    .placeholder {
-      min-width: 30%;
-      padding-top: 133.33%; /* Maintain 3:4 ratio */
-    }
+  .placeholder {
+    min-width: 30%;
   }
+}
 
 </style>
 

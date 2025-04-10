@@ -16,17 +16,8 @@
     };
 </script>
 
-<script>
-    import { Link } from "@inertiajs/vue3";
-
-    export default {
-    components: {
-        Link
-    },
-}
-</script>
-
 <template>
+    <pre>{{ form }}</pre>
     <div class="logo">
         <a href="/" class="logo-link">FridgeRecipes</a>
     </div>
