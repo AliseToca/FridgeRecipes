@@ -1,9 +1,14 @@
 <template>
+    <main>
+        
+    </main>
         <div class="recipe-container">
             <div class="short-info">
                 <div>
-                    <h1>{{ recipe.name }}</h1>
-                    <p class="author">Author: will be name</p>
+                    <div>
+                        <h1>{{ recipe.name }}</h1>
+                        <p class="author">Author: will be name</p>
+                    </div>
                     <p>{{recipe.content}}</p>
                     <StarRating :rating="recipe.rating" :font-size="'32px'" class="star-rating"/>
                 </div>
@@ -12,12 +17,14 @@
 
             <br>
             <div class="recipe-info">
-            <p><strong>Cooking Time:</strong> {{ recipe.minutes }} minutes</p>
+                <p><strong>Prep Time:</strong> {{ recipe.minutes }} minutes</p>
+                <p><strong>Cooking Time:</strong> {{ recipe.minutes }} minutes</p>
+                <p><strong>Total Time:</strong> {{ recipe.minutes }} minutes</p>
             </div>
 
 
             <div class="recipe-section">
-                <h2 class="section-title">Ingredients</h2>
+                <h2 class="section-title"><span>Ingredients</span></h2>
 
                 <ul class="ingredient-list">
                 <li
@@ -35,12 +42,12 @@
             </div>
 
             <div class="recipe-section">
-            <h2 class="section-title">Instructions</h2>
-            <p>{{ recipe.instructions }}</p>
+                <h2 class="section-title"><span>Instructions</span></h2>
+                <p>{{ recipe.instructions }}</p>
             </div>
 
             <div class="recipe-section">
-            <h2 class="section-title">Reviews</h2>
+            <h2 class="section-title"><span>Reviews</span></h2>
             <p>No reviews yet. Be the first to leave a review!</p>
             </div>
         </div>
@@ -71,10 +78,14 @@
 
 </script>
 
-
+ 
 <style scoped>
  .recipe-container {
-    border: 2px solid #fcdcdc;
+    border: 1px solid #3a3a3a;
+    box-shadow:11px 11px 0px 0px rgba(244,64,64,0.74);
+    color: #3a3a3a;
+    border-radius: 0px;
+    background-color: #ffffff;
     padding: 20px;
     max-width: 800px;
     margin: 0 auto;
@@ -87,7 +98,6 @@
 
 
  .short-info > div{
- 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -98,6 +108,9 @@
  .short-info  h1{
     font-size: 32px;
     font-weight: bold;
+    color: #1d1d1d;
+    width: 67%;
+    text-transform: uppercase;
  }
 
  .short-info p{
@@ -125,11 +138,10 @@
 }
 
 .ingredient-item {
-
-
   display: flex;
   align-items: center;
 
+  
   transition: background-color 0.2s, color 0.2s;
 }
 
@@ -164,11 +176,27 @@
     margin-bottom: 30px;
 }
 
+
+
 .section-title {
+   width: 100%; 
+   text-align: center; 
+   border-bottom: 1px solid #f44040; 
+   color: #f44040;
+   line-height: 0.1em;
+   margin: 10px 0 20px; 
+} 
+
+.section-title span{
     font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 10px;
+    background:#fff; 
+    padding:0 10px; 
+    text-transform: uppercase;
 }
+
+
 
 .ingredient-list {
     padding-left: 20px;
