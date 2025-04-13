@@ -9,11 +9,11 @@
 
     const submit = () => {
         form.post(route('login'), {
+            onError: (errors) => console.log(errors),
             onFinish: () => form.reset('password'),
         });
     };
 </script>
-
 
 <template>
     <body>
@@ -25,10 +25,8 @@
         <div class="login-wrapper">
             <h1 class="login-title">Log in</h1>
 
-
-
             <!-- Display status message -->
-            <div v-if="form.errors.email || form.errors.password" class="error-message">
+            <div v-if="form.errors.email_or_username || form.errors.password" class="error-message">
             Please check your input errors.
             </div>
 

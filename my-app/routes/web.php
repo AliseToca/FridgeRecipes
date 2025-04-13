@@ -5,11 +5,18 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Recipe;
 
-// Debug route to check authentication user
-Route::get('/debug-auth', function () {
-    return response()->json(Auth::user());
-});
+
+Route::get('/recipes/{id}', function ($id) {
+    $recipe = Recipe::where('id', $id)->firstOrFail();
+
+    return Inertia::render('Recipe', [
+        'recipe' => $recipe
+    ]);
+})->name('recipes.show');
+
+
 
 // Home route
 Route::get('/', function () {

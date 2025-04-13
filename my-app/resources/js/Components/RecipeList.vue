@@ -49,7 +49,7 @@ export default {
 <style scoped>
 .recipe-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   column-gap: 10px;
   row-gap: 25px;
   justify-items: center;
@@ -59,8 +59,9 @@ export default {
 }
 
 .placeholder {
-  width: 300px;
-  height: 350px;
+  aspect-ratio: 4 / 5;
+  width: 100%;
+  max-width: 250px;
   background: rgba(0, 0, 0, 0.05);
   border-radius: 8px;
 }

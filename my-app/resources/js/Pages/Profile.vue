@@ -189,7 +189,7 @@ import { Link } from '@inertiajs/vue3';
 }
 
 .placeholder {
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 4 / 5;
   width: 100%;
   max-width: 250px;
   background: rgba(0, 0, 0, 0.05);

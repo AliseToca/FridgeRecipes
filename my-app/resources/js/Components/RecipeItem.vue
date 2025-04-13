@@ -1,23 +1,31 @@
 <!-- Updated RecipeItem.vue -->
 <template>
+ 
   <div class="recipe-item">
-    <div class="image-container">
-      <!-- <img :src="img" alt=""> -->
-      <h1>{{ name }}</h1>
-      <div class="recipe-details">
-        <span class="material-symbols-outlined">schedule</span>
-        <p class="detail-text">{{ minutes }} min</p>
-        <StarRating :rating="rating"/>
+    <Link href="/recipes/${id}">
+        <div class="image-container">
+        <img :src="img" alt="">
+        <!-- <img src="/images/profile-placeholder-square.png" alt=""> -->
+        <h1>{{ name }}</h1>
+        <div class="recipe-details">
+          <span class="material-symbols-outlined">schedule</span>
+          <p class="detail-text">{{ minutes }} min</p>
+          <StarRating :rating="rating"/>
+        </div>
       </div>
-    </div>
-    <p class="ingredient-text">{{ ingredientsMissing }} missing ingredient{{ ingredientsMissing !== 1 ? 's' : '' }}...</p>
-    <RelBar :percentage="relbarPercentage" />
+      <p class="ingredient-text">{{ ingredientsMissing }} missing ingredient{{ ingredientsMissing !== 1 ? 's' : '' }}...</p>
+      <RelBar :percentage="relbarPercentage" />
+    </Link>
   </div>
+  
+
 </template>
 
 <script>
+import { Link } from "@inertiajs/vue3";
 import StarRating from './StarRating.vue';
 import RelBar from './Relbar.vue';
+
 
 export default {
   data() {
@@ -29,7 +37,8 @@ export default {
   },
   components: {
     StarRating,
-    RelBar
+    RelBar,
+    Link
   },
   computed: {
     relbarPercentage() {
@@ -65,16 +74,15 @@ export default {
 </script>
 
 <style scoped>
-  h1{
-    padding-bottom: 5px;
-  }
-
   .recipe-item {
     z-index: 0;
     display: flex;
     flex-direction: column;
-    width: 300px;
-    height: 350px;
+
+    aspect-ratio: 4 / 5;
+    width: 100%;
+    max-width: 250px;
+    
     background-color: rgb(255, 255, 255);
     border: #fff 8px solid;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -84,20 +92,24 @@ export default {
     position: relative;
     width: auto;
     height: 90%;
+    padding: 0;
   }
 
   .image-container img{
     object-fit: cover;
+    
+    aspect-ratio: 1 / 1;
     width: 100%;
-    height: 100%;
+    max-width: calc(100%-10px);
+
   }
 
   .image-container h1{
     position: absolute;
-    bottom: 20px;
-    left: 7px;
+    bottom: 35px;
+    left: 2px;
     background-color: #ffffff;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
     padding: 5px;
   }
@@ -105,11 +117,11 @@ export default {
   .recipe-details {
     position: absolute;
     bottom: 6px;
-    left: 7px;
+    left: 0px;
 
     background-color: #ffffff;
     margin: 0;
-    padding-inline: 5px;
+
     display: flex;
     flex-direction: row;
     align-items: center;
