@@ -1,21 +1,31 @@
 <!-- resources/js/Layouts/DefaultLayout.vue -->
 <template>
-    <div>
-<!--        <Navbar :routes="routes"/>-->
-        <slot />
-        <!--         slot used to make opportunity for home or others pages put other objects inside default layout tags-->
-<!--        <Footer />-->
-    </div>
+  <div>
+    <Navbar :auth="auth" @search="handleSearch" />
+      <main>
+         <slot></slot>
+      </main>
+      <Footer />
+  </div>
 </template>
-
+  
 <script>
-import Navbar from '../Components/Navbar.vue';
-import Footer from "../Components/Footer.vue";
-
-export default {
+  import Navbar from '../Components/Navbar.vue'
+  import Footer from '../Components/Footer.vue'
+  
+  export default {
+    name: 'DefaultLayout',
     components: {
-        Footer,
-        Navbar
-    },
-};
-</script>
+      Navbar,
+      Footer
+    }
+  }
+  </script>
+  
+  <style scoped>
+    main {
+      margin-top: 90px;
+      padding: 20px;
+    }
+</style>
+  

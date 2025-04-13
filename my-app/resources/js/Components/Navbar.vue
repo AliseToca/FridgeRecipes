@@ -4,7 +4,7 @@
       <div class="logo">
         <Link href="/">FridgeRecipes</Link>
       </div>
-      <SearchBar @search="handleSearch" />
+      <!-- <SearchBar @search="handleSearch" /> -->
       <ul class="nav-links" :class="{ active: menuActive }">
         <li><Link href="/Homeview">Recipes</Link></li>
         <li><Link href="/fridge">Fridge</Link></li>

@@ -10,13 +10,14 @@
       :rating="recipe.rating"
       :ingredients="recipe.ingredients"
       :img="recipe.img"
+      :slug="recipe.slug" 
     />
     <!-- Placeholder items to maintain grid layout -->
-    <div
+    <!-- <div
       v-for="n in emptySlots"
       :key="'placeholder-' + n"
       class="placeholder"
-    ></div>
+    ></div> -->
   </div>
 </template>
 
@@ -37,11 +38,11 @@ export default {
         recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     },
-    emptySlots() {
-      const totalItems = this.filteredRecipes.length;
-      const slotsNeeded = totalItems % 4 === 0 ? 0 : 4 - (totalItems % 4);
-      return slotsNeeded;
-    },
+    // emptySlots() {
+    //   const totalItems = this.filteredRecipes.length;
+    //   const slotsNeeded = totalItems % 3 === 0 ? 0 : 3 - (totalItems % 4);
+    //   return slotsNeeded;
+    // },
   },
 };
 </script>
@@ -58,13 +59,13 @@ export default {
   min-height: 500px;
 }
 
-.placeholder {
+/* .placeholder {
   aspect-ratio: 4 / 5;
   width: 100%;
   max-width: 250px;
   background: rgba(0, 0, 0, 0.05);
   border-radius: 8px;
-}
+} */
 
 @media (max-width: 1200px) {
   .recipe-container {

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('img');
+            $table->longText('content');
             $table->integer('minutes');
             $table->integer('rating');
             $table->integer('ingredients');

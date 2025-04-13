@@ -1,23 +1,23 @@
 <!-- Updated RecipeItem.vue -->
 <template>
- 
+  <Link :href="`/recipes/${slug}`">
   <div class="recipe-item">
-    <Link href="/recipes/${id}">
+   
         <div class="image-container">
         <img :src="img" alt="">
         <!-- <img src="/images/profile-placeholder-square.png" alt=""> -->
         <h1>{{ name }}</h1>
         <div class="recipe-details">
-          <span class="material-symbols-outlined">schedule</span>
-          <p class="detail-text">{{ minutes }} min</p>
-          <StarRating :rating="rating"/>
+            <span class="material-symbols-outlined">schedule</span>
+            <p>{{ minutes }} min</p>
+            <StarRating :rating="rating"/>
+          </div>
         </div>
-      </div>
       <p class="ingredient-text">{{ ingredientsMissing }} missing ingredient{{ ingredientsMissing !== 1 ? 's' : '' }}...</p>
       <RelBar :percentage="relbarPercentage" />
-    </Link>
+
   </div>
-  
+</Link>
 
 </template>
 
@@ -55,6 +55,7 @@ export default {
     ingredients: Number,
     rating: Number,
     img: String,
+    slug: String,
   },
   methods: {
     calculateBarPercentage(userHas) {
@@ -115,9 +116,9 @@ export default {
   }
 
   .recipe-details {
-    position: absolute;
+    /* position: absolute;
     bottom: 6px;
-    left: 0px;
+    left: 0px; */
 
     background-color: #ffffff;
     margin: 0;
@@ -128,7 +129,7 @@ export default {
     width: auto;
   }
 
-  .detail-text {
+  .recipe-details p {
     margin: 0 10px 0 0;
     font-size: 12px;
     font-weight: 400;
@@ -136,14 +137,14 @@ export default {
   }
 
   .ingredient-text {
-    margin: 0;
+    margin: 0 0 3px 0;
     font-size: 12px;
     font-weight: 400;
     color: #9B9B9B;
   }
 
   .relbar-container {
-    margin-top: 10px;
+    margin-top: 0px;
   }
 
   .relbar {
