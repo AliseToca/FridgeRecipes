@@ -4,18 +4,22 @@
   <div class="recipe-item">
    
         <div class="image-container">
-        <img :src="img" alt="">
-        <!-- <img src="/images/profile-placeholder-square.png" alt=""> -->
-        <h1>{{ name }}</h1>
-        <div class="recipe-details">
-            <span class="material-symbols-outlined">schedule</span>
-            <p>{{ minutes }} min</p>
-            <StarRating :rating="rating"/>
-          </div>
+          <img :src="img" alt="">
+          <!-- <img src="/images/profile-placeholder-square.png" alt=""> -->
         </div>
-      <p class="ingredient-text">{{ ingredientsMissing }} missing ingredient{{ ingredientsMissing !== 1 ? 's' : '' }}...</p>
-      <RelBar :percentage="relbarPercentage" />
-
+        <div class="text-container">
+          <h1>{{ name }}</h1>
+          <div class="recipe-info">
+            <div class="recipe-details">
+                <span class="material-symbols-outlined">schedule</span>
+                <p>{{ minutes }} min</p>
+                <StarRating :rating="rating"/>
+            </div>
+            <!-- <p class="ingredient-text">{{ ingredientsMissing }} missing ingredient{{ ingredientsMissing !== 1 ? 's' : '' }}...</p> -->
+            <p class="ingredient-text">{{userHasIngredients}} / {{ingredients}}  <span class="material-symbols-outlined">grocery</span></p>
+          </div>
+          <RelBar :percentage="relbarPercentage" class="relbar"/>
+        </div>
   </div>
 </Link>
 
@@ -82,44 +86,42 @@ export default {
 
     aspect-ratio: 4 / 5;
     width: 100%;
-    max-width: 250px;
+    max-width: 350px;
     
     background-color: rgb(255, 255, 255);
-    border: #fff 8px solid;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+    border: #3a3a3a 1px solid;
+    box-shadow: 5px 5px 0px 0px rgba(244,64,64,0.74);
+    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
   }
 
-  .image-container{
-    position: relative;
-    width: auto;
-    height: 90%;
-    padding: 0;
-  }
 
   .image-container img{
     object-fit: cover;
-    
     aspect-ratio: 1 / 1;
     width: 100%;
     max-width: calc(100%-10px);
 
   }
 
-  .image-container h1{
-    position: absolute;
-    bottom: 35px;
-    left: 2px;
+  .text-container{
+    padding-inline: 10px;
+  }
+
+  .text-container h1{
+    text-transform: uppercase;
     background-color: #ffffff;
-    font-size: 20px;
+    font-size: 21px;
     font-weight: 700;
-    padding: 5px;
+    margin: 5px 0 0px 0;
+  }
+
+  .recipe-info{
+    display: flex;
+    justify-content: space-between;
   }
 
   .recipe-details {
-    /* position: absolute;
-    bottom: 6px;
-    left: 0px; */
-
     background-color: #ffffff;
     margin: 0;
 
@@ -137,10 +139,16 @@ export default {
   }
 
   .ingredient-text {
-    margin: 0 0 3px 0;
+    display: flex;
+    align-items: center;
     font-size: 12px;
     font-weight: 400;
     color: #9B9B9B;
+  }
+
+  .ingredient-text span{
+    margin-left: 2px;
+    padding: 0px;
   }
 
   .relbar-container {
@@ -148,16 +156,8 @@ export default {
   }
 
   .relbar {
+    margin-top: 5px;
     width: 100%;
-    height: 7px;
-    border-radius: 3px;
-    box-shadow: 0 0 1px #656565;
-  }
-
-  .relbar-fill {
-    height: 100%;
-    border-radius: 3px;
-    transition: background-color 0.3s ease;
   }
 
   .material-symbols-outlined {

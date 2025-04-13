@@ -59,7 +59,7 @@
 <style scoped>
   .main-container {
     display: flex;
-    padding-inline: 50px;
+    /* padding-inline: 50px; */
     padding-left: 0;
   }
 

@@ -16,15 +16,17 @@
     };
 </script>
 
-<template>
-    <pre>{{ form }}</pre>
-    <div class="logo">
-        <a href="/" class="logo-link">FridgeRecipes</a>
-    </div>
 
-    <div class="background">
-        <div class="register-wrapper">
-            <h1 class="register-title">Register</h1>
+<script>
+    import AuthentificationLayout from '../../Layouts/AuthentificationLayout.vue';
+
+    export default {
+        layout: AuthentificationLayout,
+    }
+</script>
+
+<template>
+            <h1 class="register-title">REGISTER</h1>
 
             <!-- Form Section -->
             <form @submit.prevent="submit" class="register-form">
@@ -101,7 +103,7 @@
                     :disabled="form.processing"
                     class="submit-button"
                 >
-                        Register
+                        REGISTER
                     </button>
                 </div>
 
@@ -112,8 +114,6 @@
                     </Link>
                 </div>
             </form>
-        </div>
-    </div>
 </template>
 
 <style scoped>
@@ -142,7 +142,7 @@
         box-sizing: border-box;
     }
 
-    .register-wrapper {
+    /* .register-wrapper {
         background-color: #fcfcfc;
         opacity: 0.9;
         padding: 30px;
@@ -150,9 +150,10 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         max-width: 450px;
         width: 100%;
-    }
+    } */
 
     .register-title {
+        color: #000;
         text-align: center;
         font-size: 24px;
         font-weight: bold;
@@ -203,7 +204,7 @@
         color: white;
         padding: 10px 20px;
         width: 100%;
-        border-radius: 4px;
+        border-radius: 2px;
         border: none;
         cursor: pointer;
     }

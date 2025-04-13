@@ -1,9 +1,7 @@
 <template>
   <nav :class="{ sticky: isSticky }">
     <div class="nav-content">
-      <div class="logo">
-        <Link href="/">FridgeRecipes</Link>
-      </div>
+      <Logo></Logo>
       <!-- <SearchBar @search="handleSearch" /> -->
       <ul class="nav-links" :class="{ active: menuActive }">
         <li><Link href="/Homeview">Recipes</Link></li>
@@ -16,7 +14,7 @@
           </Link>
         </li>
         <li v-else>
-          <button class="login-button"><Link href="/login">Log in</Link></button>
+          <button class="login-button"><Link href="/login">LOG IN</Link></button>
         </li>
       </ul>
       <div class="hamburger" @click="toggleMenu">
@@ -31,11 +29,13 @@
 <script>
 import { Link } from "@inertiajs/vue3";
 import SearchBar from "./SearchBar.vue";
+import Logo from "./Logo.vue";
 
 export default {
   components: {
     Link,
     SearchBar,
+    Logo,
   },
   props: {
     auth: {
@@ -85,6 +85,9 @@ nav {
   width: 100%;
   padding: 20px 50px 20px 50px;
   background-color: #ffffff;
+  border-bottom: 2px solid #f05c5c;
+  /* border-bottom: 2px solid #e76f51; */
+
   transition: all 0.4s ease;
   z-index: 10;
 }
@@ -102,16 +105,6 @@ nav .nav-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.logo a {
-  font-weight: 600;
-  font-size: 35px;
-  color: #000000;
-}
-
-.logo{
-  margin-right: 20px;
 }
 
 .nav-content .nav-links {
@@ -162,7 +155,7 @@ nav .nav-content {
 
 .login-button {
   background-color: #f44040;
-  border-radius: 4px;
+  border-radius: 2px;
   padding: 5px ;
   width: 100px;
   height: 45px;
@@ -171,10 +164,12 @@ nav .nav-content {
 
 .login-button a{
   color: #ffffff !important;
+  text-transform: uppercase;
 }
 
 .login-button:hover{
   background-color: #d32f2f;
+  
 }
 
 .login-button a:hover{

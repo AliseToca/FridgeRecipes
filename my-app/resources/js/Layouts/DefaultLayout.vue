@@ -20,13 +20,13 @@
       Footer
     }
   }
-  </script>
+</script>
   
-  <style scoped>
-    main {
-      margin-top: 90px;
-      padding: 20px;
-      /* background-color: #fdf3f3; */
-    }
+<style scoped>
+  main {
+    margin-top: 90px;
+    padding: 20px;
+    /* background-color: #fdf3f3; */
+  }
 </style>
   

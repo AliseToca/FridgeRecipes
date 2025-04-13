@@ -16,21 +16,13 @@
 </script>
 
 <template>
-    <body>
-        <div class="logo">
-        <Link href="/">FridgeRecipes</Link>
-    </div>
+    <div class="login-wrapper">
+        <h1 class="login-title">LOG IN</h1>
+        <div v-if="form.errors.email_or_username || form.errors.password" class="error-message">
+             Please check your input errors.
+        </div>
 
-    <div class="background">
-        <div class="login-wrapper">
-            <h1 class="login-title">Log in</h1>
-
-            <!-- Display status message -->
-            <div v-if="form.errors.email_or_username || form.errors.password" class="error-message">
-            Please check your input errors.
-            </div>
-
-            <form @submit.prevent="submit" class="login-form">
+        <form @submit.prevent="submit" class="login-form">
             <!-- Email Input -->
             <div class="input-group">
                 <label for="email_or_username" class="label">Email or Username</label>
@@ -41,7 +33,7 @@
                     class="input"
                     required
                     autofocus
-                 />
+                />
                 <p v-if="form.errors.email_or_username" class="error">{{ form.errors.email_or_username }}</p>
             </div>
 
@@ -49,12 +41,12 @@
             <div class="input-group">
                 <label for="password" class="label">Password</label>
                 <input
-                id="password"
-                type="password"
-                v-model="form.password"
-                class="input"
-                required
-                />
+                    id="password"
+                    type="password"
+                    v-model="form.password"
+                    class="input"
+                    required
+                    />
                 <p v-if="form.errors.password" class="error">{{ form.errors.password }}</p>
             </div>
 
@@ -65,29 +57,28 @@
                     :disabled="form.processing"
                     class="submit-button"
                 >
-                Log in
+                LOG IN
                 </button>
 
-                <!-- <Link
-                    v-if="canResetPassword"
-                    :href="route('password.request')"
-                    class="forgot-password"
-                >
-                    Forgot your password?
-                </Link> -->
+                    <!-- <Link
+                        v-if="canResetPassword"
+                        :href="route('password.request')"
+                        class="forgot-password"
+                    >
+                        Forgot your password?
+                    </Link> -->
             </div>
-
-            
+                
             <div class="checkbox-group">
-                <!-- <div>
-                    <input id="remember" type="checkbox" v-model="form.remember" class="checkbox"/>
-                    <label class="label">
-                            <Checkbox name="remember" v-model:checked="form.remember" />
-                            <span class="ms-2 text-sm text-gray-600">
-                                Remember me
-                            </span>
-                    </label>
-                </div> -->
+                    <!-- <div>
+                        <input id="remember" type="checkbox" v-model="form.remember" class="checkbox"/>
+                        <label class="label">
+                                <Checkbox name="remember" v-model:checked="form.remember" />
+                                <span class="ms-2 text-sm text-gray-600">
+                                    Remember me
+                                </span>
+                        </label>
+                    </div> -->
 
 
                 <Link
@@ -97,13 +88,17 @@
                     Don't have an account?
                 </Link>
             </div>
-            </form>
-            </div>
-        </div>
-    <div id="overlay"></div>
-    </body>
-  
+        </form>
+    </div>
 </template>
+
+<script>
+    import AuthentificationLayout from '../../Layouts/AuthentificationLayout.vue';
+
+    export default {
+        layout: AuthentificationLayout,
+    }
+</script>
 
 <style scoped>
 
@@ -132,7 +127,7 @@
         box-sizing: border-box;
     }
 
-    .login-wrapper {
+    /* .login-wrapper {
         background-color: #fcfcfc;
         opacity: 0.9;
         padding: 30px;
@@ -140,9 +135,10 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         max-width: 400px;
         width: 100%;
-    }
+    } */
 
     .login-title {
+        color: #000000;
         text-align: center;
         font-size: 24px;
         font-weight: bold;
@@ -199,7 +195,7 @@
         color: white;
         padding: 10px 20px;
         width: 100%;
-        border-radius: 4px;
+        border-radius: 2px;
         border: none;
         cursor: pointer;
     }

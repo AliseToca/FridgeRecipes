@@ -49,9 +49,10 @@ export default {
 
 <style scoped>
 .recipe-container {
+  width: 93%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  column-gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 25px;
   row-gap: 25px;
   justify-items: center;
   padding: 20px;
@@ -70,18 +71,21 @@ export default {
 @media (max-width: 1200px) {
   .recipe-container {
     grid-template-columns: repeat(2, 1fr);
+    width: 100%;
   }
 }
 
 @media (max-width: 900px) {
   .recipe-container {
     grid-template-columns: repeat(2, 1fr);
+    width: 100%;
   }
 }
 
 @media (max-width: 600px) {
   .recipe-container {
     grid-template-columns: 1fr;
+    width: 100%;
   }
 }
 </style>
