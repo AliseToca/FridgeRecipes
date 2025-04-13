@@ -43,11 +43,11 @@
   }
   
   .filled {
-    color: #FFE500;
+    color: #f44040;
   }
   
   .outlined {
-    color: gray;
+    color: rgb(228, 210, 210);
   }
   </style>
   
