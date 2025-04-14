@@ -6,9 +6,9 @@
       :key="recipe.id"
       :id="recipe.id"
       :name="recipe.name"
-      :minutes="recipe.minutes"
+      :minutes="recipe.cookMinutes"
       :rating="recipe.rating"
-      :ingredients="recipe.ingredients"
+      :ingredients="recipe.ingredients.length"
       :img="recipe.img"
       :slug="recipe.slug" 
     />

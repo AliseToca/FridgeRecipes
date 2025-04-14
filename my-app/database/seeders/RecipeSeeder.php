@@ -11,47 +11,56 @@ class RecipeSeeder extends Seeder
 {
     public function run(): void
     {
-
         $recipes = [
             [
                 'name' => 'Healthy Rich Salad',
                 'img' => '/images/recipe/salad.jpg',
-                'minutes' => 12,
+                'bio' => 'This healthy salad is packed with vibrant greens, nuts, and a zesty vinaigrette. Perfect for a light lunch or side dish. It’s easy, fast, and incredibly nutritious!',
+                'cookMinutes' => 12,
                 'rating' => 3,
-                'ingredients' => 6,
-                'content' => 'This healthy salad is packed with vibrant greens, nuts, and a zesty vinaigrette. Perfect for a light lunch or side dish. It’s easy, fast, and incredibly nutritious!',
+                'ingredients' => json_encode(['lettuce', 'tomato', 'cucumber', 'avocado', 'walnuts', 'feta']),
+                'instructions' => json_encode([
+                    'Chop the lettuce and tomatoes.',
+                    'Slice the avocado and cucumber.',
+                    'Toss everything together in a large bowl.',
+                    'Top with feta and walnuts, then drizzle with vinaigrette.',
+                ]),
             ],
             [
                 'name' => 'Butter Chicken',
                 'img' => '/images/recipe/butter-chicken-test.jpg',
-                'minutes' => 15,
+                'bio' => 'Butter Chicken is a rich and creamy Indian dish made with tender chicken in a spiced tomato sauce. Serve it with naan or basmati rice for a satisfying meal',
+                'cookMinutes' => 15,
                 'rating' => 4,
-                'ingredients' => 4,
-                'content' => 'Butter Chicken is a rich and creamy Indian dish made with tender chicken in a spiced tomato sauce. Serve it with naan or basmati rice for a satisfying meal.',
-            ],
-            [
-                'name' => 'Eggs and Bacon',
-                'img' => '/images/recipe/bacon-and-eggs.jpg',
-                'minutes' => 10,
-                'rating' => 2,
-                'ingredients' => 8,
-                'content' => 'A classic breakfast combo! Crispy bacon and perfectly cooked eggs served with toast or hash browns. Quick, simple, and satisfying.',
+                'ingredients' =>json_encode(['Chicken', 'Butter', 'Tomato Puree', 'Cream']),
+                'instructions' => json_encode([
+                    'Marinate chicken in yogurt and spices.',
+                    'Cook chicken until browned.',
+                    'Add tomato puree and simmer.',
+                    'Stir in cream and serve with rice or naan.'
+                ]),
             ],
             [
                 'name' => 'Kikas Special',
                 'img' => '/images/recipe/kika-special.jpg',
-                'minutes' => 60,
+                'bio' => 'Kika’s Special is a mystery blend of secret ingredients and cooking magic. Slow-cooked to perfection, this recipe is a family favorite with deep, layered flavors',
+                'cookMinutes' => 60,
                 'rating' => 5,
-                'ingredients' => 9,
-                'content' => 'Kika’s Special is a mystery blend of secret ingredients and cooking magic. Slow-cooked to perfection, this recipe is a family favorite with deep, layered flavors.',
+                'ingredients' => json_encode(['Secret Ingredient 1', 'Secret Ingredient 2', 'Love', 'Time', 'Skill', 'Magic', 'Flavor', 'Joy', 'Mystery']),
+                'instructions' => json_encode([
+                    'Prepare all mystery ingredients carefully.',
+                    'Cook slowly over low heat.',
+                    'Add love and patience.',
+                    'Garnish with joy and serve warm.'
+                ]),
             ],
         ];
-
-        // Generate slugs dynamically
+    
         foreach ($recipes as &$recipe) {
             $recipe['slug'] = Str::slug($recipe['name']);
         }
-
+    
         Recipe::insert($recipes);
     }
+    
 }

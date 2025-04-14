@@ -16,10 +16,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('img');
-            $table->longText('content');
-            $table->integer('minutes');
-            $table->integer('rating');
-            $table->integer('ingredients');
+            $table->tinyText('bio');
+            $table->integer('cookMinutes');
+            $table->integer('rating'); //nevajag?
+            $table->json('ingredients')->nullable(); //bus connection ar ingredients
+            $table->json('instructions')->nullable();
             $table->timestamps();
         });
     }

@@ -1,7 +1,6 @@
 <template>
 <DefaultLayout>
   <div>
-    <!-- <Navbar :auth="auth" @search="handleSearch" /> -->
     <div class="main-container">
       <FridgeSidebar />
 
@@ -9,7 +8,6 @@
         <RecipeList :recipes="recipes" :searchQuery="searchQuery" />
       </div>
     </div>
-    <!-- <Footer /> -->
   </div>
 </DefaultLayout>
 </template>
@@ -26,8 +24,6 @@
     layout: DefaultLayout,
 
     components: {
-      // Footer,
-      // Navbar,
       SearchBar,
       RecipeList,
       FridgeSidebar, 

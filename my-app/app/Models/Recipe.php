@@ -10,9 +10,15 @@ class Recipe extends Model
     protected $fillable = [
         'name',
         'img',
-        'minutes',
+        'bio',
+        'cookMinutes',
         'rating',
-        'description',
-        // Add other fields here
+        'ingredients',
+        'instructions',
+    ];
+
+    protected $casts = [
+        'ingredients' => 'array', 
+        'instructions' => 'array',  // ✅ Automatically decode JSON into array
     ];
 }

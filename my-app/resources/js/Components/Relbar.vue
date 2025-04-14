@@ -38,7 +38,7 @@ export default {
 <style scoped>
 .relbar {
   width: 100%;
-  height: 15px;
+  height: 40%;
   border-radius: 1px;
   box-shadow: 0 0 1px #adadad;
 }
@@ -47,5 +47,17 @@ export default {
   height: 100%;
   border-radius: 1px;
   transition: background-color 0.3s ease;
+}
+
+@media (max-width: 1200px) {
+
+}
+
+@media (max-width: 900px) {
+
+}
+
+@media (max-width: 600px) {
+
 }
 </style>

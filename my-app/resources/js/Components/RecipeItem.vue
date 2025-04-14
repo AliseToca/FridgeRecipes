@@ -124,6 +124,7 @@ export default {
   .recipe-details {
     background-color: #ffffff;
     margin: 0;
+    font-size: 12px;
 
     display: flex;
     flex-direction: row;
@@ -133,7 +134,7 @@ export default {
 
   .recipe-details p {
     margin: 0 10px 0 0;
-    font-size: 12px;
+    /* font-size: 12px; */
     font-weight: 400;
     color: #9B9B9B;
   }
@@ -141,7 +142,7 @@ export default {
   .ingredient-text {
     display: flex;
     align-items: center;
-    font-size: 12px;
+    /* font-size: 12px; */
     font-weight: 400;
     color: #9B9B9B;
   }
@@ -165,4 +166,5 @@ export default {
     font-weight: 350;
     color: #9B9B9B;
   }
+
 </style>
