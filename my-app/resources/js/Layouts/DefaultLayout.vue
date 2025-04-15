@@ -18,6 +18,9 @@
     components: {
       Navbar,
       Footer
+    },
+    props: {
+      auth: Object, 
     }
   }
 </script>

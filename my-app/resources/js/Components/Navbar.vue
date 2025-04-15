@@ -121,6 +121,8 @@ nav .nav-content {
 }
 
 .nav-links li a {
+  display: flex;
+  align-items: center;
   text-decoration: none;
   color: #0e2431;
   font-size: 18px;
@@ -134,7 +136,8 @@ nav .nav-content {
 }
 
 .material-icons {
-  font-size: 36px;
+  font-size: 40px;
+  color: #f13535;
 }
 
 /*----Mobile nav----*/
@@ -175,7 +178,8 @@ nav .nav-content {
 .login-button a:hover{
   color: #ebebeb;
 }
-/* Responsive design */
+
+/*---Responsive design---*/
 @media (max-width: 900px) {
   .nav-content .nav-links {
     display: none;

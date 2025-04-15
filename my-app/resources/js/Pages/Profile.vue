@@ -10,11 +10,9 @@
     </div> -->
 
     <div class="nav-bar">
-      <div class="logo">
-        <Link href="/">FridgeRecipes</Link>
-      </div>
+      <Logo></Logo>
 
-      <Link :href="route('logout')" method="post" class="logout-btn"> Log out </Link>
+      <Link :href="route('logout')" method="post" class="logout-btn"> LOG OUT </Link>
     </div>
 
 
@@ -57,10 +55,12 @@
   
 <script>
 import { Link } from '@inertiajs/vue3';
+import Logo from '@/Components/Logo.vue';
   
   export default {
     components: {
       Link,
+      Logo,
     },
     props: {
       auth: Object, // Make sure auth data is passed to this component
@@ -90,7 +90,7 @@ import { Link } from '@inertiajs/vue3';
     width: 100px;
 
     background-color: #f44040;
-    border-radius: 5px;
+    border-radius: 3px;
     padding: 5px ;
 
     color: white;

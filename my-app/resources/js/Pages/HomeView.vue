@@ -13,8 +13,6 @@
 </template>
 
 <script>
-  // import Footer from '@/Components/Footer.vue';
-  // import Navbar from '@/Components/Navbar.vue';
   import SearchBar from '@/Components/SearchBar.vue';
   import RecipeList from '@/Components/RecipeList.vue';
   import FridgeSidebar from '@/Components/FridgeSideBar.vue'; 
@@ -29,7 +27,7 @@
       FridgeSidebar, 
     },
     props: {
-      auth: Object, 
+      // auth: Object, 
       recipes: Array,
     },
     data() {

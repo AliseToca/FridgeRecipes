@@ -36,9 +36,10 @@ export default {
 </script>
 
 <style scoped>
+
 .relbar {
   width: 100%;
-  height: 40%;
+  height: 10px;
   border-radius: 1px;
   box-shadow: 0 0 1px #adadad;
 }
@@ -49,15 +50,4 @@ export default {
   transition: background-color 0.3s ease;
 }
 
-@media (max-width: 1200px) {
-
-}
-
-@media (max-width: 900px) {
-
-}
-
-@media (max-width: 600px) {
-
-}
 </style>

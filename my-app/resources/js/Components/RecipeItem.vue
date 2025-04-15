@@ -8,16 +8,19 @@
           <!-- <img src="/images/profile-placeholder-square.png" alt=""> -->
         </div>
         <div class="text-container">
-          <h1>{{ name }}</h1>
-          <div class="recipe-info">
-            <div class="recipe-details">
-                <span class="material-symbols-outlined">schedule</span>
-                <p>{{ minutes }} min</p>
-                <StarRating :rating="rating"/>
+          <div>
+            <h1>{{ name }}</h1>
+            <div class="recipe-info">
+              <div class="recipe-details">
+                  <span class="material-symbols-outlined">schedule</span>
+                  <p>{{ minutes }} min</p>
+                  <StarRating :rating="rating" :font-size="'17px'"/>
+              </div>
+              <!-- <p class="ingredient-text">{{ ingredientsMissing }} missing ingredient{{ ingredientsMissing !== 1 ? 's' : '' }}...</p> -->
+              <p class="ingredient-text">{{userHasIngredients}} / {{ingredients}}  <span class="material-symbols-outlined">grocery</span></p>
             </div>
-            <!-- <p class="ingredient-text">{{ ingredientsMissing }} missing ingredient{{ ingredientsMissing !== 1 ? 's' : '' }}...</p> -->
-            <p class="ingredient-text">{{userHasIngredients}} / {{ingredients}}  <span class="material-symbols-outlined">grocery</span></p>
           </div>
+
           <RelBar :percentage="relbarPercentage" class="relbar"/>
         </div>
   </div>
@@ -86,7 +89,7 @@ export default {
 
     aspect-ratio: 4 / 5;
     width: 100%;
-    max-width: 350px;
+    max-width: 360px;
     
     background-color: rgb(255, 255, 255);
 
@@ -105,6 +108,11 @@ export default {
   }
 
   .text-container{
+    flex-grow: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
     padding-inline: 10px;
   }
 
@@ -114,6 +122,10 @@ export default {
     font-size: 21px;
     font-weight: 700;
     margin: 5px 0 0px 0;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .recipe-info{
@@ -142,7 +154,7 @@ export default {
   .ingredient-text {
     display: flex;
     align-items: center;
-    /* font-size: 12px; */
+    font-size: 14px;
     font-weight: 400;
     color: #9B9B9B;
   }

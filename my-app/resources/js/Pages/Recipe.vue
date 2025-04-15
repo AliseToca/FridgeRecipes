@@ -15,7 +15,7 @@
             <br>
             <div class="recipe-info">
                 <p><strong>Prep Time:</strong> {{ recipe.minutes }} minutes</p>
-                <p><strong>Cooking Time:</strong> {{ recipe.cook-minutes }} minutes</p>
+                <p><strong>Cooking Time:</strong> {{ recipe.cookMinutes }} minutes</p>
                 <p><strong>Total Time:</strong> {{ recipe.minutes }} minutes</p>
             </div>
 
