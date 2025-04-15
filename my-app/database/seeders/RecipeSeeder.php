@@ -13,6 +13,7 @@ class RecipeSeeder extends Seeder
     {
         $recipes = [
             [
+                'user_id' => 1,
                 'name' => 'Healthy Rich Salad',
                 'img' => '/images/recipe/salad.jpg',
                 'bio' => 'This healthy salad is packed with vibrant greens, nuts, and a zesty vinaigrette. Perfect for a light lunch or side dish. It’s easy, fast, and incredibly nutritious!',
@@ -27,6 +28,7 @@ class RecipeSeeder extends Seeder
                 ]),
             ],
             [
+                'user_id' => 1,
                 'name' => 'Butter Chicken',
                 'img' => '/images/recipe/butter-chicken-test.jpg',
                 'bio' => 'Butter Chicken is a rich and creamy Indian dish made with tender chicken in a spiced tomato sauce. Serve it with naan or basmati rice for a satisfying meal',
@@ -41,6 +43,7 @@ class RecipeSeeder extends Seeder
                 ]),
             ],
             [
+                'user_id' => 1,
                 'name' => 'Kikas Special',
                 'img' => '/images/recipe/kika-special.jpg',
                 'bio' => 'Kika’s Special is a mystery blend of secret ingredients and cooking magic. Slow-cooked to perfection, this recipe is a family favorite with deep, layered flavors',

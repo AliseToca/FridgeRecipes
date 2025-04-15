@@ -22,6 +22,10 @@ return new class extends Migration
             $table->json('ingredients')->nullable(); //bus connection ar ingredients
             $table->json('instructions')->nullable();
             $table->timestamps();
+            $table
+                ->foreignId('users_id')
+                ->constrained('users')
+                ->onDelete('cascade');
         });
     }
 

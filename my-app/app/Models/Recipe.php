@@ -21,4 +21,9 @@ class Recipe extends Model
         'ingredients' => 'array', 
         'instructions' => 'array',  // ✅ Automatically decode JSON into array
     ];
+
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
 }
