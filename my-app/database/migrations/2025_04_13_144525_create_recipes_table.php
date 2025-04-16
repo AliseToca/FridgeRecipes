@@ -19,13 +19,13 @@ return new class extends Migration
             $table->tinyText('bio');
             $table->integer('cookMinutes');
             $table->integer('rating'); //nevajag?
-            $table->json('ingredients')->nullable(); //bus connection ar ingredients
+            // $table->json('ingredients')->nullable(); 
             $table->json('instructions')->nullable();
+
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            
             $table->timestamps();
-            $table
-                ->foreignId('users_id')
-                ->constrained('users')
-                ->onDelete('cascade');
         });
     }
 

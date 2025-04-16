@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('ingredients', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table
-                ->foreignId('ingredient_category_id')
-                ->constrained('ingredient_category')
-                ->onDelete('cascade');
+
+            $table->unsignedBigInteger('ingredient_category_id');
+            $table->foreign('ingredient_category_id')->references('id')->on('ingredient_category')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
