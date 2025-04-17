@@ -20,5 +20,12 @@ class DatabaseSeeder extends Seeder
             'username' => 'FridgeRecipes',
             'email' => 'fridgeRecipes@gmail.com',
         ]);
+
+        $this->call([
+            RecipeSeeder::class,
+            IngredientCategorySeeder::class,
+            IngredientSeeder::class,
+            RecipeIngredientSeeder::class,
+        ]);
     }
 }

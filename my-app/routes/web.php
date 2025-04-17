@@ -16,7 +16,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 //Recipe
 Route::get('/recipes/{slug}', function ($slug) {
-    $recipe = Recipe::where('slug', $slug)->firstOrFail();
+    $recipe = Recipe::with(['ingredients' => fn($q) => $q->withPivot('amount'), 'user'])
+        ->where('slug', $slug)
+        ->firstOrFail();
 
     return Inertia::render('Recipe', [
         'recipe' => $recipe

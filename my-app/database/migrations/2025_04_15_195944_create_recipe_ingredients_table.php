@@ -15,7 +15,8 @@ return new class extends Migration
 
             $table->primary(['recipes_id', 'ingredients_id']);
 
-            $table->integer('amount');
+            $table->integer('amount')->default('1');
+            $table->string('unit')->nullable();
             $table->timestamps();
         });
     }

@@ -13,17 +13,24 @@ class Recipe extends Model
         'bio',
         'cookMinutes',
         'rating',
-        'ingredients',
         'instructions',
     ];
 
     protected $casts = [
-        'ingredients' => 'array', 
-        'instructions' => 'array',  // ✅ Automatically decode JSON into array
+        'instructions' => 'array',  
     ];
 
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
+
+    public function ingredients()
+    {
+        return $this->belongsToMany(Ingredient::class, 'recipe_ingredients', 'recipes_id', 'ingredients_id')
+                    ->withPivot('amount', 'unit');
+    }
+
+    
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
 }

@@ -1,84 +1,87 @@
 <template>
-        <div class="recipe-container">
-            <div class="short-info">
-                <div>
-                    <div>
-                        <h1>{{ recipe.name }}</h1>
-                        <p class="author">Author: will be name</p>
-                    </div>
-                    <p>{{recipe.bio}}</p>
-                    <StarRating :rating="recipe.rating" :font-size="'32px'" class="star-rating"/>
-                </div>
-                <img :src="recipe.img" alt="Recipe Image" class="recipe-image" />
-            </div>
-
-            <br>
-            <div class="recipe-info">
-                <p><strong>Prep Time:</strong> {{ recipe.minutes }} minutes</p>
-                <p><strong>Cooking Time:</strong> {{ recipe.cookMinutes }} minutes</p>
-                <p><strong>Total Time:</strong> {{ recipe.minutes }} minutes</p>
-            </div>
-
-
-            <div class="recipe-section">
-                <h2 class="section-title"><span>Ingredients</span></h2>
-
-                <ul class="ingredient-list">
-                <li
-                    v-for="(ingredient, index) in recipe.ingredients"
-                    :key="index"
-                    class="ingredient-item"
-                    :class="{ checked: checkedIngredients[index] }"
-                    >
-                    <label>
-                        <input type="checkbox" v-model="checkedIngredients[index]" />
-                        <span class="ingredient-text">{{ ingredient }}</span>
-                    </label>
-                </li>
-                </ul>
-            </div>
-
-            <div class="recipe-section">
-                <h2 class="section-title"><span>Instructions</span></h2>
-                <ol class="instruction-list">
-                    <li v-for="(step, index) in recipe.instructions" :key="index">
-                        {{ step }} 
-                    </li>
-                </ol>
-            </div>
-
-
-            <div class="recipe-section">
-            <h2 class="section-title"><span>Reviews</span></h2>
-            <p>No reviews yet. Be the first to leave a review!</p>
-            </div>
+  <div class="recipe-container">
+    <div class="short-info">
+      <div>
+        <div>
+          <h1>{{ recipe.name }}</h1>
+          <p class="author">Author: {{ recipe.user?.name ?? 'Unknown' }}</p>
         </div>
+        <p>{{ recipe.bio }}</p>
+        <StarRating :rating="recipe.rating" :font-size="'32px'" class="star-rating"/>
+      </div>
+      <img :src="recipe.img" alt="Recipe Image" class="recipe-image" />
+    </div>
+
+    <br>
+    <div class="recipe-info">
+      <p><strong>Prep Time:</strong> {{ recipe.minutes }} minutes</p>
+      <p><strong>Cooking Time:</strong> {{ recipe.cookMinutes }} minutes</p>
+      <p><strong>Total Time:</strong> {{ recipe.minutes + recipe.cookMinutes }} minutes</p>
+    </div>
+
+    <div class="recipe-section">
+      <h2 class="section-title"><span>Ingredients</span></h2>
+
+      <ul class="ingredient-list">
+          <li
+              v-for="(ingredient, index) in recipe.ingredients"
+              :key="ingredient.id"
+              class="ingredient-item"
+              :class="{ checked: checkedIngredients[index] }"
+          >
+              <label>
+                <input type="checkbox" v-model="checkedIngredients[index]" />
+                <span class="ingredient-text">
+                  <span v-if="ingredient.pivot.amount">{{ingredient.pivot.amount }} </span> 
+                  <span v-if="ingredient.pivot.unit"> 
+                    {{ingredient.pivot.unit }} 
+                  </span>{{ingredient.name }} 
+                </span>
+              </label>
+          </li>
+      </ul>
+
+    </div>
+
+    <div class="recipe-section">
+      <h2 class="section-title"><span>Instructions</span></h2>
+      <ol class="instruction-list">
+        <li v-for="(step, index) in recipe.instructions" :key="index">
+          {{ step }}
+        </li>
+      </ol>
+    </div>
+
+    <div class="recipe-section">
+      <h2 class="section-title"><span>Reviews</span></h2>
+      <p>No reviews yet. Be the first to leave a review!</p>
+    </div>
+  </div>
 </template>
   
-<script setup>
-    import { defineProps } from 'vue';
+  <script setup>
+    import { defineProps, ref, onMounted } from 'vue';
     import DefaultLayout from '../Layouts/DefaultLayout.vue';
     import StarRating from '@/Components/StarRating.vue';
-    import { ref, watch, onMounted } from 'vue'
-
+    
+    defineOptions({ layout: DefaultLayout });
+    
     const props = defineProps({
         recipe: Object,
         auth: Object,
     });
-
-    defineOptions({
-        layout: DefaultLayout
+    
+    const checkedIngredients = ref([]);
+    
+    onMounted(() => {
+        if (props.recipe.ingredients && Array.isArray(props.recipe.ingredients)) {
+            checkedIngredients.value = props.recipe.ingredients.map(() => false);
+        } else {
+            checkedIngredients.value = [];
+        }
     });
 
-
-    const checkedIngredients = ref([])
-        
-    onMounted(() => {
-        checkedIngredients.value = props.recipe.ingredients.map(() => false)
-    })
-
-
-</script>
+  </script>
 
  
 <style scoped>
@@ -194,13 +197,16 @@
 
 .ingredient-item .ingredient-text {
   font-size: 16px;
-  text-transform: capitalize;
   transition: text-decoration 0.2s;
 }
 
 .ingredient-item.checked .ingredient-text {
   text-decoration: line-through;
   color: gray;
+}
+
+.ingredient-text span {
+  margin-right: 5px; /* Adjust the spacing as needed */
 }
 
 .ingredient-list {

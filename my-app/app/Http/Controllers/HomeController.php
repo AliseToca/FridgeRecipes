@@ -9,7 +9,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $recipes = Recipe::all();
+        $recipes = Recipe::with('ingredients')->get();
+    
         return Inertia::render('HomeView', [
             'auth' => [
                 'user' => auth()->user(),

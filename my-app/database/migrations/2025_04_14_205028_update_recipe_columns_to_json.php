@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('recipes', function (Blueprint $table) {
-            $table->json('ingredients')->change();
+            // $table->json('ingredients')->change();
             $table->json('instructions')->change();
         });
     }
@@ -17,7 +17,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('recipes', function (Blueprint $table) {
-            $table->longText('ingredients')->change();
+            // $table->longText('ingredients')->change();
             $table->longText('instructions')->change();
         });
     }

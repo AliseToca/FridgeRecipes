@@ -157,6 +157,9 @@ nav .nav-content {
 }
 
 .login-button {
+  display:flex;
+  justify-content: center;
+  align-items: center;
   background-color: #f44040;
   border-radius: 2px;
   padding: 5px ;
