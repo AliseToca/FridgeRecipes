@@ -195,6 +195,11 @@
   cursor: pointer;
 }
 
+.ingredient-list label{
+  display: flex;
+  align-items: center;
+}
+
 .ingredient-item .ingredient-text {
   font-size: 16px;
   transition: text-decoration 0.2s;
