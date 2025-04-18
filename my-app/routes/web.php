@@ -1,10 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Recipe;
 use App\Http\Controllers\HomeController;
 

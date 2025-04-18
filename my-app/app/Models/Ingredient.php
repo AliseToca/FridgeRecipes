@@ -19,4 +19,11 @@ class Ingredient extends Model
         ->withPivot('amount')
         ->withTimestamps();
     }
+
+    public function fridges()
+    {
+        return $this->belongsToMany(Fridge::class, 'fridge_ingredients')
+                    ->withPivot('amount', 'unit')
+                    ->withTimestamps();
+    }
 }

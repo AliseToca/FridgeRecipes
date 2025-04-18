@@ -12,18 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('fridge_ingredients', function (Blueprint $table) {
-            $table->foreignId('users_id')->constrained()->onDelete('cascade');
+            $table->foreignId('fridges_id')->constrained()->onDelete('cascade');
             $table->foreignId('ingredients_id')->constrained()->onDelete('cascade');
 
-            $table->primary(['users_id', 'ingredients_id']);
+            $table->primary(['fridges_id', 'ingredients_id']);
 
-            $table->integer('amount');
+            $table->integer('amount')->default('1');
+            $table->string('unit')->nullable();
             $table->timestamps();
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations.a
      */
     public function down(): void
     {

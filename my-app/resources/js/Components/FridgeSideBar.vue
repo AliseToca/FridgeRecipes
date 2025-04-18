@@ -1,38 +1,83 @@
 <template>
-    <div class="fridge-sidebar">
-      <div class="fridge-container">
-        <h2>Your Fridge</h2>
-          <div class="ingredient-list">
-            <ul>
-              <li v-for="ingredient in fridgeIngredients" :key="ingredient">{{ ingredient }}</li>
-            </ul>
-          </div>
-          <div class="add-ingredient">
-            <input v-model="newIngredient" @keyup.enter="addIngredient" placeholder="Add an ingredient" />
-            <button @click="addIngredient">Add Ingredient</button>
-          </div>
+  <div class="fridge-sidebar">
+    <div class="fridge-container">
+      <h2>Your Fridge</h2>
+
+      <div class="ingredient-list">
+        <ul>
+          <li v-for="ingredient in fridgeIngredients" :key="ingredient.id">
+            {{ ingredient.name }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="add-ingredient">
+        <input
+          v-model="newIngredient"
+          @keyup.enter="addIngredient"
+          placeholder="Add an ingredient"
+        />
+        <button @click="addIngredient">Add Ingredient</button>
+        <p v-if="error" class="error">{{ error }}</p>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        fridgeIngredients: [], // List of ingredients in the fridge
-        newIngredient: '', // New ingredient to add
-      };
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  name: 'FridgeSidebar',
+  props: {
+    fridgesId: {
+      type: Number,
+      required: true,
     },
-    methods: {
-      addIngredient() {
-        if (this.newIngredient.trim()) {
-          this.fridgeIngredients.push(this.newIngredient.trim());
-          this.newIngredient = ''; // Clear input field after adding
-        }
-      },
+  },
+  data() {
+    return {
+      fridgeIngredients: [], // List of ingredients in the fridge
+      newIngredient: '',      // New ingredient to add
+      error: null,            // Error message
+    };
+  },
+  methods: {
+    addIngredient() {
+      this.error = null;
+
+      const trimmed = this.newIngredient.trim();
+      if (!trimmed) return; // Don't allow empty input
+
+      // Make API request to add ingredient
+      axios.post('/api/fridges/ingredient', {
+        ingredients_name: trimmed,  // Ensure the correct parameter name
+        fridges_id: this.fridgesId, // Correct prop usage
+        })
+        .then(response => {
+          const ingredient = response.data.ingredient;  
+
+          // Check if the ingredient exists in the fridge list before adding
+          if (!this.fridgeIngredients.some(i => i.id === ingredient.id)) {
+            this.fridgeIngredients.push(ingredient); 
+            console.log(ingredient); // Use 'ingredient' here
+          }
+
+          // Reset the input field
+          this.newIngredient = '';
+        })
+        .catch(error => {
+          if (error.response && error.response.data && error.response.data.message) {
+            this.error = error.response.data.message;
+          } else {
+            this.error = 'Something went wrong. Please try again.';
+          }
+          console.error(error);
+        });
     },
-  };
-  </script>
+  },
+};
+</script>
   
   <style scoped>
   .fridge-sidebar {

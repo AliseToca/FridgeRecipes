@@ -2,7 +2,7 @@
 <DefaultLayout>
   <div>
     <div class="main-container">
-      <FridgeSidebar />
+      <FridgeSidebar :fridgesId="1"/>
 
       <div class="main">
         <RecipeList :recipes="recipes" :searchQuery="searchQuery" />
