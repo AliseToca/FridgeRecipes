@@ -1,7 +1,7 @@
 <!-- resources/js/Layouts/DefaultLayout.vue -->
 <template>
   <div>
-    <Navbar :auth="auth" @search="handleSearch" />
+    <Navbar @search="handleSearch" />
       <main>
          <slot></slot>
       </main>
@@ -18,17 +18,13 @@
     components: {
       Navbar,
       Footer
-    },
-    props: {
-      auth: Object, 
     }
   }
 </script>
   
 <style scoped>
   main {
-    margin-top: 90px;
-    padding: 20px;
+    margin: 85px 0 0 0;
     /* background-color: #fdf3f3; */
   }
 </style>

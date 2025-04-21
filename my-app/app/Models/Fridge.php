@@ -8,12 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Fridge extends Model
 {
 
-    protected $fillable = ['name', 'users_id'];
+    protected $fillable = ['name', 'user_id'];
     
     public function ingredients()
     {
         return $this->belongsToMany(Ingredient::class, 'fridge_ingredients', 'fridges_id', 'ingredients_id')
                     ->withPivot('amount', 'unit')
                     ->withTimestamps();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

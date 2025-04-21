@@ -9,3 +9,4 @@ use App\Http\Controllers\FridgeController;
 // })->middleware('auth:sanctum');
 
 Route::post('/fridges/ingredient', [FridgeController::class, 'addIngredientToFridge']);
+Route::get('/fridges/{id}/ingredients', [FridgeController::class, 'getIngredients']);

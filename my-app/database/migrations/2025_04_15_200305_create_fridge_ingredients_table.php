@@ -17,7 +17,7 @@ return new class extends Migration
 
             $table->primary(['fridges_id', 'ingredients_id']);
 
-            $table->integer('amount')->default('1');
+            $table->integer('amount')->nullable();
             $table->string('unit')->nullable();
             $table->timestamps();
         });

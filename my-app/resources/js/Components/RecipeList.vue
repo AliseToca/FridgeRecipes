@@ -51,12 +51,12 @@ export default {
 .recipe-container {
   width: 93%;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   column-gap: 25px;
   row-gap: 25px;
   justify-items: center;
   padding: 20px;
-  padding-left: 5px;
+  padding-left: 25px;
   min-height: 500px;
 }
 

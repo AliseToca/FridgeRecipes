@@ -14,4 +14,10 @@ class Category extends Model
 
     // Optionally, you can specify which columns are fillable
     protected $fillable = ['name'];
+
+    public function ingredients()
+    {
+        return $this->hasMany(Ingredient::class, 'ingredient_category_id');
+    }
+
 }

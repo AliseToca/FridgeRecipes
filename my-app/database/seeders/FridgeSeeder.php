@@ -13,13 +13,13 @@ class FridgeSeeder extends Seeder
      */
     public function run(): void
     {
-        $fridges = [
-            [
-                'name' => 'Test fridge',
-                'users_id' => 1,
-            ],
-        ];
+        // $fridges = [
+        //     [
+        //         'name' => 'Test fridge',
+        //         'users_id' => 1,
+        //     ],
+        // ];
 
-        Fridge::insert($fridges);
+        // Fridge::insert($fridges);
     }
 }

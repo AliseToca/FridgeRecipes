@@ -86,6 +86,7 @@
  
 <style scoped>
 /* ----In general----*/
+
  .recipe-container {
     border: 1px solid #3a3a3a;
     box-shadow:11px 11px 0px 0px rgba(244,64,64,0.74);
@@ -94,7 +95,7 @@
     background-color: #ffffff;
     padding: 20px;
     max-width: 800px;
-    margin: 0 auto;
+    margin: 100px auto;
   }
 
   .recipe-section {

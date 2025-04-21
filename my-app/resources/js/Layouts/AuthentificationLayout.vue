@@ -15,9 +15,9 @@
     import Logo from "../Components/Logo.vue";
 
     export default {
-    components: {
-        Logo,
-    },
+        components: {
+            Logo,
+        },
     }
 </script>
 

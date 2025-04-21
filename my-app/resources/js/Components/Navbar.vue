@@ -1,22 +1,26 @@
 <template>
-  <nav :class="{ sticky: isSticky }">
+  <nav>
     <div class="nav-content">
-      <Logo></Logo>
-      <!-- <SearchBar @search="handleSearch" /> -->
+      <Logo />
+
       <ul class="nav-links" :class="{ active: menuActive }">
         <li><Link href="/Homeview">Recipes</Link></li>
         <li><Link href="/fridge">Fridge</Link></li>
         <li><Link href="/about">About</Link></li>
         <li><Link href="/services">Services</Link></li>
-        <li v-if="auth.user">
+
+        <li v-if="user">
           <Link href="/profile">
             <span class="material-icons">account_circle</span>
           </Link>
         </li>
         <li v-else>
-          <button class="login-button"><Link href="/login">LOG IN</Link></button>
+          <button class="login-button">
+            <Link href="/login">LOG IN</Link>
+          </button>
         </li>
       </ul>
+
       <div class="hamburger" @click="toggleMenu">
         <span class="bar"></span>
         <span class="bar"></span>
@@ -26,48 +30,24 @@
   </nav>
 </template>
 
-<script>
-import { Link } from "@inertiajs/vue3";
-import SearchBar from "./SearchBar.vue";
-import Logo from "./Logo.vue";
+<script setup>
+  import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+  import { usePage, Link } from '@inertiajs/vue3';
+  import Logo from './Logo.vue';
+  // import SearchBar from './SearchBar.vue'; 
 
-export default {
-  components: {
-    Link,
-    SearchBar,
-    Logo,
-  },
-  props: {
-    auth: {
-      type: Object,
-      default: () => ({ user: null }) // Ensure auth is always defined
-    }
-  },
-  data() {
-    return {
-      menuActive: false,
-      isSticky: false,
-    };
-  },
-  methods: {
-    handleSearch(query) {
-      this.$emit("search", query);
-    },
-    toggleMenu() {
-      this.menuActive = !this.menuActive;
-    },
-    handleScroll() {
-      this.isSticky = window.scrollY > 50;
-    },
-  },
-  mounted() {
-    window.addEventListener("scroll", this.handleScroll);
-  },
-  beforeUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
-  },
-};
+  // // Global auth from Inertia shared props
+  const page = usePage();
+  const user = computed(() => page.props.auth?.user);
+
+  const menuActive = ref(false);
+  const isSticky = ref(false);
+
+  function toggleMenu() {
+    menuActive.value = !menuActive.value;
+  }
 </script>
+
 
 <style scoped>
 * {
@@ -83,20 +63,14 @@ nav {
   top: 0;
   left: 0;
   width: 100%;
+  height: 85px;
   padding: 20px 50px 20px 50px;
   background-color: #ffffff;
   border-bottom: 2px solid #f05c5c;
   /* border-bottom: 2px solid #e76f51; */
-
-  transition: all 0.4s ease;
-  z-index: 10;
 }
 
-nav.sticky {
-  padding: 15px 20px;
-  background: #ffffff;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-}
+
 
 nav .nav-content {
   height: 100%;

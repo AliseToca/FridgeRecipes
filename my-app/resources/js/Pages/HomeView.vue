@@ -2,7 +2,7 @@
 <DefaultLayout>
   <div>
     <div class="main-container">
-      <FridgeSidebar :fridgesId="1"/>
+      <FridgeSidebar/>
 
       <div class="main">
         <RecipeList :recipes="recipes" :searchQuery="searchQuery" />
@@ -27,7 +27,7 @@
       FridgeSidebar, 
     },
     props: {
-      // auth: Object, 
+      auth: Object, 
       recipes: Array,
     },
     data() {
@@ -53,13 +53,12 @@
 <style scoped>
   .main-container {
     display: flex;
+    align-items: flex-start;
     /* padding-inline: 50px; */
-    padding-left: 0;
   }
 
   .main {
     flex: 1;
-    padding-left: 15px;
   }
 
 </style>

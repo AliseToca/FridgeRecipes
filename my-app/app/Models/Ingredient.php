@@ -26,4 +26,11 @@ class Ingredient extends Model
                     ->withPivot('amount', 'unit')
                     ->withTimestamps();
     }
+
+    // Ingredient.php
+    public function ingredientCategory()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
 }

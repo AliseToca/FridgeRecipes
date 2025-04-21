@@ -18,7 +18,7 @@ Route::get('/recipes/{slug}', function ($slug) {
         ->where('slug', $slug)
         ->firstOrFail();
 
-    return Inertia::render('Recipe', [
+    return Inertia::render('RecipeView', [
         'recipe' => $recipe
     ]);
 })->name('recipes.show');
