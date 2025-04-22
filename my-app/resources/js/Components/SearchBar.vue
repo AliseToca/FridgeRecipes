@@ -6,6 +6,9 @@
       :placeholder="placeholder"
       @input="onSearch"
     />
+    <button @click="onSearch">
+      <span class="material-symbols-outlined">search</span>
+    </button>
   </div>
 </template>
 
@@ -33,31 +36,43 @@ export default {
 <style scoped>
 .search-bar {
   display: flex;
-  justify-content: center;
+  align-items: center;
   width: 100%;
   max-width: 600px;
-  padding: 10px;
+  border: 1px solid #3a3a3a;
+  border-radius: 3px;
+  overflow: hidden; /* Makes button flush with input */
 }
 
 .search-bar input {
-  width: 100%;
+  flex: 1;
   padding: 12px;
   font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box; /* Ensures padding doesn't affect width */
-}
-
-/* Optional: Add focus effect */
-.search-bar input:focus {
-  border-color: #4070f4;
+  border: none;
   outline: none;
+  box-sizing: border-box;
 }
 
-/* Responsive styling */
+.search-bar button {
+  height: 100%;
+  aspect-ratio: 1/1;
+  background-color: #f44040;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-bar button span {
+  color: white;
+  font-size: 24px;
+}
+
+/* Responsive tweaks */
 @media (max-width: 600px) {
-  .search-bar input {
-    max-width: 90%; /* Allows the input to be more flexible on small screens */
+  .search-bar {
+    max-width: 100%;
   }
 }
 </style>

@@ -61,7 +61,6 @@
         placeholder="Amount (optional)"
       />
     </div>
-
   </div>
 </template>
 
@@ -76,7 +75,6 @@ const page = usePage();
 const user = computed(() => page.props.auth?.user);
 const fridgeId = computed(() => user.value?.fridge?.id);
 const isExpanded = ref(true);
-
 
 const fridgeIngredients = ref([]); 
 const categories = ref([]);
@@ -101,7 +99,6 @@ const ingredientsByCategory = computed(() => {
 
   return grouped;
 });
-
 
 function getFridgeIngredients() {
   axios
@@ -428,7 +425,7 @@ input:checked + .slider:before {
   background: none;
   border: none;
   color: #f44040;
-  font-size: 18px;
+  font-size: 24px;
   margin-left: 10px;
   cursor: pointer;
 }

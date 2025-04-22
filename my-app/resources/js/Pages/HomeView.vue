@@ -1,15 +1,19 @@
 <template>
-<DefaultLayout>
-  <div>
-    <div class="main-container">
-      <FridgeSidebar/>
+  <DefaultLayout>
+    <div>
+      <div class="main-container">
+        <FridgeSidebar/>
 
-      <div class="main">
-        <RecipeList :recipes="recipes" :searchQuery="searchQuery" />
+        <div class="main-content">
+          <div class="content-actions">
+            <SearchBar></SearchBar>
+            <div class="temp-sort"></div>
+          </div>
+          <RecipeList :recipes="recipes" :searchQuery="searchQuery" />
+        </div>
       </div>
     </div>
-  </div>
-</DefaultLayout>
+  </DefaultLayout>
 </template>
 
 <script>
@@ -51,14 +55,31 @@
 </script>
 
 <style scoped>
-  .main-container {
-    display: flex;
-    align-items: flex-start;
-    /* padding-inline: 50px; */
-  }
+.main-container {
+  display: flex;
+  align-items: flex-start;
+}
 
-  .main {
-    flex: 1;
-  }
+.main-content {
+  flex: 1;
+}
 
+.content-wrapper {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.content-actions{
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* .temp-sort{
+  width: 10%;
+  height: 50px;
+  background-color: #ccc;
+} */
 </style>
