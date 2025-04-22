@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ingredient;
 use App\Models\Fridge;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class FridgeController extends Controller
@@ -11,6 +12,8 @@ class FridgeController extends Controller
     public function getIngredients($fridgeId)
     {
         $fridge = Fridge::with(['ingredients.ingredientCategory'])->findOrFail($fridgeId);
+    
+        $allCategories = Category::orderBy('id')->get();
     
         return response()->json([
             'ingredients' => $fridge->ingredients->map(function ($ingredient) {
@@ -22,6 +25,12 @@ class FridgeController extends Controller
                         'id' => $ingredient->ingredientCategory->id,
                         'name' => $ingredient->ingredientCategory->name,
                     ] : null,
+                ];
+            }),
+            'categories' => $allCategories->map(function ($category) {
+                return [
+                    'id' => $category->id,
+                    'name' => $category->name,
                 ];
             }),
         ]);
@@ -63,4 +72,28 @@ class FridgeController extends Controller
             'ingredient' => $ingredient,
         ]);
     }
+
+    public function remove($fridgeId, $ingredientId)
+    {
+        // Find the fridge and ingredient based on the IDs
+        $fridge = Fridge::find($fridgeId);
+        $ingredient = Ingredient::find($ingredientId);
+
+        // Check if either the fridge or ingredient was not found
+        if (!$fridge || !$ingredient) {
+            return response()->json(['message' => 'Fridge or Ingredient not found'], 404);
+        }
+
+        // Check if the ingredient exists in the fridge's relationship
+        if (!$fridge->ingredients()->where('ingredients_id', $ingredient->id)->exists()) {
+            return response()->json(['message' => 'Ingredient not found in this fridge.'], 404);
+        }
+
+        // Detach the ingredient from the fridge
+        $fridge->ingredients()->detach($ingredient->id);
+
+        return response()->json(['message' => 'Ingredient removed successfully.']);
+    }
+
+
 }

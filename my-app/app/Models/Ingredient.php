@@ -8,11 +8,6 @@ class Ingredient extends Model
 {
     protected $fillable = ['name', 'ingredient_category_id'];
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
-
     public function recipes()
     {
         return $this->belongsToMany(Recipe::class, 'recipe_ingredients', 'ingredients_id', 'recipes_id')
@@ -20,17 +15,18 @@ class Ingredient extends Model
         ->withTimestamps();
     }
 
+// Ingredient.php
     public function fridges()
     {
-        return $this->belongsToMany(Fridge::class, 'fridge_ingredients')
-                    ->withPivot('amount', 'unit')
-                    ->withTimestamps();
+        return $this->belongsToMany(Fridge::class, 'fridge_ingredients', 'ingredients_id', 'fridges_id')
+                    ->withPivot('amount', 'unit'); // Add any other pivot fields you need
     }
+
 
     // Ingredient.php
     public function ingredientCategory()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'ingredient_category_id');
     }
 
 }

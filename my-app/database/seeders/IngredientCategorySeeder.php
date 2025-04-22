@@ -13,7 +13,7 @@ class IngredientCategorySeeder extends Seeder
     public function run(): void
     {
         $ingredient_category = [
-            ['name' => 'Uncategorised'],
+            ['name' => 'Other'],
             ['name' => 'Vegetables'],
             ['name' => 'Fruits'],
             ['name' => 'Dairy'],

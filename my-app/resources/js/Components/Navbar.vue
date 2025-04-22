@@ -110,7 +110,7 @@ nav .nav-content {
 }
 
 .material-icons {
-  font-size: 40px;
+  font-size: 48px;
   color: #f13535;
 }
 

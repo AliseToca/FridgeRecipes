@@ -17,7 +17,7 @@ class Category extends Model
 
     public function ingredients()
     {
-        return $this->hasMany(Ingredient::class, 'ingredient_category_id');
+        return $this->hasMany(Ingredient::class);
     }
 
 }
