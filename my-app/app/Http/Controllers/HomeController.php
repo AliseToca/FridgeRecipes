@@ -9,13 +9,13 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // $user = auth()->user()?->load('fridge');
-        $recipes = Recipe::with('ingredients')->get();
-    
+        $user = auth()->user()?->load('fridge.ingredients'); // 👈 load fridge with ingredients
+        $recipes = Recipe::with('ingredients')->get(); // 👈 load recipe ingredients
+
         return Inertia::render('HomeView', [
-            // 'auth' => [
-            //     'user' => auth()->user(),
-            // ],
+            'auth' => [
+                'user' => $user,
+            ],
             'recipes' => $recipes,
         ]);
     }

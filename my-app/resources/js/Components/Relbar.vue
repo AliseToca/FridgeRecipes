@@ -5,7 +5,6 @@
         class="relbar-fill"
         :style="{
           width: percentage + '%',
-          backgroundColor: getColor(percentage)
         }">
       </div>
     </div>
@@ -17,37 +16,32 @@ export default {
   props: {
     percentage: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
-  methods: {
-    getColor(percentage) {
-      // if (percentage < 30) {
-      //   return '#e76f51'; // Red
-      // } else if (percentage < 70) {
-      //   return '#f4a261'; // Orange
-      // } else {
-      //   return '#4caf50'; // Green
-      // }
-      return '#f4a261';
-    }
-  }
 };
 </script>
 
 <style scoped>
+.relbar-container {
+  position: absolute;
+  bottom: 0; /* Position it at the bottom of the .recipe-item */
+  left: 0;
+  width: 100%;
+  height: 100%; /* 5% height of the parent .recipe-item */
+}
 
 .relbar {
   width: 100%;
-  height: 10px;
+  height: 100%; /* Fill the container */
   border-radius: 1px;
   box-shadow: 0 0 1px #adadad;
 }
 
 .relbar-fill {
-  height: 100%;
+  height: 100%; /* Fill the entire height of the .relbar */
   border-radius: 1px;
-  transition: background-color 0.3s ease;
+  background-color: #f4a261;
+  transition: width 0.3s ease;
 }
-
 </style>

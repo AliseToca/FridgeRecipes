@@ -20,9 +20,11 @@
               <p class="ingredient-text">{{userHasIngredients}} / {{ingredients}}  <span class="material-symbols-outlined">grocery</span></p>
             </div>
           </div>
-
+        </div>
+        <div class="relbar-container">
           <RelBar :percentage="relbarPercentage" class="relbar"/>
         </div>
+
   </div>
 </Link>
 
@@ -38,8 +40,8 @@ export default {
   data() {
     return {
       relbarPercentage: 0,
-      ingredientsMissing: 0,
-      userHasIngredients: 4,
+      // ingredientsMissing: 0,
+      // userHasIngredients: 4,
     };
   },
   components: {
@@ -55,6 +57,7 @@ export default {
       return Math.max(0, this.ingredients - this.userHasIngredients);
     }
   },
+
   props: {
     id: Number,
     name: String,
@@ -63,6 +66,7 @@ export default {
     rating: Number,
     img: String,
     slug: String,
+    userHasIngredients: Number,
   },
   methods: {
     calculateBarPercentage(userHas) {
@@ -95,7 +99,8 @@ export default {
 
     border: #3a3a3a 1px solid;
     box-shadow: 5px 5px 0px 0px rgba(244,64,64,0.74);
-    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+    
+    position: relative;
   }
 
 
@@ -104,7 +109,6 @@ export default {
     aspect-ratio: 1 / 1;
     width: 100%;
     max-width: calc(100%-10px);
-
   }
 
   .text-container{
@@ -112,7 +116,6 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 8px;
     padding-inline: 10px;
   }
 
@@ -142,6 +145,7 @@ export default {
     flex-direction: row;
     align-items: center;
     width: auto;
+    
   }
 
   .recipe-details p {
@@ -164,13 +168,12 @@ export default {
     padding: 0px;
   }
 
-  .relbar-container {
-    margin-top: 0px;
-  }
-
-  .relbar {
+  .relbar-container{
+    position: absolute;
+    bottom: 0;
     margin-top: 5px;
     width: 100%;
+    height: 17%;
   }
 
   .material-symbols-outlined {

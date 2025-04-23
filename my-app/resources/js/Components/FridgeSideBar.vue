@@ -8,13 +8,18 @@
       </span>
     </button>
 
-    <div class="fridge-info" v-if="isExpanded">
+    <div class="fridge-info" v-if="isExpanded && user">
       <h2><span class="material-symbols-outlined">grocery</span></h2>
       <div>
-        <label class="switch" v-if="user">
-          <input type="checkbox">
+        <label class="switch">
+          <input
+            type="checkbox"
+            :checked="useFridgeFilter"
+            @change="toggleFridgeSearch"
+          />
           <span class="slider"></span>
         </label>
+
         <p>Search by <span>fridge ingredients</span></p>
       </div>
     </div>
@@ -83,6 +88,14 @@ const newIngredient = ref('');
 const newAmount = ref(null); 
 const error = ref(null); 
 
+const emits = defineEmits(['toggle-fridge-filter']); // 👈 add this
+
+const useFridgeFilter = ref(false); // 👈 this is the toggle value
+
+function toggleFridgeSearch() {
+  useFridgeFilter.value = !useFridgeFilter.value;
+  emits('toggle-fridge-filter', useFridgeFilter.value); // 👈 emit to parent
+}
 
 const ingredientsByCategory = computed(() => {
   const grouped = {};

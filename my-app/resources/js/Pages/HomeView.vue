@@ -2,56 +2,88 @@
   <DefaultLayout>
     <div>
       <div class="main-container">
-        <FridgeSidebar/>
+        <FridgeSidebar @toggle-fridge-filter="handleFridgeFilterToggle" />
+
+
 
         <div class="main-content">
           <div class="content-actions">
-            <SearchBar></SearchBar>
+            <SearchBar @search="handleSearch" />
             <div class="temp-sort"></div>
           </div>
-          <RecipeList :recipes="recipes" :searchQuery="searchQuery" />
+
+          <RecipeList :recipes="filteredRecipes" :searchQuery="searchQuery" />
         </div>
       </div>
     </div>
   </DefaultLayout>
 </template>
 
+
 <script>
-  import SearchBar from '@/Components/SearchBar.vue';
-  import RecipeList from '@/Components/RecipeList.vue';
-  import FridgeSidebar from '@/Components/FridgeSideBar.vue'; 
-  import DefaultLayout from '../Layouts/DefaultLayout.vue'
+import SearchBar from '@/Components/SearchBar.vue';
+import RecipeList from '@/Components/RecipeList.vue';
+import FridgeSidebar from '@/Components/FridgeSideBar.vue'; 
+import DefaultLayout from '../Layouts/DefaultLayout.vue';
 
-  export default {
-    layout: DefaultLayout,
+export default {
+  layout: DefaultLayout,
 
-    components: {
-      SearchBar,
-      RecipeList,
-      FridgeSidebar, 
+  components: {
+    SearchBar,
+    RecipeList,
+    FridgeSidebar,
+  },
+
+  props: {
+    auth: Object,
+    recipes: Array,
+  },
+
+  data() {
+    return {
+      searchQuery: '',
+      fridgeFilterEnabled: false, 
+    };
+  },
+
+  computed: {
+    filteredRecipes() {
+      const recipesCopy = [...this.recipes];
+
+      const fridgeIngredientIds = this.auth?.user?.fridge?.ingredients
+        ? this.auth.user.fridge.ingredients.map(i => i.id)
+        : [];
+
+      // Attach match count to each recipe
+      for (const recipe of recipesCopy) {
+        recipe.matchCount = recipe.ingredients?.filter(ing =>
+          fridgeIngredientIds.includes(ing.id)
+        ).length || 0;
+      }
+
+      // Always apply name filter
+      let result = recipesCopy.filter(recipe =>
+        recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+
+      // If fridge toggle is ON → sort by matchCount DESC
+      if (this.fridgeFilterEnabled) {
+        result.sort((a, b) => b.matchCount - a.matchCount);
+      }
+
+      return result;
+    }
+  },
+  methods: {
+    handleSearch(query) {
+      this.searchQuery = query;
     },
-    props: {
-      auth: Object, 
-      recipes: Array,
+        handleFridgeFilterToggle(enabled) {
+      this.fridgeFilterEnabled = enabled;
     },
-    data() {
-      return {
-        searchQuery: '',
-      };
-    },
-    computed: {
-      filteredRecipes() {
-        return this.recipes.filter((recipe) =>
-          recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-        );
-      },
-    },
-    methods: {
-      handleSearch(query) {
-        this.searchQuery = query;
-      },
-    },
-  };
+  },
+};
 </script>
 
 <style scoped>

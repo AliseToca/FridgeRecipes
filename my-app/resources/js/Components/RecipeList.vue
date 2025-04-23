@@ -1,23 +1,18 @@
 <!-- RecipeList.vue -->
 <template>
   <div class="recipe-container">
-    <RecipeItem
-      v-for="recipe in filteredRecipes"
-      :key="recipe.id"
-      :id="recipe.id"
-      :name="recipe.name"
-      :minutes="recipe.cookMinutes"
-      :rating="recipe.rating"
-      :ingredients="recipe.ingredients.length"
-      :img="recipe.img"
-      :slug="recipe.slug" 
-    />
-    <!-- Placeholder items to maintain grid layout -->
-    <!-- <div
-      v-for="n in emptySlots"
-      :key="'placeholder-' + n"
-      class="placeholder"
-    ></div> -->
+      <RecipeItem
+        v-for="recipe in filteredRecipes"
+        :key="recipe.id"
+        :id="recipe.id"
+        :name="recipe.name"
+        :minutes="recipe.cookMinutes"
+        :rating="recipe.rating"
+        :ingredients="recipe.ingredients.length"
+        :userHasIngredients="recipe.matchCount || 0"
+        :img="recipe.img"
+        :slug="recipe.slug" 
+      />
   </div>
 </template>
 
@@ -48,6 +43,22 @@ export default {
 </script>
 
 <style scoped>
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.3s ease;
+}
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.fade-slide-leave-from,
+.fade-slide-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
 .recipe-container {
   width: 93%;
   display: grid;
