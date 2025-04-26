@@ -42,6 +42,6 @@ export default {
   height: 100%; /* Fill the entire height of the .relbar */
   border-radius: 1px;
   background-color: #f4a261;
-  transition: width 0.3s ease;
+  transition: width 0.2s ease;
 }
 </style>

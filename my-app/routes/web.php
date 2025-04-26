@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Models\Recipe;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\SavedRecipeController;
 
 
 
@@ -38,6 +38,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+//API MOVED HERE
+Route::middleware(['auth'])->group(function () {
+    Route::post('/saved-recipes/toggle', [SavedRecipeController::class, 'toggle']);
 });
 
 require __DIR__.'/auth.php';

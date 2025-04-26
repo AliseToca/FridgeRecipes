@@ -2,9 +2,7 @@
   <DefaultLayout>
     <div>
       <div class="main-container">
-        <FridgeSidebar @toggle-fridge-filter="handleFridgeFilterToggle" />
-
-
+        <FridgeSidebar @toggle-fridge-filter="handleFridgeFilterToggle" @ingredient-changed="handleIngredientChanged" />
 
         <div class="main-content">
           <div class="content-actions">
@@ -19,8 +17,8 @@
   </DefaultLayout>
 </template>
 
-
 <script>
+import axios from 'axios';
 import SearchBar from '@/Components/SearchBar.vue';
 import RecipeList from '@/Components/RecipeList.vue';
 import FridgeSidebar from '@/Components/FridgeSideBar.vue'; 
@@ -44,6 +42,7 @@ export default {
     return {
       searchQuery: '',
       fridgeFilterEnabled: false, 
+      filterKey: 0, 
     };
   },
 
@@ -55,19 +54,16 @@ export default {
         ? this.auth.user.fridge.ingredients.map(i => i.id)
         : [];
 
-      // Attach match count to each recipe
       for (const recipe of recipesCopy) {
         recipe.matchCount = recipe.ingredients?.filter(ing =>
           fridgeIngredientIds.includes(ing.id)
         ).length || 0;
       }
 
-      // Always apply name filter
       let result = recipesCopy.filter(recipe =>
         recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
 
-      // If fridge toggle is ON → sort by matchCount DESC
       if (this.fridgeFilterEnabled) {
         result.sort((a, b) => b.matchCount - a.matchCount);
       }
@@ -75,16 +71,29 @@ export default {
       return result;
     }
   },
+
   methods: {
     handleSearch(query) {
       this.searchQuery = query;
     },
-        handleFridgeFilterToggle(enabled) {
+
+    handleFridgeFilterToggle(enabled) {
       this.fridgeFilterEnabled = enabled;
     },
+
+    async handleIngredientChanged() {
+      try {
+        const response = await axios.get(`/api/fridges/${this.auth.user.fridge.id}/ingredients`);
+        this.auth.user.fridge.ingredients = response.data.ingredients; // update ingredients
+      } catch (error) {
+        console.error('Failed to refresh fridge ingredients:', error);
+      }
+  }
   },
 };
 </script>
+
+
 
 <style scoped>
 .main-container {
@@ -109,6 +118,17 @@ export default {
   justify-content: space-between;
 }
 
+.sorting{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #3a3a3a;
+  border-radius: 3px;
+  width: 200px;
+  padding: 7px 10px 7px 10px;
+  color: #9B9B9B;
+  margin-right: 7%;
+}
 /* .temp-sort{
   width: 10%;
   height: 50px;

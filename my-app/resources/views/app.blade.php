@@ -3,15 +3,14 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
-    <meta name="author" content="daniilsonufrijuks">
-    <meta name="description" content="Laptop, PC, Components shop with auction and ai">
+    <meta name="author" content="alisevelinatoca">
     <meta http-equiv="refresh" content="180">
-    <meta name="keywords" content="auction, e-commerce, buy, sell, deals, online shopping, pc, laptop, components, parts, auction, ai, stores near me, hardware store near me, lv, en">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=account_circle,add_circle,bookmark,chevron_left,chevron_right,grocery,receipt_long,schedule,search,star" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=account_circle,add_circle,bookmark,chevron_left,chevron_right,grocery,keyboard_arrow_up,receipt_long,schedule,search,star" />
 
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

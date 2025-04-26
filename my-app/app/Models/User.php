@@ -45,4 +45,11 @@ class User extends Authenticatable
             ]);
         });
     }
+
+    public function savedRecipes()
+    {
+        return $this->belongsToMany(SaavedRecipe::class, 'saved_recipes', 'user_id', 'recipes_id')->withTimestamps();
+    }
+    
+
 }

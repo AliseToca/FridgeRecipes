@@ -88,13 +88,13 @@ const newIngredient = ref('');
 const newAmount = ref(null); 
 const error = ref(null); 
 
-const emits = defineEmits(['toggle-fridge-filter']); // 👈 add this
+const emits = defineEmits(['toggle-fridge-filter', 'ingredient-changed']); // 👈 add the ingredient-added event
 
-const useFridgeFilter = ref(false); // 👈 this is the toggle value
+const useFridgeFilter = ref(false);
 
 function toggleFridgeSearch() {
   useFridgeFilter.value = !useFridgeFilter.value;
-  emits('toggle-fridge-filter', useFridgeFilter.value); // 👈 emit to parent
+  emits('toggle-fridge-filter', useFridgeFilter.value);
 }
 
 const ingredientsByCategory = computed(() => {
@@ -115,15 +115,14 @@ const ingredientsByCategory = computed(() => {
 
 function getFridgeIngredients() {
   axios
-  .get(`/api/fridges/${fridgeId.value}/ingredients`)
-  .then((response) => {
-    fridgeIngredients.value = response.data.ingredients;
-    categories.value = response.data.categories;
-  })
-  .catch((err) => {
-    console.error('Failed to fetch ingredients:', err);
-  });
-
+    .get(`/api/fridges/${fridgeId.value}/ingredients`)
+    .then((response) => {
+      fridgeIngredients.value = response.data.ingredients;
+      categories.value = response.data.categories;
+    })
+    .catch((err) => {
+      console.error('Failed to fetch ingredients:', err);
+    });
 }
 
 function addIngredient() {
@@ -135,7 +134,7 @@ function addIngredient() {
   axios
     .post('/api/fridges/ingredient', {
       ingredients_name: newIngredient.value,
-      fridges_id: fridgeId.value, // Use the correct fridge ID (you can bind this dynamically if needed)
+      fridges_id: fridgeId.value, 
       amount: newAmount.value,
     })
     .then((response) => {
@@ -145,6 +144,9 @@ function addIngredient() {
         getFridgeIngredients();
         console.log(ingredient);
       }
+
+      // Emit the event to refilter recipes in the parent component
+      emits('ingredient-changed');
 
       newIngredient.value = '';
       newAmount.value = null;
@@ -160,29 +162,28 @@ function addIngredient() {
 }
 
 function removeIngredient(ingredient) {
-  console.log("Removing ingredient:", ingredient); // Should show in console
-
-  // Make API call to remove ingredient
   axios
     .delete(`/api/fridges/${fridgeId.value}/ingredient/${ingredient.id}`)
     .then(() => {
-      // Update local list to reflect removed ingredient
       fridgeIngredients.value = fridgeIngredients.value.filter(
         (i) => i.id !== ingredient.id
       );
       console.log('Ingredient removed successfully!');
+
+      emits('ingredient-changed'); // ✅ Reuse the same event to notify parent
     })
     .catch((err) => {
       console.error('Failed to remove ingredient:', err);
     });
 }
+
 onMounted(() => {
   if (user.value) {
     getFridgeIngredients();
   }
 });
-
 </script>
+
 
 
 <style scoped>

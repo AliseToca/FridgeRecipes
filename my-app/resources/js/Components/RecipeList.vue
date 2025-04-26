@@ -12,6 +12,7 @@
         :userHasIngredients="recipe.matchCount || 0"
         :img="recipe.img"
         :slug="recipe.slug" 
+
       />
   </div>
 </template>
@@ -43,22 +44,6 @@ export default {
 </script>
 
 <style scoped>
-.fade-slide-enter-active,
-.fade-slide-leave-active {
-  transition: all 0.3s ease;
-}
-.fade-slide-enter-from,
-.fade-slide-leave-to {
-  opacity: 0;
-  transform: translateY(10px);
-}
-.fade-slide-leave-from,
-.fade-slide-enter-to {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-
 .recipe-container {
   width: 93%;
   display: grid;

@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('saved_recipes', function (Blueprint $table) {
-            $table->foreignId('users_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('recipes_id')->constrained()->onDelete('cascade');
 
-            $table->primary(['users_id', 'recipes_id']);
+            $table->primary(['user_id', 'recipes_id']);
 
             $table->timestamps();
         });
