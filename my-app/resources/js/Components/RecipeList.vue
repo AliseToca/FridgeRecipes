@@ -29,7 +29,10 @@ export default {
       type: Array,
       default: () => [], // Ensure the recipes array is always initialized as an empty array
     },
-    searchQuery: String,
+    searchQuery: {
+      type: String,
+      default: '',  // default empty string if not passed
+    },
   },
   computed: {
     filteredRecipes() {

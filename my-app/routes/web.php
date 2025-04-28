@@ -35,7 +35,7 @@ Route::get('/about', function () {
 // Profile
 Route::middleware('auth')->group(function () {
     // Route to view the profile
-    Route::get('/profile', [ProfileController::class, 'index'])->name('Profile');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     
     // Route to show the profile edit form (separate URL)
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');

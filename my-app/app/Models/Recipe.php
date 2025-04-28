@@ -35,8 +35,9 @@ class Recipe extends Model
 
     public function savedByUsers()
     {
-        return $this->belongsToMany(User::class, 'saved_recipes');
+        return $this->belongsToMany(User::class, 'saved_recipes', 'recipes_id', 'user_id');
     }
+    
 
     
 }

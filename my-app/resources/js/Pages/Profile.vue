@@ -35,7 +35,7 @@
       <div class="placeholder"></div>
     </div> -->
 
-    <RecipeList :recipes="savedRecipes" :searchQuery="searchQuery"></RecipeList>
+    <RecipeList :recipes="savedRecipes" />
   </div>
 
 </template>
@@ -53,7 +53,11 @@ export default {
   },
   props: {
     auth: Object,
-    savedRecipes: Array,  // This should contain the saved recipes for the user
+    savedRecipes: Array,
+    searchQuery: {
+      type: String,
+      default: '',
+    }, 
   },
   mounted() {
     console.log('Saved Recipes:', this.savedRecipes);

@@ -16,13 +16,17 @@ use App\Models\Recipe;
 class ProfileController extends Controller
 {   public function index()
     {
-        $user = auth()->user();
-    
-        // Fetch saved recipes for the current user using the relationship method
-        $savedRecipes = $user->savedRecipes; // This automatically handles the pivot table
-    
+        $user = Auth::user();
+
+        // Get the recipes the user has saved, including related data
+        $savedRecipes = Recipe::with(['ingredients']) // <- add relationships you want
+            ->whereHas('savedByUsers', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->get();
+
         return Inertia::render('Profile', [
-            'savedRecipes' => $savedRecipes,  // Pass the saved recipes to the Vue component
+            'savedRecipes' => $savedRecipes,
         ]);
     }
     
