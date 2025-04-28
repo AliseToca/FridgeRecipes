@@ -9,7 +9,7 @@
         <div class="text-container">
           <div class="bookmark-container">
             <span  class="material-symbols-outlined bookmark-icon" 
-              :class="{ active: saved, animate: isAnimating }" 
+              :class="{ active: isSaved, animate: isAnimating }" 
               @click.stop.prevent="toggleSave"
               >
               bookmark
@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       relbarPercentage: 0,
-      saved: false,
+      isSaved: this.saved, 
       isAnimating: false,
     };
   },
@@ -61,6 +61,7 @@ export default {
     img: String,
     slug: String,
     userHasIngredients: Number,
+    saved: Boolean,
   },
   components: {
     StarRating,
@@ -82,9 +83,7 @@ export default {
           recipe_id: this.id,
         });
         console.log('Toggled:', response.data.status);
-
-        // Set local saved state
-        this.saved = response.data.status === 'saved'; // or however your backend responds
+        this.isSaved = response.data.status === 'saved'; // <--- NOT this.saved
       } catch (error) {
         console.error('Failed to save recipe:', error);
       }

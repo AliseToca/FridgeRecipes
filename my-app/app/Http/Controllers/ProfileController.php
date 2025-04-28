@@ -10,9 +10,23 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\SavedRecipe;
+use App\Models\Recipe;
 
 class ProfileController extends Controller
-{
+{   public function index()
+    {
+        $user = auth()->user();
+    
+        // Fetch saved recipes for the current user using the relationship method
+        $savedRecipes = $user->savedRecipes; // This automatically handles the pivot table
+    
+        return Inertia::render('Profile', [
+            'savedRecipes' => $savedRecipes,  // Pass the saved recipes to the Vue component
+        ]);
+    }
+    
+    
     /**
      * Display the user's profile form.
      */

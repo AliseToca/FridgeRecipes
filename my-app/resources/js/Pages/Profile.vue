@@ -1,17 +1,6 @@
 <template>
-    <!-- <div>
-      <h1>Profile</h1>
-      <p>Welcome, {{ auth.user.name }}</p>
-  
-
-      <Link :href="route('logout')" method="post" class="logout-btn">
-        Log out
-      </Link>
-    </div> -->
-
     <div class="nav-bar">
       <Logo></Logo>
-
       <Link :href="route('logout')" method="post" class="logout-btn"> LOG OUT </Link>
     </div>
 
@@ -21,10 +10,6 @@
       <img class="profile-image" src="/images/profile-placeholder-square.png" alt="Profile"/>
       <h2 class="name">{{auth.user.username}}</h2>
       <p class="bio"> No bio yet. </p>
-
-      <!-- <div class="buttons">
-        <button class="btn secondary">Follow</button>
-      </div> -->
     </div>
   </div>
 
@@ -39,7 +24,7 @@
     </div>
 
 
-    <div class="recipe-grid">
+    <!-- <div class="recipe-grid">
       <div class="placeholder"></div>
       <div class="placeholder"></div>
       <div class="placeholder"></div>
@@ -48,7 +33,9 @@
       <div class="placeholder"></div>
       <div class="placeholder"></div>
       <div class="placeholder"></div>
-    </div>
+    </div> -->
+
+    <RecipeList :recipes="savedRecipes" :searchQuery="searchQuery"></RecipeList>
   </div>
 
 </template>
@@ -56,16 +43,28 @@
 <script>
 import { Link } from '@inertiajs/vue3';
 import Logo from '@/Components/Logo.vue';
-  
-  export default {
-    components: {
-      Link,
-      Logo,
-    },
-    props: {
-      auth: Object, // Make sure auth data is passed to this component
+import RecipeList from '@/Components/RecipeList.vue';
+
+export default {
+  components: {
+    Link,
+    Logo,
+    RecipeList,
+  },
+  props: {
+    auth: Object,
+    savedRecipes: Array,  // This should contain the saved recipes for the user
+  },
+  mounted() {
+    console.log('Saved Recipes:', this.savedRecipes);
+    if (Array.isArray(this.savedRecipes)) {
+      console.log('Saved recipes are an array!');
+    } else {
+      console.error('Saved recipes are not an array:', this.savedRecipes);
     }
-  }
+  },
+
+}
 </script>
   
 <style scoped>
@@ -137,12 +136,6 @@ import Logo from '@/Components/Logo.vue';
     font-size: 16px;
     margin-bottom: 20px;
   }
-/* 
-  .buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-  } */
 
   .nav-line{
     padding: 0 0px 10px 30px;

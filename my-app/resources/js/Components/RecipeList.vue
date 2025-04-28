@@ -12,7 +12,7 @@
         :userHasIngredients="recipe.matchCount || 0"
         :img="recipe.img"
         :slug="recipe.slug" 
-
+        :saved="recipe.saved"
       />
   </div>
 </template>
@@ -25,21 +25,31 @@ export default {
     RecipeItem,
   },
   props: {
-    recipes: Array,
+    recipes: {
+      type: Array,
+      default: () => [], // Ensure the recipes array is always initialized as an empty array
+    },
     searchQuery: String,
   },
   computed: {
     filteredRecipes() {
-      return this.recipes.filter((recipe) =>
-        recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
+      // Log the first recipe item to inspect its structure
+      console.log('First recipe:', this.recipes[0]);
+
+      return this.recipes.filter((recipe) => {
+        console.log('Checking recipe:', recipe); // Log each individual recipe
+
+        // Ensure that 'recipe' and 'name' are defined
+        if (recipe && recipe.name) {
+          return recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase());
+        }
+
+        console.log('Skipping recipe due to missing name:', recipe); // Log if name is missing
+        return false;  // Return false if recipe or name is missing
+      });
     },
-    // emptySlots() {
-    //   const totalItems = this.filteredRecipes.length;
-    //   const slotsNeeded = totalItems % 3 === 0 ? 0 : 3 - (totalItems % 4);
-    //   return slotsNeeded;
-    // },
   },
+
 };
 </script>
 

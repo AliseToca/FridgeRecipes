@@ -8,7 +8,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SavedRecipeController;
 
 
-
 // Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -35,10 +34,19 @@ Route::get('/about', function () {
 
 // Profile
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route to view the profile
+    Route::get('/profile', [ProfileController::class, 'index'])->name('Profile');
+    
+    // Route to show the profile edit form (separate URL)
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    
+    // Route to update the profile
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    
+    // Route to delete the profile
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
 
 //API MOVED HERE
 Route::middleware(['auth'])->group(function () {
