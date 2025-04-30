@@ -31,11 +31,6 @@ class User extends Authenticatable
         ];
     }
 
-    public function fridge()
-    {
-        return $this->hasOne(Fridge::class);
-    }
-
     protected static function booted()
     {
         static::created(function ($user) {
@@ -46,12 +41,18 @@ class User extends Authenticatable
         });
     }
 
-// User.php Model
-public function savedRecipes()
-{
-    return $this->belongsToMany(Recipe::class, 'saved_recipes', 'user_id', 'recipes_id');
-}
+    public function fridge()
+    {
+        return $this->hasOne(Fridge::class);
+    }
 
-    
+    public function savedRecipes()
+    {
+        return $this->belongsToMany(Recipe::class, 'saved_recipes', 'user_id', 'recipes_id');
+    }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'comments_id');
+    }
 }

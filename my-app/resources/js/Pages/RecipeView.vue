@@ -54,34 +54,70 @@
 
     <div class="recipe-section">
       <h2 class="section-title"><span>Reviews</span></h2>
-      <p>No reviews yet. Be the first to leave a review!</p>
+      <Comment :image="'/images/profile-placeholder-square.png'" :author="auth.user.username" :star-rating="3" :content="'placeholder yum yum yum'" :date="'Jan 2023 12:03'"/>
+
+      <br>
+      <form @submit.prevent="submitComment">
+        <textarea v-model="newComment" placeholder="Write your comment..." required class="comment-textarea"></textarea>
+        <button type="submit" class="submit-button">Post Comment</button>
+      </form>
+
+      <div v-for="comment in recipe.comments" :key="comment.id" class="comment-item">
+        <p><strong>{{ comment.user.name }}</strong> says:</p>
+        <p>{{ comment.content }}</p>
+      </div>
+
     </div>
+
   </div>
 </template>
   
-  <script setup>
-    import { defineProps, ref, onMounted } from 'vue';
-    import DefaultLayout from '../Layouts/DefaultLayout.vue';
-    import StarRating from '@/Components/StarRating.vue';
-    
-    defineOptions({ layout: DefaultLayout });
-    
-    const props = defineProps({
-        recipe: Object,
-        auth: Object,
-    });
-    
-    const checkedIngredients = ref([]);
-    
-    onMounted(() => {
-        if (props.recipe.ingredients && Array.isArray(props.recipe.ingredients)) {
-            checkedIngredients.value = props.recipe.ingredients.map(() => false);
-        } else {
-            checkedIngredients.value = [];
-        }
-    });
+<script>
+import DefaultLayout from '../Layouts/DefaultLayout.vue';
+import StarRating from '@/Components/StarRating.vue';
+import Comment from '@/Components/Comment.vue';
+import { router } from '@inertiajs/vue3';
 
-  </script>
+export default {
+  layout: DefaultLayout,
+
+  props: {
+    recipe: Object,
+    auth: Object,
+  },
+  components: {
+    StarRating,
+    Comment,
+  },
+  data() {
+    return {
+      checkedIngredients: [],
+      newComment: '',
+    };
+  },
+  methods: {
+    submitComment() {
+      router.post('/comments', {
+        content: this.newComment,
+        recipes_id: this.recipe.id,
+      }, {
+        preserveScroll: true,
+        onSuccess: () => {
+          this.newComment = '';
+        },
+      });
+    }
+  },
+  mounted() {
+    if (this.recipe.ingredients && Array.isArray(this.recipe.ingredients)) {
+      this.checkedIngredients = this.recipe.ingredients.map(() => false);
+    } else {
+      this.checkedIngredients = [];
+    }
+  },
+};
+</script>
+
 
  
 <style scoped>
@@ -107,12 +143,12 @@
    text-align: center; 
    border-bottom: 1px solid #f44040; 
    color: #f44040;
-   line-height: 0.1em;
+   line-height: 2px;
    margin: 10px 0 20px; 
 } 
 
 .section-title span{
-    font-size: 1.25rem;
+    font-size: 18px;
     font-weight: 600;
     margin-bottom: 10px;
     background:#fff; 
@@ -164,7 +200,7 @@
 
 .recipe-info {
     margin-bottom: 20px;
-    font-size: 1rem;
+    font-size: 16px;
     padding-inline: 10px;
 }
 

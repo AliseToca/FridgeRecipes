@@ -75,7 +75,6 @@ import { ref, computed, onMounted } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 
-// Access global auth data
 const page = usePage();
 const user = computed(() => page.props.auth?.user);
 const fridgeId = computed(() => user.value?.fridge?.id);
@@ -88,7 +87,7 @@ const newIngredient = ref('');
 const newAmount = ref(null); 
 const error = ref(null); 
 
-const emits = defineEmits(['toggle-fridge-filter', 'ingredient-changed']); // 👈 add the ingredient-added event
+const emits = defineEmits(['toggle-fridge-filter', 'ingredient-changed']);
 
 const useFridgeFilter = ref(false);
 
@@ -115,7 +114,7 @@ const ingredientsByCategory = computed(() => {
 
 function getFridgeIngredients() {
   axios
-    .get(`/api/fridges/${fridgeId.value}/ingredients`)
+    .get(`/fridges/${fridgeId.value}/ingredients`)
     .then((response) => {
       fridgeIngredients.value = response.data.ingredients;
       categories.value = response.data.categories;
@@ -123,66 +122,54 @@ function getFridgeIngredients() {
     .catch((err) => {
       console.error('Failed to fetch ingredients:', err);
     });
+
+    emits('ingredient-changed');
 }
 
 function addIngredient() {
   error.value = null;
 
-  if (!newIngredient.value) return; 
+  if (!newIngredient.value) return;
 
-  // Make API request to add ingredient
-  axios
-    .post('/api/fridges/ingredient', {
-      ingredients_name: newIngredient.value,
-      fridges_id: fridgeId.value, 
-      amount: newAmount.value,
-    })
-    .then((response) => {
-      const ingredient = response.data.ingredient;
+  axios.post('/fridges/ingredient', {
+    ingredients_name: newIngredient.value,
+    fridges_id: fridgeId.value,
+    amount: newAmount.value,
+  })
+  .then(() => {
+    getFridgeIngredients();
 
-      if (!fridgeIngredients.value.some((i) => i.id === ingredient.id)) {
-        getFridgeIngredients();
-        console.log(ingredient);
-      }
-
-      // Emit the event to refilter recipes in the parent component
-      emits('ingredient-changed');
-
-      newIngredient.value = '';
-      newAmount.value = null;
-    })
-    .catch((err) => {
-      if (err.response?.data?.message) {
-        error.value = err.response.data.message;
-      } else {
-        error.value = 'Something went wrong. Please try again.';
-      }
-      console.error(err);
-    });
+    emits('ingredient-changed');
+    newIngredient.value = '';
+    newAmount.value = null;
+  })
+  .catch((err) => {
+    error.value = err.response?.data?.message || 'Something went wrong.';
+    console.error(err);
+  });
 }
 
 function removeIngredient(ingredient) {
   axios
-    .delete(`/api/fridges/${fridgeId.value}/ingredient/${ingredient.id}`)
+    .delete(`/fridges/${fridgeId.value}/ingredient/${ingredient.id}`)
     .then(() => {
-      fridgeIngredients.value = fridgeIngredients.value.filter(
-        (i) => i.id !== ingredient.id
-      );
-      console.log('Ingredient removed successfully!');
+      getFridgeIngredients();
 
-      emits('ingredient-changed'); // ✅ Reuse the same event to notify parent
+      emits('ingredient-changed');
     })
     .catch((err) => {
       console.error('Failed to remove ingredient:', err);
     });
 }
 
+
 onMounted(() => {
-  if (user.value) {
-    getFridgeIngredients();
-  }
+
+  getFridgeIngredients();
+  
 });
 </script>
+
 
 
 

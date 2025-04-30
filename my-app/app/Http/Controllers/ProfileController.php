@@ -16,7 +16,7 @@ use App\Models\Recipe;
 class ProfileController extends Controller
 {   public function index()
     {
-        $user = Auth::user();
+        $user = auth()->user();
 
         // Get the recipes the user has saved, including related data
         $savedRecipes = Recipe::with(['ingredients']) // <- add relationships you want

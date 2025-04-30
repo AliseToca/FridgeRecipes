@@ -6,7 +6,8 @@ use Inertia\Inertia;
 use App\Models\Recipe;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SavedRecipeController;
-
+use App\Http\Controllers\FridgeController;
+use App\Http\Controllers\CommentController;
 
 // Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -52,5 +53,16 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::post('/saved-recipes/toggle', [SavedRecipeController::class, 'toggle']);
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/fridges/{fridgeId}/ingredients', [FridgeController::class, 'getIngredients'])->name('fridges.ingredients');
+    Route::post('/fridges/ingredient', [FridgeController::class, 'addIngredient'])->name('fridges.addIngredient');
+    Route::delete('/fridges/{fridgeId}/ingredient/{ingredientId}', [FridgeController::class, 'remove'])->name('fridges.removeIngredient');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+});
+
 
 require __DIR__.'/auth.php';

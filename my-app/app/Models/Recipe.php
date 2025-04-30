@@ -1,6 +1,5 @@
 <?php
 
-// app/Models/Recipe.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -38,6 +37,8 @@ class Recipe extends Model
         return $this->belongsToMany(User::class, 'saved_recipes', 'recipes_id', 'user_id');
     }
     
-
-    
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'recipes_id');
+    }
 }

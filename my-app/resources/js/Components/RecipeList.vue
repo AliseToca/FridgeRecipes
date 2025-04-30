@@ -27,28 +27,20 @@ export default {
   props: {
     recipes: {
       type: Array,
-      default: () => [], // Ensure the recipes array is always initialized as an empty array
+      default: () => [], 
     },
     searchQuery: {
       type: String,
-      default: '',  // default empty string if not passed
+      default: '',  
     },
   },
   computed: {
     filteredRecipes() {
-      // Log the first recipe item to inspect its structure
-      console.log('First recipe:', this.recipes[0]);
-
       return this.recipes.filter((recipe) => {
-        console.log('Checking recipe:', recipe); // Log each individual recipe
-
-        // Ensure that 'recipe' and 'name' are defined
         if (recipe && recipe.name) {
           return recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase());
         }
-
-        console.log('Skipping recipe due to missing name:', recipe); // Log if name is missing
-        return false;  // Return false if recipe or name is missing
+        return false;  
       });
     },
   },

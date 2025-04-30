@@ -83,12 +83,12 @@ export default {
 
     async handleIngredientChanged() {
       try {
-        const response = await axios.get(`/api/fridges/${this.auth.user.fridge.id}/ingredients`);
+        const response = await axios.get(`/fridges/${this.auth.user.fridge.id}/ingredients`);
         this.auth.user.fridge.ingredients = response.data.ingredients; // update ingredients
       } catch (error) {
         console.error('Failed to refresh fridge ingredients:', error);
       }
-  }
+    }
   },
 };
 </script>

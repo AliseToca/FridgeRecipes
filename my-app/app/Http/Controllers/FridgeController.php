@@ -37,7 +37,7 @@ class FridgeController extends Controller
     }
     
 
-    public function addIngredientToFridge(Request $request)
+    public function addIngredient(Request $request)
     {
         $request->validate([
             'ingredients_name' => 'required|string|max:255',
@@ -94,6 +94,5 @@ class FridgeController extends Controller
 
         return response()->json(['message' => 'Ingredient removed successfully.']);
     }
-
 
 }

@@ -13,10 +13,15 @@ class RecipeController extends Controller
         $recipe = Recipe::with([
             'ingredients' => fn($q) => $q->withPivot('amount', 'unit'),
             'user',
+            'comments.user' // <-- Add this line to load comments and their authors
         ])->where('slug', $slug)->firstOrFail();
-    
+
+        
         return Inertia::render('Recipe', [
             'recipe' => $recipe,
         ]);
+
     }
+    
+
 }
