@@ -1,42 +1,52 @@
 <template>
     <div class="comment-container">
-        <div class="profile-info">
-            <img class="profile-image" :src="image" alt="Profile"/>
-
-            <div>
-                <h3>{{author}}</h3>
-                <StarRating :rating="starRating" :font-size="'15px'"/>
-            </div>
+      <div class="profile-info">
+        <img class="profile-image" :src="image" alt="Profile"/>
+  
+        <div>
+          <h3>{{ author }}</h3>
+          <StarRating :rating="starRating" :font-size="'15px'" />
         </div>
-        
-        <div class="content-container">
-            <div class="content">
-                <p>{{content}}</p>
-            </div>
-            <p class="date">{{date}}</p>
+      </div>
+  
+      <div class="content-container">
+        <div class="content">
+          <p>{{ content }}</p>
         </div>
-
-        
+        <p class="date">{{ formattedDate }}</p>
+      </div>
     </div>
 </template>
-
+  
 <script>
-import StarRating from '@/Components/StarRating.vue';
-
-export default {
- props:{
-    image: String,
-    author: String,
-    starRating: Number,
-    content: String,
-    date: String,
- },
-
- components: {
-    StarRating,
- },
-}
+  import StarRating from '@/Components/StarRating.vue';
+  import dayjs from 'dayjs';
+  import relativeTime from 'dayjs/plugin/relativeTime';
+  
+  dayjs.extend(relativeTime);
+  
+  export default {
+    props: {
+      image: String,
+      author: String,
+      starRating: Number,
+      content: String,
+      date: String, // raw ISO timestamp (e.g., '2025-04-30T15:34:12Z')
+    },
+  
+    components: {
+      StarRating,
+    },
+  
+    computed: {
+      formattedDate() {
+        return dayjs(this.date).fromNow(); // e.g., "3 hours ago"
+        // return dayjs(this.date).format('MMMM D, YYYY'); // for full date
+      },
+    },
+  };
 </script>
+  
 
 <style scoped>
 

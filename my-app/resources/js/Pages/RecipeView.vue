@@ -54,17 +54,27 @@
 
     <div class="recipe-section">
       <h2 class="section-title"><span>Reviews</span></h2>
-      <Comment :image="'/images/profile-placeholder-square.png'" :author="auth.user.username" :star-rating="3" :content="'placeholder yum yum yum'" :date="'Jan 2023 12:03'"/>
 
-      <br>
-      <form @submit.prevent="submitComment">
-        <textarea v-model="newComment" placeholder="Write your comment..." required class="comment-textarea"></textarea>
-        <button type="submit" class="submit-button">Post Comment</button>
+      <form v-if="user"  @submit.prevent="submitComment" class="comment-form">
+        <textarea
+          v-model="newComment"
+          placeholder="Write your comment..."
+          required
+          class="comment-textarea"
+        ></textarea>
+
+        <button type="submit" class="comment-submit-button">
+          POST
+        </button>
       </form>
 
       <div v-for="comment in recipe.comments" :key="comment.id" class="comment-item">
-        <p><strong>{{ comment.user.name }}</strong> says:</p>
-        <p>{{ comment.content }}</p>
+        <Comment 
+          :image="'/images/profile-placeholder-square.png'" 
+          :author="comment.user.username" 
+          :star-rating="3" 
+          :content="comment.content" 
+          :date="comment.created_at"/>
       </div>
 
     </div>
@@ -278,6 +288,52 @@ export default {
     top: 0;
     font-weight: bold; /* Style the numbers */
     font-size: 1.1rem; /* Adjust the font size */
+}
+
+.comment-form {
+  background-color: #fff;
+  padding: 16px;
+
+  margin-top: 24px;
+}
+
+.comment-textarea {
+  width: 100%;
+  height: 120px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: none;
+  font-size: 14px;
+  font-family: inherit;
+
+  box-sizing: border-box;
+}
+
+.comment-textarea:focus {
+  border-color: #f44040;
+  outline: none;
+  
+}
+/*---Reviews---*/
+.comment-submit-button {
+  background-color: #f44040;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.comment-submit-button:hover {
+  background-color:rgb(228, 43, 43);
+}
+
+
+.comment-item{
+  margin-bottom:20px;
 }
 </style>
   

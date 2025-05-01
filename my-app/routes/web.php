@@ -14,9 +14,13 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 //Recipe
 Route::get('/recipes/{slug}', function ($slug) {
-    $recipe = Recipe::with(['ingredients' => fn($q) => $q->withPivot('amount'), 'user'])
-        ->where('slug', $slug)
-        ->firstOrFail();
+    $recipe = \App\Models\Recipe::with([
+        'ingredients' => fn($q) => $q->withPivot('amount'),
+        'user',
+        'comments.user' // 👈 this line loads the comments and their authors
+    ])
+    ->where('slug', $slug)
+    ->firstOrFail();
 
     return Inertia::render('RecipeView', [
         'recipe' => $recipe
@@ -64,5 +68,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 });
 
+Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
 require __DIR__.'/auth.php';
