@@ -21,7 +21,7 @@
               <div class="recipe-details">
                   <span class="material-symbols-outlined">schedule</span>
                   <p>{{ minutes }} min</p>
-                  <StarRating :rating="rating" :font-size="'17px'"/>
+                  <StarRatingDisplay :rating="rating" :font-size="'17px'"/>
               </div>
               <!-- <p class="ingredient-text">{{ ingredientsMissing }} missing ingredient{{ ingredientsMissing !== 1 ? 's' : '' }}...</p> -->
               <p class="ingredient-text">{{userHasIngredients}} / {{ingredients}}  <span class="material-symbols-outlined">grocery</span></p>
@@ -39,9 +39,10 @@
 
 <script>
 import { Link } from "@inertiajs/vue3";
-import StarRating from './StarRating.vue';
+import StarRatingDisplay from './StarRatingDisplay.vue';
 import RelBar from './Relbar.vue';
 import axios from 'axios';
+
 
 export default {
   data() {
@@ -64,7 +65,7 @@ export default {
     saved: Boolean,
   },
   components: {
-    StarRating,
+    StarRatingDisplay,
     RelBar,
     Link
   },

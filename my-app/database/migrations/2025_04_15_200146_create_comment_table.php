@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->integer('rating')->default(0);;
+            $table->integer('rating')->nullable();
             $table->text('content');
             $table
                 ->foreignId('user_id')

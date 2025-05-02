@@ -5,7 +5,7 @@
   
         <div>
           <h3>{{ author }}</h3>
-          <StarRating :rating="starRating" :font-size="'15px'" />
+          <StarRatingDisplay :rating="starRating" :font-size="'15px'" />
         </div>
       </div>
   
@@ -19,7 +19,7 @@
 </template>
   
 <script>
-  import StarRating from '@/Components/StarRating.vue';
+  import StarRatingDisplay from '@/Components/StarRatingDisplay.vue';
   import dayjs from 'dayjs';
   import relativeTime from 'dayjs/plugin/relativeTime';
   
@@ -35,7 +35,7 @@
     },
   
     components: {
-      StarRating,
+      StarRatingDisplay,
     },
   
     computed: {

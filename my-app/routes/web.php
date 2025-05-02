@@ -14,7 +14,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 //Recipe
 Route::get('/recipes/{slug}', function ($slug) {
-    $recipe = \App\Models\Recipe::with([
+    $recipe = Recipe::with([
         'ingredients' => fn($q) => $q->withPivot('amount'),
         'user',
         'comments.user' // 👈 this line loads the comments and their authors

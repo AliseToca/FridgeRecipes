@@ -7,7 +7,7 @@
           <p class="author">Author: {{ recipe.user?.name ?? 'Unknown' }}</p>
         </div>
         <p>{{ recipe.bio }}</p>
-        <StarRating :rating="recipe.rating" :font-size="'32px'" class="star-rating"/>
+        <StarRatingDisplay :rating="recipe.rating" :font-size="'32px'" class="star-rating"/>
       </div>
       <img :src="recipe.img" alt="Recipe Image" class="recipe-image" />
     </div>
@@ -55,7 +55,9 @@
     <div class="recipe-section">
       <h2 class="section-title"><span>Reviews</span></h2>
 
-      <form v-if="user"  @submit.prevent="submitComment" class="comment-form">
+      <form v-if="auth.user" @submit.prevent="submitComment" class="comment-form">
+        <StarRatingInput v-model="userRating" :font-size="'32px'" />
+
         <textarea
           v-model="newComment"
           placeholder="Write your comment..."
@@ -68,23 +70,27 @@
         </button>
       </form>
 
-      <div v-for="comment in recipe.comments" :key="comment.id" class="comment-item">
+
+      <div class="comment-container">
+        <div v-for="comment in recipe.comments" :key="comment.id" class="comment-item">
         <Comment 
           :image="'/images/profile-placeholder-square.png'" 
           :author="comment.user.username" 
-          :star-rating="3" 
+          :star-rating="comment.rating" 
           :content="comment.content" 
           :date="comment.created_at"/>
       </div>
+      </div>
+     
 
     </div>
-
   </div>
 </template>
   
 <script>
 import DefaultLayout from '../Layouts/DefaultLayout.vue';
-import StarRating from '@/Components/StarRating.vue';
+import StarRatingDisplay from '@/Components/StarRatingDisplay.vue';
+import StarRatingInput from '@/Components/StarRatingInput.vue';
 import Comment from '@/Components/Comment.vue';
 import { router } from '@inertiajs/vue3';
 
@@ -96,13 +102,15 @@ export default {
     auth: Object,
   },
   components: {
-    StarRating,
+    StarRatingDisplay,
+    StarRatingInput,
     Comment,
   },
   data() {
     return {
       checkedIngredients: [],
       newComment: '',
+      userRating: 0,
     };
   },
   methods: {
@@ -110,10 +118,13 @@ export default {
       router.post('/comments', {
         content: this.newComment,
         recipes_id: this.recipe.id,
+        rating: this.userRating, 
       }, {
         preserveScroll: true,
         onSuccess: () => {
           this.newComment = '';
+          this.userRating = 0;
+
         },
       });
     }
@@ -329,8 +340,12 @@ export default {
 
 .comment-submit-button:hover {
   background-color:rgb(228, 43, 43);
+  margin-bottom: 20px;
 }
 
+.comment-container{
+  padding: 20px 0 0 10px;
+}
 
 .comment-item{
   margin-bottom:20px;
