@@ -22,9 +22,28 @@ class CommentController extends Controller
             'user_id' => auth()->id(),
             'rating' => $validated['rating'],
         ]);
-    
-        // Redirect back to the recipe page by slug
-        $recipe = Recipe::findOrFail($request->recipes_id);
+
+        $recipe = Recipe::findOrFail($validated['recipes_id']);
+        $recipe->updateRating(); 
+
         return redirect()->route('recipes.show', $recipe->slug);
+    }
+
+    public function destroy($id)
+    {
+        $comment = Comment::findOrFail($id);
+
+        if (auth()->id() !== $comment->user_id) {
+            abort(403);
+        }
+
+        $recipeId = $comment->recipes_id; 
+        $comment->delete();
+
+
+        $recipe = Recipe::find($recipeId);
+        $recipe->updateRating();
+
+        return redirect()->back(303);
     }
 }

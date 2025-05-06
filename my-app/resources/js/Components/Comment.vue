@@ -1,21 +1,29 @@
 <template>
-    <div class="comment-container">
-      <div class="profile-info">
-        <img class="profile-image" :src="image" alt="Profile"/>
-  
-        <div>
-          <h3>{{ author }}</h3>
-          <StarRatingDisplay :rating="starRating" :font-size="'15px'" />
-        </div>
+  <div class="comment-container">
+    <div class="profile-info">
+      <img class="profile-image" :src="image" alt="Profile"/>
+      <div>
+        <h3>{{ author }}</h3>
+        <StarRatingDisplay :rating="starRating" :font-size="'15px'" />
       </div>
-  
-      <div class="content-container">
-        <div class="content">
-          <p>{{ content }}</p>
-        </div>
-        <p class="date">{{ formattedDate }}</p>
-      </div>
+
+      <button
+        v-if="authUserId === commentUserId"
+        @click="$emit('delete', id)"
+        class="delete-button"
+        title="Delete Comment"
+      >
+        <span class="material-symbols-outlined">delete</span>
+      </button>
     </div>
+
+    <div class="content-container">
+      <div class="content">
+        <p>{{ content }}</p>
+      </div>
+      <p class="date">{{ formattedDate }}</p>
+    </div>
+  </div>
 </template>
   
 <script>
@@ -27,13 +35,15 @@
   
   export default {
     props: {
+      id: Number,
       image: String,
       author: String,
       starRating: Number,
       content: String,
-      date: String, // raw ISO timestamp (e.g., '2025-04-30T15:34:12Z')
+      date: String,
+      authUserId: Number,
+      commentUserId: Number,
     },
-  
     components: {
       StarRatingDisplay,
     },

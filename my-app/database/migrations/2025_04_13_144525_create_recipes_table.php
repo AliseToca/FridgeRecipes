@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('img');
             $table->tinyText('bio');
             $table->integer('cookMinutes');
-            $table->integer('rating'); //nevajag?
+            $table->integer('rating')->default(0); //nevajag?
             // $table->json('ingredients')->nullable(); 
             $table->json('instructions')->nullable();
 

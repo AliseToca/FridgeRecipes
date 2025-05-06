@@ -13,15 +13,16 @@ class RecipeController extends Controller
         $recipe = Recipe::with([
             'ingredients' => fn($q) => $q->withPivot('amount', 'unit'),
             'user',
-            'comments.user' // <-- Add this line to load comments and their authors
-        ])->where('slug', $slug)->firstOrFail();
-
-        
-        return Inertia::render('Recipe', [
+            'comments.user',
+        ])->where('slug', $slug)->first();
+    
+        if (!$recipe) {
+            abort(404); // Still show 404, but lets you debug
+        }
+    
+        return Inertia::render('RecipeView', [
             'recipe' => $recipe,
         ]);
-
     }
     
-
 }

@@ -114,7 +114,7 @@ export default {
 
     aspect-ratio: 4 / 5;
     width: 100%;
-    max-width: 360px;
+    max-width: 320px;
     
     background-color: rgb(255, 255, 255);
 
@@ -177,7 +177,7 @@ export default {
     object-fit: cover;
     aspect-ratio: 1 / 1;
     width: 100%;
-    max-width: calc(100%-10px);
+    max-width: calc(100%-90px);
   }
 
   .text-container{

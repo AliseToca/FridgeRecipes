@@ -41,4 +41,11 @@ class Recipe extends Model
     {
         return $this->hasMany(Comment::class, 'recipes_id');
     }
+
+    public function updateRating()
+    {
+        $avg = $this->comments()->avg('rating'); // Will return null if no comments
+        $this->rating = is_null($avg) ? 0 : round($avg, 2);
+        $this->save();
+    }
 }

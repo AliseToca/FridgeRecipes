@@ -8,24 +8,30 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SavedRecipeController;
 use App\Http\Controllers\FridgeController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\RecipeController;
+
 
 // Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-//Recipe
-Route::get('/recipes/{slug}', function ($slug) {
-    $recipe = Recipe::with([
-        'ingredients' => fn($q) => $q->withPivot('amount'),
-        'user',
-        'comments.user' // 👈 this line loads the comments and their authors
-    ])
-    ->where('slug', $slug)
-    ->firstOrFail();
+// //Recipe
+// Route::get('/recipes/{slug}', function ($slug) {
+//     $recipe = Recipe::with([
+//         'ingredients' => fn($q) => $q->withPivot('amount'),
+//         'user',
+//         'comments.user'
+//     ])
+//     ->where('slug', $slug)
+//     ->firstOrFail();
 
-    return Inertia::render('RecipeView', [
-        'recipe' => $recipe
-    ]);
-})->name('recipes.show');
+//     return Inertia::render('RecipeView', [
+//         'recipe' => $recipe
+//     ]);
+// })->name('recipes.show');
+
+// Use controller
+Route::get('/recipes/{slug}', [RecipeController::class, 'show'])->name('recipes.show');
+
 
 // Other 
 Route::get('/fridge', function () {
@@ -66,7 +72,9 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
 });
+
 
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 

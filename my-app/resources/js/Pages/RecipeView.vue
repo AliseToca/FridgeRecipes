@@ -7,7 +7,15 @@
           <p class="author">Author: {{ recipe.user?.name ?? 'Unknown' }}</p>
         </div>
         <p>{{ recipe.bio }}</p>
-        <StarRatingDisplay :rating="recipe.rating" :font-size="'32px'" class="star-rating"/>
+        <div class="star-rating">
+          <StarRatingDisplay
+            v-if="recipe.rating > 0"
+            :rating="recipe.rating"
+            :font-size="'32px'"
+          />
+          <p v-else class="unrated">Not rated yet</p>
+        </div>
+
       </div>
       <img :src="recipe.img" alt="Recipe Image" class="recipe-image" />
     </div>
@@ -56,7 +64,7 @@
       <h2 class="section-title"><span>Reviews</span></h2>
 
       <form v-if="auth.user" @submit.prevent="submitComment" class="comment-form">
-        <StarRatingInput v-model="userRating" :font-size="'32px'" />
+        <StarRatingInput v-model="userRating" :font-size="'28px'" />
 
         <textarea
           v-model="newComment"
@@ -72,17 +80,26 @@
 
 
       <div class="comment-container">
-        <div v-for="comment in recipe.comments" :key="comment.id" class="comment-item">
-        <Comment 
-          :image="'/images/profile-placeholder-square.png'" 
-          :author="comment.user.username" 
-          :star-rating="comment.rating" 
-          :content="comment.content" 
-          :date="comment.created_at"/>
-      </div>
-      </div>
-     
+        <div v-if="recipe.comments.length === 0" class="no-comments-message">
+          Be the first to review!
+        </div>
 
+        <div v-else>
+          <div v-for="comment in recipe.comments" :key="comment.id" class="comment-item">
+            <Comment 
+              :id="comment.id"
+              :image="'/images/profile-placeholder-square.png'" 
+              :author="comment.user?.username ?? 'Unknown'"
+              :star-rating="comment.rating" 
+              :content="comment.content" 
+              :date="comment.created_at"
+              :auth-user-id="auth.user?.id"
+              :comment-user-id="comment.user?.id"
+              @delete="handleCommentDelete"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -118,17 +135,33 @@ export default {
       router.post('/comments', {
         content: this.newComment,
         recipes_id: this.recipe.id,
-        rating: this.userRating, 
+        rating: this.userRating,
       }, {
         preserveScroll: true,
         onSuccess: () => {
           this.newComment = '';
           this.userRating = 0;
-
         },
       });
-    }
+    },
+    handleCommentDelete(commentId) {
+  if (confirm('Are you sure you want to delete this comment?')) {
+    console.log('Deleting comment:', commentId);
+
+    router.delete(`/comments/${commentId}`, {
+      preserveScroll: true,
+      onSuccess: () => {
+        router.visit(window.location.pathname, {
+          preserveScroll: true,
+        });
+      }
+    });
+  }
+}
+
+
   },
+
   mounted() {
     if (this.recipe.ingredients && Array.isArray(this.recipe.ingredients)) {
       this.checkedIngredients = this.recipe.ingredients.map(() => false);
@@ -310,7 +343,7 @@ export default {
 
 .comment-textarea {
   width: 100%;
-  height: 120px;
+  height: 70px;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -340,7 +373,6 @@ export default {
 
 .comment-submit-button:hover {
   background-color:rgb(228, 43, 43);
-  margin-bottom: 20px;
 }
 
 .comment-container{
