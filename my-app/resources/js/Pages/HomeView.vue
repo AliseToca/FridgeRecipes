@@ -1,17 +1,24 @@
 <template>
   <DefaultLayout>
-    <div>
-      <div class="main-container">
-        <FridgeSidebar @toggle-fridge-filter="handleFridgeFilterToggle" @ingredient-changed="handleIngredientChanged" />
+    <div class="main-container">
+      <FridgeSidebar
+        @toggle-fridge-filter="handleFridgeFilterToggle"
+        @ingredient-changed="handleIngredientChanged"
+      />
 
-        <div class="main-content">
-          <div class="content-actions">
-            <SearchBar @search="handleSearch" />
-            <div class="temp-sort"></div>
-          </div>
+      <div class="main-content">
+        <div class="content-actions">
+          <SearchBar @search="handleSearch" />
 
-          <RecipeList :recipes="filteredRecipes" :searchQuery="searchQuery" />
+          <select v-model="selectedCategory" class="category-filter">
+            <option value="">All Categories</option>
+            <option v-for="category in categories" :key="category.id" :value="category.name">
+              {{ category.name }}
+            </option>
+          </select>
         </div>
+
+        <RecipeList :recipes="filteredRecipes" :searchQuery="searchQuery" />
       </div>
     </div>
   </DefaultLayout>
@@ -21,7 +28,7 @@
 import axios from 'axios';
 import SearchBar from '@/Components/SearchBar.vue';
 import RecipeList from '@/Components/RecipeList.vue';
-import FridgeSidebar from '@/Components/FridgeSideBar.vue'; 
+import FridgeSidebar from '@/Components/FridgeSideBar.vue';
 import DefaultLayout from '../Layouts/DefaultLayout.vue';
 
 export default {
@@ -36,40 +43,52 @@ export default {
   props: {
     auth: Object,
     recipes: Array,
+    categories: Array,
   },
 
   data() {
     return {
       searchQuery: '',
-      fridgeFilterEnabled: false, 
-      filterKey: 0, 
+      selectedCategory: '',
+      fridgeFilterEnabled: false,
     };
   },
 
   computed: {
     filteredRecipes() {
-      const recipesCopy = [...this.recipes];
+      let recipes = [...this.recipes];
 
-      const fridgeIngredientIds = this.auth?.user?.fridge?.ingredients
-        ? this.auth.user.fridge.ingredients.map(i => i.id)
-        : [];
+      const fridgeIngredientIds = this.auth?.user?.fridge?.ingredients?.map(i => i.id) || [];
 
-      for (const recipe of recipesCopy) {
-        recipe.matchCount = recipe.ingredients?.filter(ing =>
-          fridgeIngredientIds.includes(ing.id)
-        ).length || 0;
+      // Add match count for sorting
+      recipes.forEach(recipe => {
+        recipe.matchCount = recipe.ingredients?.filter(ing => fridgeIngredientIds.includes(ing.id)).length || 0;
+      });
+
+      // Search filter
+      if (this.searchQuery.trim()) {
+        recipes = recipes.filter(recipe =>
+          recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
       }
 
-      let result = recipesCopy.filter(recipe =>
-        recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
+      // Category filter
+      if (this.selectedCategory) {
+        recipes = recipes.filter(recipe =>
+          recipe.categories?.some(cat =>
+            cat.name.toLowerCase() === this.selectedCategory.toLowerCase()
+          )
+        );
+      }
 
+
+      // Sort by fridge match count
       if (this.fridgeFilterEnabled) {
-        result.sort((a, b) => b.matchCount - a.matchCount);
+        recipes.sort((a, b) => b.matchCount - a.matchCount);
       }
 
-      return result;
-    }
+      return recipes;
+    },
   },
 
   methods: {
@@ -84,16 +103,14 @@ export default {
     async handleIngredientChanged() {
       try {
         const response = await axios.get(`/fridges/${this.auth.user.fridge.id}/ingredients`);
-        this.auth.user.fridge.ingredients = response.data.ingredients; // update ingredients
+        this.auth.user.fridge.ingredients = response.data.ingredients;
       } catch (error) {
         console.error('Failed to refresh fridge ingredients:', error);
       }
-    }
+    },
   },
 };
 </script>
-
-
 
 <style scoped>
 .main-container {
@@ -116,6 +133,18 @@ export default {
   padding: 20px;
   display: flex;
   justify-content: space-between;
+}
+
+.category-filter {
+  border: 1px solid #3a3a3a;
+  border-radius: 3px;
+  padding: 7px 10px;
+  background-color: white;
+  color: #3a3a3a;
+}
+
+.category-filter option{
+  text-transform: capitalize;
 }
 
 .sorting{

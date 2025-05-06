@@ -50,7 +50,7 @@ export default {
 
 <style scoped>
 .recipe-container {
-  width: 85%;
+  width: 92%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   column-gap: 25px;
