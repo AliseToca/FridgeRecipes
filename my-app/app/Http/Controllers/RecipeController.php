@@ -14,15 +14,15 @@ class RecipeController extends Controller
             'ingredients' => fn($q) => $q->withPivot('amount', 'unit'),
             'user',
             'comments.user',
+            'categories' // 👈 Add this line
         ])->where('slug', $slug)->first();
-    
+
         if (!$recipe) {
-            abort(404); // Still show 404, but lets you debug
+            abort(404);
         }
-    
+
         return Inertia::render('RecipeView', [
             'recipe' => $recipe,
         ]);
     }
-    
 }

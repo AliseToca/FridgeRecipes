@@ -184,6 +184,7 @@ export default {
     border-radius: 0px;
     background-color: #ffffff;
     padding: 20px;
+    width: 90%;
     max-width: 800px;
     margin: 100px auto;
   }
@@ -228,7 +229,7 @@ export default {
  }
 
  .short-info  h1{
-    font-size: 32px;
+    font-size: 28px;
     font-weight: bold;
     color: #1d1d1d;
     width: 100%;

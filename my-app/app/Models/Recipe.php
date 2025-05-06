@@ -26,7 +26,6 @@ class Recipe extends Model
                     ->withPivot('amount', 'unit');
     }
 
-    
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -42,9 +41,14 @@ class Recipe extends Model
         return $this->hasMany(Comment::class, 'recipes_id');
     }
 
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'category_recipe');
+    }
+
     public function updateRating()
     {
-        $avg = $this->comments()->avg('rating'); // Will return null if no comments
+        $avg = $this->comments()->avg('rating'); 
         $this->rating = is_null($avg) ? 0 : round($avg, 2);
         $this->save();
     }

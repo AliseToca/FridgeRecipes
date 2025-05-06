@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ingredient;
 use App\Models\Fridge;
-use App\Models\Category;
+use App\Models\IngredientCategory;
 use Illuminate\Http\Request;
 
 class FridgeController extends Controller
@@ -13,7 +13,7 @@ class FridgeController extends Controller
     {
         $fridge = Fridge::with(['ingredients.ingredientCategory'])->findOrFail($fridgeId);
     
-        $allCategories = Category::orderBy('id')->get();
+        $allCategories = IngredientCategory::orderBy('id')->get();
     
         return response()->json([
             'ingredients' => $fridge->ingredients->map(function ($ingredient) {

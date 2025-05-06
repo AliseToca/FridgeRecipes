@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
+use App\Models\IngredientCategory;
 use Illuminate\Database\Seeder;
 
 class IngredientCategorySeeder extends Seeder
@@ -22,6 +22,6 @@ class IngredientCategorySeeder extends Seeder
             ['id' => 7,  'name' => 'Spices & Seasonings'],
         ];
 
-        Category::insert($ingredient_category);
+        IngredientCategory::insert($ingredient_category);
     }
 }

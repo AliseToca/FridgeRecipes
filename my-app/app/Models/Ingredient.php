@@ -26,7 +26,7 @@ class Ingredient extends Model
     // Ingredient.php
     public function ingredientCategory()
     {
-        return $this->belongsTo(Category::class, 'ingredient_category_id');
+        return $this->belongsTo(IngredientCategory::class, 'ingredient_category_id');
     }
 
 }
