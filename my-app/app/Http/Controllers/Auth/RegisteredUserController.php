@@ -9,7 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -31,10 +31,10 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string|max:50',
-            'username' => ['required', 'string', 'max:20', 'unique:'.User::class],
-            'email' => 'required|string|lowercase|email|max:50|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'name' => ['required', 'string', 'max:50', 'regex:/^[a-zA-Z\s]+$/'],
+            'username' => ['required', 'string', 'max:15', 'unique:'.User::class],
+            'email' => 'required|string|email:rfc,dns|max:50|unique:' . User::class,
+            'password' => ['required', 'confirmed', Password::defaults()],
         ]);
 
         $user = User::create([

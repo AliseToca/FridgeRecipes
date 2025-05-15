@@ -1,29 +1,37 @@
-<script setup>
-    import { Head, Link, useForm } from '@inertiajs/vue3';
+<script>
+import { Head, Link, useForm } from '@inertiajs/vue3'
+import AuthentificationLayout from '../../Layouts/AuthentificationLayout.vue'
 
-    const form = useForm({
+export default {
+  layout: AuthentificationLayout,
+
+  components: {
+    Head,
+    Link,
+  },
+
+  data() {
+    return {
+      form: useForm({
         username: '',
         name: '',
         email: '',
         password: '',
         password_confirmation: '',
-    });
-
-    const submit = () => {
-        form.post(route('register'), {
-            onFinish: () => form.reset('password', 'password_confirmation'),
-        });
-    };
-</script>
-
-
-<script>
-    import AuthentificationLayout from '../../Layouts/AuthentificationLayout.vue';
-
-    export default {
-        layout: AuthentificationLayout,
+      }),
     }
+  },
+
+  methods: {
+    submit() {
+      this.form.post(route('register'), {
+        onFinish: () => this.form.reset('password', 'password_confirmation'),
+      })
+    },
+  },
+}
 </script>
+
 
 <template>
             <h1 class="register-title">REGISTER</h1>
@@ -48,7 +56,7 @@
                     <label for="email" class="label">Email</label>
                     <input
                         id="email"
-                        type="email"
+                        type="text"
                         v-model="form.email"
                         class="input"
                         required

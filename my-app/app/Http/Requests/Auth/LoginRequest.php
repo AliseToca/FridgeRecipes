@@ -39,29 +39,17 @@ class LoginRequest extends FormRequest
             ]);
         }
     
-        $credentials = [
-            'email' => $user->email,
-            'password' => $this->input('password'),
-        ];
-    
-        $authenticated = Auth::attempt($credentials, $this->boolean('remember'));
-    
-        // ✅ Now safe to debug after
-        \Log::info('AUTH ATTEMPT', [
-            'credentials' => $credentials,
-            'success' => $authenticated,
-        ]);
-    
-        if (! $authenticated) {
+        if (! Auth::attempt(['email' => $user->email, 'password' => $this->input('password')], $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
     
             throw ValidationException::withMessages([
-                'email_or_username' => trans('auth.failed'),
+                'password' => trans('auth.password'), 
             ]);
         }
     
         RateLimiter::clear($this->throttleKey());
     }
+    
     
     
 
