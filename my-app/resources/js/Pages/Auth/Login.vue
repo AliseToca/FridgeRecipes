@@ -6,21 +6,16 @@
         password: '',
         remember: false,
     });
-
     const submit = () => {
-        form.post(route('login'), {
-            onError: (errors) => console.log(errors),
-            onFinish: () => form.reset('password'),
-        });
+        form.post(route('login'));
     };
+
+
 </script>
 
 <template>
     <div class="login-wrapper">
         <h1 class="login-title">LOG IN</h1>
-        <div v-if="form.errors.email_or_username || form.errors.password" class="error-message">
-             Please check your input errors.
-        </div>
 
         <form @submit.prevent="submit" class="login-form">
             <!-- Email Input -->

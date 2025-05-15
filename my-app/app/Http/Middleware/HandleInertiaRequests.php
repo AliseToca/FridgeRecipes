@@ -2,46 +2,26 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
+use Inertia\Middleware;
 
-class HandleInertiaRequests
+class HandleInertiaRequests extends Middleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
-     */
-    public function handle(Request $request, Closure $next)
-    {
-        // You can add other logic here if needed
+    protected $rootView = 'app'; // Adjust to match your root view if it's different
 
-        return $next($request);
-    }
-
-    /**
-     * Share data across all Inertia requests.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    public function share(Request $request): array
+    public function share($request)
     {
-        return [
+        return array_merge(parent::share($request), [
             'auth' => [
-                'user' => Auth::user() ? [
-                    'id' => Auth::user()->id,
-                    'name' => Auth::user()->name,
-                    'username' => Auth::user()->username,
-                    'email' => Auth::user()->email,
+                'user' => $request->user() ? [
+                    'id' => $request->user()->id,
+                    'name' => $request->user()->name,
+                    'username' => $request->user()->username,
+                    'email' => $request->user()->email,
                 ] : null,
             ],
-        ];
+        ]);
     }
 }
+
 
 
