@@ -32,7 +32,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:50', 'regex:/^[a-zA-Z\s]+$/'],
-            'username' => ['required', 'string', 'max:15', 'unique:'.User::class],
+            'username' => ['required','string', 'min:5', 'max:15', 'regex:/^[a-zA-Z0-9]+$/', 'unique:' . User::class,],
             'email' => 'required|string|email:rfc,dns|max:50|unique:' . User::class,
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
@@ -43,7 +43,6 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-
 
 
         event(new Registered($user));

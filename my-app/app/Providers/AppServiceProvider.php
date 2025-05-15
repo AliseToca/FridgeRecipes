@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-
+use Illuminate\Validation\Rules\Password;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -24,6 +24,13 @@ class AppServiceProvider extends ServiceProvider
     {
         Vite::prefetch(concurrency: 3);
 
+        Password::defaults(function () {
+            return Password::min(8)
+                           ->mixedCase()
+                           ->numbers()
+                           ->symbols();
+        });
+        
         Inertia::share([
             'auth' => function () {
                 $user = Auth::user();
