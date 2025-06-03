@@ -1,5 +1,5 @@
-<template>
-  <div class="recipe-container">
+<template >
+  <div class="recipe-container"  v-if="filteredRecipes.length > 0">
       <RecipeItem
         v-for="recipe in filteredRecipes"
         :key="recipe.id"
@@ -13,6 +13,12 @@
         :slug="recipe.slug" 
         :saved="recipe.saved"
       />
+  </div>
+
+  <div  v-else class="no-recipes-message">
+    <p>
+      No recipes found matching your filters.
+    </p>
   </div>
 </template>
 
@@ -59,13 +65,13 @@ export default {
   min-height: 500px;
 }
 
-/* .placeholder {%
-  aspect-ratio: 4 / 5;
+.no-recipes-message{
+  padding: 20px;
+  padding-left: 25px;
   width: 100%;
-  max-width: 250px;
-  background: rgba(0, 0, 0, 0.05);
-  border-radius: 8px;
-} */
+  min-height: 500px;
+
+}
 
 @media (max-width: 1200px) {
   .recipe-container {

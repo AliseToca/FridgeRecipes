@@ -57,13 +57,13 @@
         @keyup.enter="addIngredient"
         placeholder="Add an ingredient"
       />
-      <input
+      <!-- <input
         v-model.number="newAmount"
         type="number"
         min="0"
         step="any"
         placeholder="Amount (optional)"
-      />
+      /> -->
     </div>
   </div>
 </template>

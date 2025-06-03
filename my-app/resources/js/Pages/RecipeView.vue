@@ -1,102 +1,106 @@
 <template>
-  <div class="recipe-container">
-    <div class="short-info">
-      <div>
+  <div class="page-wrapper">
+    <LoadingOverlay :show="isLoading" message="Loading..." />
+        
+    <div class="recipe-container">
+      <div class="short-info">
         <div>
-          <h1>{{ recipe.name }}</h1>
-          <p class="author">Author: {{ recipe.user?.name ?? 'Unknown' }}</p>
+          <div>
+            <h1>{{ recipe.name }}</h1>
+            <p class="author">Author: {{ recipe.user?.name ?? 'Unknown' }}</p>
+          </div>
+          <p>{{ recipe.bio }}</p>
+          <div class="star-rating">
+            <StarRatingDisplay
+              v-if="recipe.rating > 0"
+              :rating="recipe.rating"
+              :font-size="'32px'"
+            />
+            <p v-else class="unrated">Not rated yet</p>
+          </div>
+
         </div>
-        <p>{{ recipe.bio }}</p>
-        <div class="star-rating">
-          <StarRatingDisplay
-            v-if="recipe.rating > 0"
-            :rating="recipe.rating"
-            :font-size="'32px'"
-          />
-          <p v-else class="unrated">Not rated yet</p>
-        </div>
+        <img :src="recipe.img" alt="Recipe Image" class="recipe-image" />
+      </div>
+  
+      <br>
+      <div class="recipe-info">
+        <p><strong>Prep Time:</strong> {{ recipe.minutes }} minutes</p>
+        <p><strong>Cooking Time:</strong> {{ recipe.cookMinutes }} minutes</p>
+        <p><strong>Total Time:</strong> {{ recipe.minutes + recipe.cookMinutes }} minutes</p>
+      </div>
+
+      <div class="recipe-section">
+        <h2 class="section-title"><span>Ingredients</span></h2>
+
+        <ul class="ingredient-list">
+            <li
+                v-for="(ingredient, index) in recipe.ingredients"
+                :key="ingredient.id"
+                class="ingredient-item"
+                :class="{ checked: checkedIngredients[index] }"
+            >
+                <label>
+                  <input type="checkbox" v-model="checkedIngredients[index]" />
+                  <span class="ingredient-text">
+                    <span v-if="ingredient.pivot.amount">{{ingredient.pivot.amount }} </span> 
+                    <span v-if="ingredient.pivot.unit"> 
+                      {{ingredient.pivot.unit }} 
+                    </span>{{ingredient.name }} 
+                  </span>
+                </label>
+            </li>
+        </ul>
 
       </div>
-      <img :src="recipe.img" alt="Recipe Image" class="recipe-image" />
-    </div>
 
-    <br>
-    <div class="recipe-info">
-      <p><strong>Prep Time:</strong> {{ recipe.minutes }} minutes</p>
-      <p><strong>Cooking Time:</strong> {{ recipe.cookMinutes }} minutes</p>
-      <p><strong>Total Time:</strong> {{ recipe.minutes + recipe.cookMinutes }} minutes</p>
-    </div>
-
-    <div class="recipe-section">
-      <h2 class="section-title"><span>Ingredients</span></h2>
-
-      <ul class="ingredient-list">
-          <li
-              v-for="(ingredient, index) in recipe.ingredients"
-              :key="ingredient.id"
-              class="ingredient-item"
-              :class="{ checked: checkedIngredients[index] }"
-          >
-              <label>
-                <input type="checkbox" v-model="checkedIngredients[index]" />
-                <span class="ingredient-text">
-                  <span v-if="ingredient.pivot.amount">{{ingredient.pivot.amount }} </span> 
-                  <span v-if="ingredient.pivot.unit"> 
-                    {{ingredient.pivot.unit }} 
-                  </span>{{ingredient.name }} 
-                </span>
-              </label>
+      <div class="recipe-section">
+        <h2 class="section-title"><span>Instructions</span></h2>
+        <ol class="instruction-list">
+          <li v-for="(step, index) in recipe.instructions" :key="index">
+            {{ step }}
           </li>
-      </ul>
+        </ol>
+      </div>
 
-    </div>
+      <div class="recipe-section">
+        <h2 class="section-title"><span>Reviews</span></h2>
 
-    <div class="recipe-section">
-      <h2 class="section-title"><span>Instructions</span></h2>
-      <ol class="instruction-list">
-        <li v-for="(step, index) in recipe.instructions" :key="index">
-          {{ step }}
-        </li>
-      </ol>
-    </div>
+        <form v-if="auth.user" @submit.prevent="submitComment" class="comment-form">
+          <StarRatingInput v-model="userRating" :font-size="'28px'" />
 
-    <div class="recipe-section">
-      <h2 class="section-title"><span>Reviews</span></h2>
+          <textarea
+            v-model="newComment"
+            placeholder="Write your comment..."
+            required
+            class="comment-textarea"
+          ></textarea>
 
-      <form v-if="auth.user" @submit.prevent="submitComment" class="comment-form">
-        <StarRatingInput v-model="userRating" :font-size="'28px'" />
-
-        <textarea
-          v-model="newComment"
-          placeholder="Write your comment..."
-          required
-          class="comment-textarea"
-        ></textarea>
-
-        <button type="submit" class="comment-submit-button">
-          POST
-        </button>
-      </form>
+          <button type="submit" class="comment-submit-button">
+            POST
+          </button>
+        </form>
 
 
-      <div class="comment-container">
-        <div v-if="recipe.comments.length === 0" class="no-comments-message">
-          Be the first to review!
-        </div>
+        <div class="comment-container">
+          <div v-if="recipe.comments.length === 0" class="no-comments-message">
+            Be the first to review!
+          </div>
 
-        <div v-else>
-          <div v-for="comment in recipe.comments" :key="comment.id" class="comment-item">
-            <Comment 
-              :id="comment.id"
-              :image="'/images/profile-placeholder-square.png'" 
-              :author="comment.user?.username ?? 'Unknown'"
-              :star-rating="comment.rating" 
-              :content="comment.content" 
-              :date="comment.created_at"
-              :auth-user-id="auth.user?.id"
-              :comment-user-id="comment.user?.id"
-              @delete="handleCommentDelete"
-            />
+          <div v-else>
+            <div v-for="comment in recipe.comments" :key="comment.id" class="comment-item">
+              <Comment 
+                :id="comment.id"
+                :image="'/images/profile-placeholder-square.png'" 
+                :author="comment.user?.username ?? 'Unknown'"
+                :star-rating="comment.rating" 
+                :content="comment.content" 
+                :date="comment.created_at"
+                :auth-user-id="auth.user?.id"
+                :comment-user-id="comment.user?.id"
+                @delete="handleCommentDelete"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -108,6 +112,7 @@
 import DefaultLayout from '../Layouts/DefaultLayout.vue';
 import StarRatingDisplay from '@/Components/StarRatingDisplay.vue';
 import StarRatingInput from '@/Components/StarRatingInput.vue';
+import LoadingOverlay from '@/Components/LoadingOverlay.vue';
 import Comment from '@/Components/Comment.vue';
 import { router } from '@inertiajs/vue3';
 
@@ -122,16 +127,19 @@ export default {
     StarRatingDisplay,
     StarRatingInput,
     Comment,
+    LoadingOverlay,
   },
   data() {
     return {
       checkedIngredients: [],
       newComment: '',
       userRating: 0,
+      isLoading: false,
     };
   },
   methods: {
     submitComment() {
+      this.isLoading = true;
       router.post('/comments', {
         content: this.newComment,
         recipes_id: this.recipe.id,
@@ -141,25 +149,33 @@ export default {
         onSuccess: () => {
           this.newComment = '';
           this.userRating = 0;
+          this.isLoading = false;
+        },
+        onError: () => {
+          this.isLoading = false;
         },
       });
     },
-    handleCommentDelete(commentId) {
-  if (confirm('Are you sure you want to delete this comment?')) {
-    console.log('Deleting comment:', commentId);
 
-    router.delete(`/comments/${commentId}`, {
-      preserveScroll: true,
-      onSuccess: () => {
-        router.visit(window.location.pathname, {
+    handleCommentDelete(commentId) {
+      if (confirm('Are you sure you want to delete this comment?')) {
+        this.isLoading = true;
+        router.delete(`/comments/${commentId}`, {
           preserveScroll: true,
+          onSuccess: () => {
+            router.visit(window.location.pathname, {
+              preserveScroll: true,
+              onFinish: () => {
+                this.isLoading = false;
+              }
+            });
+          },
+          onError: () => {
+            this.isLoading = false;
+          }
         });
       }
-    });
-  }
-}
-
-
+    }
   },
 
   mounted() {

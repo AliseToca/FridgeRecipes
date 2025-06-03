@@ -41,6 +41,7 @@ export default {
   max-width: 600px;
   border: 1px solid #3a3a3a;
   border-radius: 3px;
+  height: 50px;
   overflow: hidden; /* Makes button flush with input */
 }
 
@@ -55,7 +56,7 @@ export default {
 
 .search-bar button {
   height: 100%;
-  aspect-ratio: 1/1;
+  padding: 0 16px; 
   background-color: #f44040;
   border: none;
   cursor: pointer;
@@ -63,6 +64,7 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
 
 .search-bar button span {
   color: white;

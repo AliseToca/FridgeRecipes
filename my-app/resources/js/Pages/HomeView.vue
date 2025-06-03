@@ -1,42 +1,46 @@
 <template>
   <DefaultLayout>
-    <div class="main-container">
-      <FridgeSidebar
-        @toggle-fridge-filter="handleFridgeFilterToggle"
-        @ingredient-changed="handleIngredientChanged"
-      />
+    <div class="page-wrapper">
+      <LoadingOverlay :show="isLoading" message="Updating fridge..." />
 
-      <div class="main-content">
-        <div class="content-actions">
-          <SearchBar @search="handleSearch" />
+      <div class="main-container">
+        <FridgeSidebar
+          @toggle-fridge-filter="handleFridgeFilterToggle"
+          @ingredient-changed="handleIngredientChanged"
+        />
 
-          <!-- Multi-select dropdown -->
-          <div class="multi-select-dropdown">
-            <button @click="toggleDropdown" class="dropdown-button">
-              Filter by
-              <span class="material-symbols-outlined">
-                {{ isOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
-              </span>
-            </button>
+        <div class="main-content">
+          <div class="content-actions">
+            <SearchBar @search="handleSearch" />
 
-            <div v-if="isOpen" class="dropdown-menu">
-              <label
-                v-for="category in categories"
-                :key="category.id"
-                class="dropdown-item"
-              >
-                <input
-                  type="checkbox"
-                  :value="category.name"
-                  v-model="selectedCategories"
-                />
-                {{ category.name }}
-              </label>
+            <!-- Multi-select dropdown -->
+            <div class="multi-select-dropdown">
+              <button @click="toggleDropdown" class="dropdown-button">
+                Filter by
+                <span class="material-symbols-outlined">
+                  {{ isOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+                </span>
+              </button>
+
+              <div v-if="isOpen" class="dropdown-menu">
+                <label
+                  v-for="category in categories"
+                  :key="category.id"
+                  class="dropdown-item"
+                >
+                  <input
+                    type="checkbox"
+                    :value="category.name"
+                    v-model="selectedCategories"
+                  />
+                  {{ category.name }}
+                </label>
+              </div>
             </div>
           </div>
-        </div>
 
-        <RecipeList :recipes="filteredRecipes" :searchQuery="searchQuery" />
+          <RecipeList :recipes="filteredRecipes" :searchQuery="searchQuery" />
+        </div>
       </div>
     </div>
   </DefaultLayout>
@@ -48,6 +52,7 @@ import SearchBar from '@/Components/SearchBar.vue';
 import RecipeList from '@/Components/RecipeList.vue';
 import FridgeSidebar from '@/Components/FridgeSideBar.vue';
 import DefaultLayout from '../Layouts/DefaultLayout.vue';
+import LoadingOverlay from '@/Components/LoadingOverlay.vue';
 
 export default {
   layout: DefaultLayout,
@@ -56,6 +61,7 @@ export default {
     SearchBar,
     RecipeList,
     FridgeSidebar,
+    LoadingOverlay,
   },
 
   props: {
@@ -70,6 +76,7 @@ export default {
       selectedCategories: [],
       fridgeFilterEnabled: false,
       isOpen: false,
+      isLoading: false, // 🔥 loading flag
     };
   },
 
@@ -102,7 +109,6 @@ export default {
         });
       }
 
-
       // Sort by match count
       if (this.fridgeFilterEnabled) {
         recipes.sort((a, b) => b.matchCount - a.matchCount);
@@ -122,11 +128,14 @@ export default {
     },
 
     async handleIngredientChanged() {
+      this.isLoading = true;
       try {
         const response = await axios.get(`/fridges/${this.auth.user.fridge.id}/ingredients`);
         this.auth.user.fridge.ingredients = response.data.ingredients;
       } catch (error) {
         console.error('Failed to refresh fridge ingredients:', error);
+      } finally {
+        this.isLoading = false;
       }
     },
 
@@ -153,6 +162,10 @@ export default {
 </script>
 
 <style scoped>
+.page-wrapper {
+  position: relative;
+}
+
 .main-container {
   display: flex;
   align-items: flex-start;
@@ -166,6 +179,7 @@ export default {
   padding: 20px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .multi-select-dropdown {
@@ -176,14 +190,15 @@ export default {
 
 .dropdown-button {
   width: 100%;
+  height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 12px;
-  font-size: 14px;
-  color: #333;
+  font-size: 16px;
+  color: #5c5b5b;
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid #585858;
   border-radius: 1px;
   cursor: pointer;
   transition: background-color 0.2s ease;
