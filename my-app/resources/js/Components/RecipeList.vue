@@ -1,4 +1,3 @@
-<!-- RecipeList.vue -->
 <template>
   <div class="recipe-container">
       <RecipeItem
@@ -50,18 +49,17 @@ export default {
 
 <style scoped>
 .recipe-container {
-  width: 92%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   column-gap: 25px;
   row-gap: 25px;
-  justify-items: center;
+  justify-items:  start; 
   padding: 20px;
   padding-left: 25px;
   min-height: 500px;
 }
 
-/* .placeholder {
+/* .placeholder {%
   aspect-ratio: 4 / 5;
   width: 100%;
   max-width: 250px;

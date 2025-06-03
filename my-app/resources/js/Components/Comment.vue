@@ -50,7 +50,7 @@
   
     computed: {
       formattedDate() {
-        return dayjs(this.date).fromNow(); // e.g., "3 hours ago"
+        return dayjs(this.date).fromNow(); 
         // return dayjs(this.date).format('MMMM D, YYYY'); // for full date
       },
     },

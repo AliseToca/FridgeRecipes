@@ -1,4 +1,3 @@
-<!-- Updated RecipeItem.vue -->
 <template>
   <Link :href="`/recipes/${slug}`">
   <div class="recipe-item">
@@ -31,7 +30,6 @@
         <div class="relbar-container">
           <RelBar :percentage="relbarPercentage" class="relbar"/>
         </div>
-
   </div>
 </Link>
 
@@ -115,6 +113,8 @@ export default {
     aspect-ratio: 4 / 5;
     width: 100%;
     max-width: 320px;
+    min-width: 250px;
+    height: auto;
     
     background-color: rgb(255, 255, 255);
 
@@ -123,25 +123,13 @@ export default {
     
     position: relative;
   }
-/* HTML: <div class="ribbon">Your text content</div> */
-/* HTML: <div class="ribbon">Your text content</div> */
-.ribbon {
-  font-size: 28px;
-  font-weight: bold;
-  color: #f44040;
-}
-/* .bookmark-container {
-  --r: .8em; 
-  
-  border-block: .5em solid #0000;
-  padding-inline: calc(var(--r) + .25em) .5em;
-  line-height: 1.8;
-  clip-path: polygon(0 0,100% 0,100% 100%,0 100%,0 calc(100% - .25em),var(--r) 50%,0 .25em);
-  background:
-   #2699dc padding-box;
-  width: fit-content;
-} */
- 
+
+  .ribbon {
+    font-size: 28px;
+    font-weight: bold;
+    color: #f44040;
+  }
+
   .bookmark-container{
     width: 13%;
     position: absolute;
@@ -251,5 +239,4 @@ export default {
     font-weight: 350;
     color: #9B9B9B;
   }
-
 </style>

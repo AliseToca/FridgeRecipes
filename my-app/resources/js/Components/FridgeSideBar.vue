@@ -1,12 +1,11 @@
 <template>
   <div :class="['fridge-sidebar', { collapsed: !isExpanded }]">
 
-    <button class="toggle-btn" @click="isExpanded = !isExpanded">
+    <!-- <button class="toggle-btn" @click="isExpanded = !isExpanded">
       <span class="material-symbols-outlined">
-        <!-- grocery -->
         {{ isExpanded ? 'chevron_left' : 'grocery' }}
       </span>
-    </button>
+    </button> -->
 
     <div class="fridge-info" v-if="isExpanded && user">
       <h2><span class="material-symbols-outlined">grocery</span></h2>
@@ -20,7 +19,7 @@
           <span class="slider"></span>
         </label>
 
-        <p>Search by <span>fridge ingredients</span></p>
+        <p>Sort by <span>fridge ingredients</span></p>
       </div>
     </div>
 

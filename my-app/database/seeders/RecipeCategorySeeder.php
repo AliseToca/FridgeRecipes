@@ -22,7 +22,8 @@ class RecipeCategorySeeder extends Seeder
             'grilled-chicken-caesar-salad' => ['protein-rich', 'low-carb'],
             'stuffed-bell-peppers' => ['gluten-free'],
             'peanut-butter-banana-smoothie' => ['vegetarian', 'breakfast'],
-            'tomato-basil-soup' => ['vegetarian', 'gluten-free']
+            'tomato-basil-soup' => ['vegetarian', 'gluten-free'],
+            'creamy-mushrooms-with-potatoes' => ['vegetarian'],
         ];
 
         foreach ($assignments as $slug => $categoryNames) {

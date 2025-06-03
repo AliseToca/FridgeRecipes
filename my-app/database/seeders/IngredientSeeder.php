@@ -25,6 +25,7 @@ class IngredientSeeder extends Seeder
             ['name' => 'mushrooms', 'ingredient_category_id' => 1],
             ['name' => 'banana', 'ingredient_category_id' => 1],
             ['name' => 'garlic', 'ingredient_category_id' => 1],
+            ['name' => 'potatoes', 'ingredient_category_id' => 1],
 
 
             // 2. Meat & Seafood
@@ -53,6 +54,7 @@ class IngredientSeeder extends Seeder
             ['name' => 'buttermilk', 'ingredient_category_id' => 3],
             ['name' => 'egg', 'ingredient_category_id' => 3],
             ['name' => 'coconut milk', 'ingredient_category_id' => 3],
+            ['name' => 'cheese spread', 'ingredient_category_id' => 3],
 
 
             // 4. Bakery

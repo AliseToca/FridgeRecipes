@@ -115,6 +115,15 @@ class RecipeIngredientSeeder extends Seeder
                 ['basil', 1, 'tbsp'],
                 ['salt', 1, 'tsp'],
             ],
+            'creamy-mushrooms-with-potatoes' =>[
+                ['potatoes', 300, 'grams'],
+                ['mushrooms', 200, 'grams'],
+                ['onion', 1, 'whole'],
+                ['milk', 100, 'ml'],
+                ['cheese spread', 100, 'grams'],
+                ['salt', 1, 'tsp'],
+                ['black pepper', 0.5, 'tsp'],
+            ],
         ];
 
         foreach ($data as $slug => $ingredientData) {

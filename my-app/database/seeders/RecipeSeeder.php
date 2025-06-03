@@ -188,6 +188,23 @@ class RecipeSeeder extends Seeder
                     'Season with salt and pepper, and serve with fresh basil and crusty bread.'
                 ]),
             ],
+            [
+                'user_id' => 1,
+                'name' => 'Creamy Mushrooms with Potatoes',
+                'img' => '/images/recipe/creamy-mushrooms-potatoes.png',
+                'bio' => 'A warm and creamy dish made with sautéed mushrooms, tender potatoes, and rich cheese spread, perfect as a side or comforting main.',
+                'cookMinutes' => 35,
+                'instructions' => json_encode([
+                    'Peel and dice the potatoes into small cubes. Boil them in salted water for about 10-12 minutes or until tender. Drain and set aside.',
+                    'In a large pan, heat oil or butter over medium heat. Add chopped onions and cook until translucent.',
+                    'Add sliced mushrooms and sauté until they release their moisture and become golden brown.',
+                    'Stir in the boiled potatoes and mix well.',
+                    'Add milk and cheese spread, stirring until everything is well coated and creamy.',
+                    'Season with salt, black pepper, and your choice of herbs (like thyme or parsley).',
+                    'Simmer for a few more minutes until heated through and creamy. Serve hot.'
+                ]),
+            ],
+            
         ];
 
         foreach ($recipes as &$recipe) {

@@ -1,5 +1,4 @@
 <template>
-    
     <Logo></Logo>
 
     <div class="background">

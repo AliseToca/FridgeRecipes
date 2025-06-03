@@ -10,12 +10,30 @@
         <div class="content-actions">
           <SearchBar @search="handleSearch" />
 
-          <select v-model="selectedCategory" class="category-filter">
-            <option value="">All Categories</option>
-            <option v-for="category in categories" :key="category.id" :value="category.name">
-              {{ category.name }}
-            </option>
-          </select>
+          <!-- Multi-select dropdown -->
+          <div class="multi-select-dropdown">
+            <button @click="toggleDropdown" class="dropdown-button">
+              Filter by
+              <span class="material-symbols-outlined">
+                {{ isOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
+              </span>
+            </button>
+
+            <div v-if="isOpen" class="dropdown-menu">
+              <label
+                v-for="category in categories"
+                :key="category.id"
+                class="dropdown-item"
+              >
+                <input
+                  type="checkbox"
+                  :value="category.name"
+                  v-model="selectedCategories"
+                />
+                {{ category.name }}
+              </label>
+            </div>
+          </div>
         </div>
 
         <RecipeList :recipes="filteredRecipes" :searchQuery="searchQuery" />
@@ -49,8 +67,9 @@ export default {
   data() {
     return {
       searchQuery: '',
-      selectedCategory: '',
+      selectedCategories: [],
       fridgeFilterEnabled: false,
+      isOpen: false,
     };
   },
 
@@ -60,9 +79,10 @@ export default {
 
       const fridgeIngredientIds = this.auth?.user?.fridge?.ingredients?.map(i => i.id) || [];
 
-      // Add match count for sorting
       recipes.forEach(recipe => {
-        recipe.matchCount = recipe.ingredients?.filter(ing => fridgeIngredientIds.includes(ing.id)).length || 0;
+        recipe.matchCount = recipe.ingredients?.filter(ing =>
+          fridgeIngredientIds.includes(ing.id)
+        ).length || 0;
       });
 
       // Search filter
@@ -73,16 +93,17 @@ export default {
       }
 
       // Category filter
-      if (this.selectedCategory) {
-        recipes = recipes.filter(recipe =>
-          recipe.categories?.some(cat =>
-            cat.name.toLowerCase() === this.selectedCategory.toLowerCase()
-          )
-        );
+      if (this.selectedCategories.length > 0) {
+        recipes = recipes.filter(recipe => {
+          const recipeCategoryNames = recipe.categories?.map(cat => cat.name) || [];
+          return this.selectedCategories.every(selected =>
+            recipeCategoryNames.includes(selected)
+          );
+        });
       }
 
 
-      // Sort by fridge match count
+      // Sort by match count
       if (this.fridgeFilterEnabled) {
         recipes.sort((a, b) => b.matchCount - a.matchCount);
       }
@@ -108,6 +129,25 @@ export default {
         console.error('Failed to refresh fridge ingredients:', error);
       }
     },
+
+    toggleDropdown() {
+      this.isOpen = !this.isOpen;
+    },
+
+    handleClickOutside(event) {
+      const dropdown = this.$el.querySelector('.multi-select-dropdown');
+      if (dropdown && !dropdown.contains(event.target)) {
+        this.isOpen = false;
+      }
+    },
+  },
+
+  mounted() {
+    document.addEventListener('click', this.handleClickOutside);
+  },
+
+  beforeUnmount() {
+    document.removeEventListener('click', this.handleClickOutside);
   },
 };
 </script>
@@ -122,45 +162,66 @@ export default {
   flex: 1;
 }
 
-.content-wrapper {
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.content-actions{
+.content-actions {
   padding: 20px;
   display: flex;
   justify-content: space-between;
 }
 
-.category-filter {
-  border: 1px solid #3a3a3a;
-  border-radius: 3px;
-  padding: 7px 10px;
-  background-color: white;
-  color: #3a3a3a;
+.multi-select-dropdown {
+  position: relative;
+  width: 200px;
+  font-family: sans-serif;
 }
 
-.category-filter option{
-  text-transform: capitalize;
-}
-
-.sorting{
+.dropdown-button {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid #3a3a3a;
-  border-radius: 3px;
-  width: 200px;
-  padding: 7px 10px 7px 10px;
-  color: #9B9B9B;
-  margin-right: 7%;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 1px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
-/* .temp-sort{
-  width: 10%;
-  height: 50px;
-  background-color: #ccc;
-} */
+
+.dropdown-button:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdown-menu {
+  position: absolute;
+  width: 100%;
+  margin-top: 4px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-height: 180px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown-item input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.material-symbols-outlined.icon {
+  font-size: 20px;
+}
 </style>
