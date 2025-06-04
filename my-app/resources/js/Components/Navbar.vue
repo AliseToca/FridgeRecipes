@@ -67,7 +67,6 @@ nav {
   padding: 20px 50px 20px 50px;
   background-color: #ffffff;
   border-bottom: 2px solid #f05c5c;
-  /* border-bottom: 2px solid #e76f51; */
 }
 
 

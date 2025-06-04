@@ -3,7 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Comment;
+use App\Models\Recipe;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,8 +14,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         User::factory()->create([
             'name' => 'Fridge Recipes',
             'username' => 'FridgeRecipes',
@@ -30,5 +29,8 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             RecipeCategorySeeder::class,
         ]);
+
+        Comment::factory()->count(100)->create();
+        Recipe::all()->each(fn ($recipe) => $recipe->updateRating());
     }
 }
