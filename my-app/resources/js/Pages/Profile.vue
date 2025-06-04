@@ -9,32 +9,54 @@
     <!--Edit profile overlay -->
     <div v-if="editing" class="modal-overlay"  @click="handleOutsideClick">
       <div class="modal-content"  ref="modal">
-        <h2>Edit Profile</h2>
-        <input
-          v-model="form.username"
-          placeholder="Username"
-          @input="usernameTaken = false"
-          @blur="checkUsername"
-        />
-        <p v-if="usernameTaken" class="error">This username is already taken.</p>
+        <div class="modal-header">
+          <div>
+            <h2>Edit Profile</h2>
+            <button @click="editing = false" class="cancel-btn"><span class="material-symbols-outlined">close</span></button>
+          </div>
+        </div>
+     
+        <div class="modal-line">
+          <h3>Profile Image</h3>
+          <div>
+            <img v-if="previewUrl" :src="previewUrl" class="profile-preview" />
+            <input type="file" @change="handleImageUpload" />
+          </div>
+        </div>
 
-        <textarea
-          v-model="form.bio"
-          placeholder="Write your bio..."
-          @input="validateBioLength"
-          maxlength="90"
-        />
-        <p class="char-count" :class="{ 'error': bioError }">
-          {{ form.bio.length }}/90 characters
-        </p>
-        <p v-if="bioError" class="error">Bio cannot exceed 90 characters.</p>
+        <div class="modal-line">
+          <h3>Username</h3>
+          <div>
+            <input
+              class="edit-field"
+              v-model="form.username"
+              placeholder="Username"
+              @input="usernameTaken = false"
+              @blur="checkUsername"
+            />
+            <p v-if="usernameTaken" class="error">This username is already taken.</p>
+          </div>
+        </div>
 
-        <input type="file" @change="handleImageUpload" />
-        <img v-if="previewUrl" :src="previewUrl" class="profile-preview" />
+        <div class="modal-line">
+          <h3>Bio</h3>  
+          <div>
+            <textarea
+              class="edit-field"
+              v-model="form.bio"
+              placeholder="Write your bio..."
+              @input="validateBioLength"
+              maxlength="90"
+            />
+            <p class="char-count" :class="{ 'error': bioError }">
+              {{ form.bio.length }}/90 characters
+            </p>
+            <p v-if="bioError" class="error">Bio cannot exceed 90 characters.</p>
+          </div>
+        </div>
         
         <div class="modal-actions">
-          <button @click="saveProfile" class="save-btn" :disabled="usernameTaken">Save</button>
-          <button @click="editing = false" class="cancel-btn">Cancel</button>
+          <button @click="saveProfile" class="save-btn" :disabled="usernameTaken">SAVE</button>
         </div>
       </div>
     </div>
@@ -183,6 +205,20 @@ methods: {
       flex-direction: column; 
   }
 
+  /*Defining page buttons*/
+  .logout-btn,
+  .save-btn,
+  .edit-btn{
+    background-color: #f44040;
+  }
+
+  .logout-btn:hover,
+  .save-btn:hover,
+  .edit-btn:hover {
+    background-color: #d32f2f;
+  }
+
+  /*-------Nav bar------*/
   .nav-bar{
     width: 100%;
     display: flex;
@@ -191,18 +227,6 @@ methods: {
     background-color: #ffffff;
     transition: all 0.4s ease;
     /* border-bottom: 2px solid #f05c5c; */
-  }
-
-  .logout-btn,
-  .save-btn,
-  .edit-btn{
-    background-color: #f44040;
-  }
-
-  .logout-btn,
-  .save-btn,
-  .edit-btn{
-    background-color: #f44040;
   }
 
   .logout-btn {
@@ -219,12 +243,7 @@ methods: {
     transition: 0.3s;
   }
   
-  .logout-btn:hover,
-  .save-btn:hover,
-  .edit-btn:hover {
-    background-color: #d32f2f;
-  }
-
+  /*----Profile card-----*/
   .card {
     display: flex;
     align-items: center;
@@ -239,12 +258,18 @@ methods: {
   }
 
   .profile-image {
-    width: 128px;
-    height: 128px;
+    width: 175px;
+    height: 175px;
     border-radius: 50%;
     object-fit: cover;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     margin-bottom: 15px;
+  }
+
+  .profile-info-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 
   .name {
@@ -260,6 +285,146 @@ methods: {
     text-wrap: pretty;
   }
 
+  .edit-btn{
+    margin-left: 10px;
+    padding: 5px;
+    background-color: #f44040;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+
+  .edit-btn span {
+    color: #fff;
+    font-size: 20px;
+  }
+
+  /*---Profile edit overlay---*/
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .modal-edittable-content{
+    padding-inline: 20px;
+  }
+
+  .modal-header{
+    border-bottom: #ccc 2px solid;
+  }
+
+  .modal-header div{
+    padding-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .modal-header h2{
+    font-size: 20px;
+  }
+
+  
+  .cancel-btn {
+    border: none;
+    border-radius: 4px;
+  }
+
+  .cancel-btn span{
+    color: #000;
+    font-size: 24px;
+  }
+
+  .modal-line{
+    display: flex;
+    margin-top: 7px;
+    padding-bottom: 7px;
+    width: 100%;
+    border-bottom: #ccc 2px solid;
+  }
+
+  .modal-line h3{
+    width: 30%;
+  }
+
+  .input-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .edit-field {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    width: 250px;
+    resize: vertical;
+  }
+
+  .save-btn{
+    width: 17%;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f44040;
+    font-weight: 600;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .image-upload {
+    cursor: pointer;
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .profile-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-top: 10px;
+  }
+  .error {
+    color: red;
+    font-size: 14px;
+  }
+
+
+  /*-----Saved recipes----*/
   .nav-line{
     padding: 0 0px 10px 30px;
     width: 90%;
@@ -305,125 +470,7 @@ methods: {
     min-height: 500px;
   }
 
-.placeholder {
-  aspect-ratio: 4 / 5;
-  width: 100%;
-  max-width: 250px;
-  background: rgba(0, 0, 0, 0.05);
-  border-radius: 8px;
-}
-
-.input-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-}
-
-.input-wrap input,
-.input-wrap textarea {
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  width: 100%;
-  resize: vertical;
-}
-
-.save-btn{
-  margin-top: 10px;
-  padding: 10px;
-  background-color: #f44040;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-
-
-.image-upload {
-  cursor: pointer;
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: space-between;
-}
-
-.cancel-btn {
-  background-color: #999;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-}
-
-.profile-preview {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-top: 10px;
-}
-.error {
-  color: red;
-  font-size: 14px;
-}
-
-.profile-info-container{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.edit-btn{
-  margin-left: 10px;
-  padding: 5px;
-  background-color: #f44040;
-  color: white;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  width: 30px;
-  height: 30px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-}
-
-.edit-btn span {
-  color: #fff;
-  font-size: 20px;
-}
-
+/*------Responsivness----*/
 @media (max-width: 1024px) {
   .recipe-grid {
     grid-template-columns: repeat(3, 1fr);

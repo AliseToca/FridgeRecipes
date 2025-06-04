@@ -16,6 +16,7 @@
   </div>
 
   <div  v-else class="no-recipes-message">
+    <img src="/images/no-content.png" alt="">
     <p>
       {{ noRecipesMessage }}
     </p>
@@ -70,11 +71,18 @@ export default {
 }
 
 .no-recipes-message{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   padding: 20px;
   padding-left: 25px;
   width: 100%;
   min-height: 500px;
+}
 
+.no-recipes-message img{
+  width: 30%;
+  aspect-ratio: 1/1;
 }
 
 @media (max-width: 1200px) {

@@ -37,7 +37,7 @@
               <li v-for="ingredient in ingredients" :key="ingredient.id">
                 {{ ingredient.name }}
                 <span v-if="ingredient.amount">({{ ingredient.amount }})</span>
-                <button @click="removeIngredient(ingredient)" class="remove-btn"> &times;</button>
+                <button @click="removeIngredient(ingredient)" class="remove-btn"> <span class="material-symbols-outlined">close</span></button>
               </li>
             </ul>
           </div>
@@ -169,29 +169,7 @@ onMounted(() => {
 });
 </script>
 
-
-
-
 <style scoped>
-/* .fridge-sidebar {
-  position: sticky;
-  top: 85px; 
-  width: 30%;
-  height: fit-content;
-  height: calc(100vh - 85px); 
-  background-color: #fff;
-  padding: 30px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  flex-shrink: 0;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  
-  border-right: 1px solid #3a3a3a;
-
-} */
-
 .fridge-sidebar {
   transition: width 0.3s ease;
   position: sticky;
@@ -235,8 +213,8 @@ onMounted(() => {
   font-size: 20px;
 }
 
-/* Optional: Smooth hiding of content */
-.fridge-info,
+
+/* .fridge-info,
 .fridge-container,
 .add-ingredient {
   transition: opacity 0.3s ease;
@@ -249,7 +227,7 @@ onMounted(() => {
   pointer-events: none;
   height: 0;
   overflow: hidden;
-}
+} */
 
 /*---------------FRIDGE INFO----------------- */
 .fridge-info{
@@ -257,15 +235,6 @@ onMounted(() => {
   justify-content: space-between;
   margin-bottom: 10px;
 }
-
-/* h2 {
-  font-size: 20px;
-  font-weight: bold;
-  padding-left: 10px;
-  color: #3a3a3a;
-  width: 50%;
-  text-wrap: wrap;
-} */
 
 h2 span{
   font-size: 90px;
@@ -417,8 +386,8 @@ input:checked + .slider:before {
 }
 
 .empty-category {
-  margin-bottom: 20px; /* Adjust this value if needed for spacing */
-  min-height: 30px; /* Optional: ensures visual gap even if no ingredients */
+  margin-bottom: 20px; 
+  min-height: 30px; 
 }
 
 .remove-btn {
