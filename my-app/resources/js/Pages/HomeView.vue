@@ -12,7 +12,6 @@
           <div class="content-actions">
             <SearchBar @search="handleSearch" />
 
-            <!-- Multi-select dropdown -->
             <div class="multi-select-dropdown">
               <button @click="toggleDropdown" class="dropdown-button">
                 Filter by

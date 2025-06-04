@@ -208,7 +208,6 @@ export default {
 
   .recipe-details p {
     margin: 0 10px 0 0;
-    /* font-size: 12px; */
     font-weight: 400;
     color: #9B9B9B;
   }

@@ -17,7 +17,7 @@
 
   <div  v-else class="no-recipes-message">
     <p>
-      No recipes found matching your filters.
+      {{ noRecipesMessage }}
     </p>
   </div>
 </template>
@@ -37,6 +37,10 @@ export default {
     searchQuery: {
       type: String,
       default: '',  
+    },
+    noRecipesMessage: {
+      type: String,
+      default: 'No recipes found.',
     },
   },
   computed: {
