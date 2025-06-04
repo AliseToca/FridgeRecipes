@@ -14,21 +14,24 @@ use App\Models\SavedRecipe;
 use App\Models\Recipe;
 
 class ProfileController extends Controller
-{   public function index()
+{  public function index()
     {
         $user = auth()->user();
-
-        // Get the recipes the user has saved, including related data
-        $savedRecipes = Recipe::with(['ingredients']) // <- add relationships you want
+    
+        $savedRecipes = Recipe::with(['ingredients'])
             ->whereHas('savedByUsers', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
             ->get();
-
+    
         return Inertia::render('Profile', [
+            'auth' => [
+                'user' => $user,
+            ],
             'savedRecipes' => $savedRecipes,
         ]);
     }
+    
     
     
     /**
@@ -42,30 +45,38 @@ class ProfileController extends Controller
     //     ]);
     // }
 
-    public function edit()
+    // public function edit()
+    // {
+    //     return Inertia::render('Profile', [
+    //         'auth' => [
+    //             'user' => Auth::user(),
+    //         ],
+    //     ]);
+    // }
+    
+    public function update(Request $request)
     {
-        return Inertia::render('Profile', [
-            'auth' => [
-                'user' => Auth::user(),
-            ],
+        $user = auth()->user();
+    
+        $request->validate([
+            'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+            'bio' => 'nullable|string|max:90',
+            'profile_image' => 'nullable|image|max:2048',
         ]);
+    
+        $user->username = $request->username;
+        $user->bio = $request->bio;
+    
+        if ($request->hasFile('profile_image')) {
+            $path = $request->file('profile_image')->store('images/profile', 'public');
+            $user->profile_image = $path;
+        }
+    
+        $user->save();
+    
+        return response()->json(['message' => 'Profile updated']);
     }
     
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit');
-    }
 
     /**
      * Delete the user's account.

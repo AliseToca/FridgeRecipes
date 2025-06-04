@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Models\Recipe;
+use App\Models\User;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SavedRecipeController;
 use App\Http\Controllers\FridgeController;
@@ -14,26 +15,10 @@ use App\Http\Controllers\RecipeController;
 // Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// //Recipe
-// Route::get('/recipes/{slug}', function ($slug) {
-//     $recipe = Recipe::with([
-//         'ingredients' => fn($q) => $q->withPivot('amount'),
-//         'user',
-//         'comments.user'
-//     ])
-//     ->where('slug', $slug)
-//     ->firstOrFail();
-
-//     return Inertia::render('RecipeView', [
-//         'recipe' => $recipe
-//     ]);
-// })->name('recipes.show');
-
-// Use controller
+// RecipeView
 Route::get('/recipes/{slug}', [RecipeController::class, 'show'])->name('recipes.show');
 
-
-// Other 
+// Fridge 
 Route::get('/fridge', function () {
     return Inertia::render('Fridge');
 })->name('fridge');
@@ -43,39 +28,33 @@ Route::get('/about', function () {
 })->name('about');
 
 
-// Profile
+
 Route::middleware('auth')->group(function () {
-    // Route to view the profile
+    // Profile
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-    
-    // Route to show the profile edit form (separate URL)
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    
-    // Route to update the profile
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    
-    // Route to delete the profile
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
-
-//API MOVED HERE
-Route::middleware(['auth'])->group(function () {
+    // Saved recipes
     Route::post('/saved-recipes/toggle', [SavedRecipeController::class, 'toggle']);
-});
 
-Route::middleware(['auth'])->group(function () {
+    // Fridge
     Route::get('/fridges/{fridgeId}/ingredients', [FridgeController::class, 'getIngredients'])->name('fridges.ingredients');
     Route::post('/fridges/ingredient', [FridgeController::class, 'addIngredient'])->name('fridges.addIngredient');
     Route::delete('/fridges/{fridgeId}/ingredient/{ingredientId}', [FridgeController::class, 'remove'])->name('fridges.removeIngredient');
-});
 
-Route::middleware(['auth'])->group(function () {
+    // Comments
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
 });
 
-
-Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+Route::get('/check-username', function (Request $request) {
+    $taken = User::where('username', $request->username)
+        ->where('id', '!=', auth()->id())
+        ->exists();
+    return response()->json(['taken' => $taken]);
+})->middleware('auth');
 
 require __DIR__.'/auth.php';
