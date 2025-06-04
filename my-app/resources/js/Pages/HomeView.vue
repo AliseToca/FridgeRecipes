@@ -1,6 +1,5 @@
 <template>
   <DefaultLayout>
-    <div class="page-wrapper">
       <LoadingOverlay :show="isLoading" message="Updating fridge..." />
 
       <div class="main-container">
@@ -42,7 +41,6 @@
           <RecipeList :recipes="filteredRecipes" :searchQuery="searchQuery" />
         </div>
       </div>
-    </div>
   </DefaultLayout>
 </template>
 
@@ -76,7 +74,7 @@ export default {
       selectedCategories: [],
       fridgeFilterEnabled: false,
       isOpen: false,
-      isLoading: false, // 🔥 loading flag
+      isLoading: false, 
     };
   },
 
@@ -162,9 +160,6 @@ export default {
 </script>
 
 <style scoped>
-.page-wrapper {
-  position: relative;
-}
 
 .main-container {
   display: flex;
