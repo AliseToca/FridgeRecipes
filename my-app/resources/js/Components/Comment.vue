@@ -1,7 +1,7 @@
 <template>
   <div class="comment-container">
     <div class="profile-info">
-      <img class="profile-image" :src="image" alt="Profile"/>
+      <img class="profile-image" :src="previewUrl" alt="Profile" />
       <div>
         <h3>{{ author }}</h3>
         <StarRatingDisplay :rating="starRating" :font-size="'15px'" />
@@ -25,74 +25,89 @@
     </div>
   </div>
 </template>
-  
+
 <script>
-  import StarRatingDisplay from '@/Components/StarRatingDisplay.vue';
-  import dayjs from 'dayjs';
-  import relativeTime from 'dayjs/plugin/relativeTime';
-  
-  dayjs.extend(relativeTime);
-  
-  export default {
-    props: {
-      id: Number,
-      image: String,
-      author: String,
-      starRating: Number,
-      content: String,
-      date: String,
-      authUserId: Number,
-      commentUserId: Number,
+import StarRatingDisplay from '@/Components/StarRatingDisplay.vue';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
+
+export default {
+  props: {
+    id: Number,
+    image: String,
+    author: String,
+    starRating: Number,
+    content: String,
+    date: String,
+    authUserId: Number,
+    commentUserId: Number,
+  },
+  components: {
+    StarRatingDisplay,
+  },
+  computed: {
+    formattedDate() {
+      return dayjs(this.date).fromNow();
     },
-    components: {
-      StarRatingDisplay,
+    previewUrl() {
+      return this.image
+        ? `/storage/${this.image}`
+        : '/images/profile-placeholder-square.png';
     },
-  
-    computed: {
-      formattedDate() {
-        return dayjs(this.date).fromNow(); 
-        // return dayjs(this.date).format('MMMM D, YYYY'); // for full date
-      },
-    },
-  };
+  },
+};
 </script>
-  
 
 <style scoped>
-
-.profile-info{
-    display: flex;
-    gap: 10px;
+.comment-container {
+  margin-bottom: 1rem;
 }
 
-.profile-info div{
-    font-size: 15px;
-    margin-bottom: 5px;
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-info div {
+  font-size: 15px;
+  margin-bottom: 5px;
 }
 
 .profile-image {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.profile-info div h3{
-    font-weight: bold;
+.profile-info div h3 {
+  font-weight: bold;
+  margin: 0;
 }
 
-.content{
-    margin-bottom: 5px;
+.delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #d9534f;
 }
 
-.content p{
-    font-size: 15px;
+.content {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
-.date{
-    font-size: 12px;
-    color: #818181;
+.content p {
+  font-size: 15px;
+  margin: 0;
 }
 
+.date {
+  font-size: 12px;
+  color: #818181;
+}
 </style>

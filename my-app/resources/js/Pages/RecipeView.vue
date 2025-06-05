@@ -1,7 +1,7 @@
 <template>
   <div class="page-wrapper">
     <LoadingOverlay :show="isLoading" message="Loading..." />
-        
+
     <div class="recipe-container">
       <div class="short-info">
         <div>
@@ -18,12 +18,12 @@
             />
             <p v-else class="unrated">Not rated yet</p>
           </div>
-
         </div>
         <img :src="recipe.img" alt="Recipe Image" class="recipe-image" />
       </div>
-  
-      <br>
+
+      <br />
+
       <div class="recipe-info">
         <p><strong>Prep Time:</strong> {{ recipe.prepMinutes }} minutes</p>
         <p><strong>Cooking Time:</strong> {{ recipe.cookMinutes }} minutes</p>
@@ -32,34 +32,29 @@
 
       <div class="recipe-section">
         <h2 class="section-title"><span>Ingredients</span></h2>
-
         <ul class="ingredient-list">
-            <li
-                v-for="(ingredient, index) in recipe.ingredients"
-                :key="ingredient.id"
-                class="ingredient-item"
-                :class="{ checked: checkedIngredients[index] }"
-            >
-                <label>
-                  <input type="checkbox" v-model="checkedIngredients[index]" />
-                  <span class="ingredient-text">
-                    <span v-if="ingredient.pivot.amount">{{ingredient.pivot.amount }} </span> 
-                    <span v-if="ingredient.pivot.unit"> 
-                      {{ingredient.pivot.unit }} 
-                    </span>{{ingredient.name }} 
-                  </span>
-                </label>
-            </li>
+          <li
+            v-for="(ingredient, index) in recipe.ingredients"
+            :key="ingredient.id"
+            class="ingredient-item"
+            :class="{ checked: checkedIngredients[index] }"
+          >
+            <label>
+              <input type="checkbox" v-model="checkedIngredients[index]" />
+              <span class="ingredient-text">
+                <span v-if="ingredient.pivot.amount">{{ ingredient.pivot.amount }} </span>
+                <span v-if="ingredient.pivot.unit">{{ ingredient.pivot.unit }} </span>
+                {{ ingredient.name }}
+              </span>
+            </label>
+          </li>
         </ul>
-
       </div>
 
       <div class="recipe-section">
         <h2 class="section-title"><span>Instructions</span></h2>
         <ol class="instruction-list">
-          <li v-for="(step, index) in recipe.instructions" :key="index">
-            {{ step }}
-          </li>
+          <li v-for="(step, index) in recipe.instructions" :key="index">{{ step }}</li>
         </ol>
       </div>
 
@@ -68,33 +63,27 @@
 
         <form v-if="auth.user" @submit.prevent="submitComment" class="comment-form">
           <StarRatingInput v-model="userRating" :font-size="'28px'" />
-
           <textarea
             v-model="newComment"
             placeholder="Write your comment..."
             required
             class="comment-textarea"
           ></textarea>
-
-          <button type="submit" class="comment-submit-button">
-            POST
-          </button>
+          <button type="submit" class="comment-submit-button">POST</button>
         </form>
-
 
         <div class="comment-container">
           <div v-if="recipe.comments.length === 0" class="no-comments-message">
             Be the first to review!
           </div>
-
           <div v-else>
             <div v-for="comment in recipe.comments" :key="comment.id" class="comment-item">
-              <Comment 
+              <Comment
                 :id="comment.id"
-                :image="'/images/profile-placeholder-square.png'" 
+                :image="comment.user?.profile_image"
                 :author="comment.user?.username ?? 'Unknown'"
-                :star-rating="comment.rating" 
-                :content="comment.content" 
+                :star-rating="comment.rating"
+                :content="comment.content"
                 :date="comment.created_at"
                 :auth-user-id="auth.user?.id"
                 :comment-user-id="comment.user?.id"
@@ -107,7 +96,7 @@
     </div>
   </div>
 </template>
-  
+
 <script>
 import DefaultLayout from '../Layouts/DefaultLayout.vue';
 import StarRatingDisplay from '@/Components/StarRatingDisplay.vue';
@@ -118,7 +107,6 @@ import { router } from '@inertiajs/vue3';
 
 export default {
   layout: DefaultLayout,
-
   props: {
     recipe: Object,
     auth: Object,
@@ -126,8 +114,8 @@ export default {
   components: {
     StarRatingDisplay,
     StarRatingInput,
-    Comment,
     LoadingOverlay,
+    Comment,
   },
   data() {
     return {
@@ -137,26 +125,34 @@ export default {
       isLoading: false,
     };
   },
+  mounted() {
+    if (this.recipe.ingredients && Array.isArray(this.recipe.ingredients)) {
+      this.checkedIngredients = this.recipe.ingredients.map(() => false);
+    }
+  },
   methods: {
     submitComment() {
       this.isLoading = true;
-      router.post('/comments', {
-        content: this.newComment,
-        recipes_id: this.recipe.id,
-        rating: this.userRating,
-      }, {
-        preserveScroll: true,
-        onSuccess: () => {
-          this.newComment = '';
-          this.userRating = 0;
-          this.isLoading = false;
+      router.post(
+        '/comments',
+        {
+          content: this.newComment,
+          recipes_id: this.recipe.id,
+          rating: this.userRating,
         },
-        onError: () => {
-          this.isLoading = false;
-        },
-      });
+        {
+          preserveScroll: true,
+          onSuccess: () => {
+            this.newComment = '';
+            this.userRating = 0;
+            this.isLoading = false;
+          },
+          onError: () => {
+            this.isLoading = false;
+          },
+        }
+      );
     },
-
     handleCommentDelete(commentId) {
       if (confirm('Are you sure you want to delete this comment?')) {
         this.isLoading = true;
@@ -167,23 +163,15 @@ export default {
               preserveScroll: true,
               onFinish: () => {
                 this.isLoading = false;
-              }
+              },
             });
           },
           onError: () => {
             this.isLoading = false;
-          }
+          },
         });
       }
-    }
-  },
-
-  mounted() {
-    if (this.recipe.ingredients && Array.isArray(this.recipe.ingredients)) {
-      this.checkedIngredients = this.recipe.ingredients.map(() => false);
-    } else {
-      this.checkedIngredients = [];
-    }
+    },
   },
 };
 </script>

@@ -23,6 +23,10 @@ class RecipeController extends Controller
 
         return Inertia::render('RecipeView', [
             'recipe' => $recipe,
+            'auth' => [
+                'user' => auth()->user(),
+            ],
         ]);
+        
     }
 }

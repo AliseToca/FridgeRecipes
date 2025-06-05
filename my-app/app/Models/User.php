@@ -20,7 +20,13 @@ class User extends Authenticatable
         'profile_image',
     ];
     
-
+    protected $visible = [
+        'id',
+        'name',
+        'profile_image',
+        'username',
+    ];
+    
     protected $hidden = [
         'password',
         'remember_token',
@@ -56,6 +62,7 @@ class User extends Authenticatable
 
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'comments_id');
+        return $this->hasMany(Comment::class, 'user_id');
     }
+
 }
