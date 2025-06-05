@@ -78,20 +78,18 @@
     </div>
 
     <!-- Saved Recipes -->
-    <div class="recipe-grid-container">
-      <div class="nav-line">
+    <div class="nav-line">
         <p>Saved Recipes</p>
         <span class="material-symbols-outlined">bookmark</span>
-      </div>
-
+    </div>
+    <div class="recipe-grid">
       <RecipeList
-          :key="recipeListKey"
-          :recipes="localSavedRecipes"
-          :searchQuery="searchQuery"
-          no-recipes-message="You don't have any saved recipes."
-          @update-save-state="handleSaveStateChange"
-        />
-
+        :key="recipeListKey"
+        :recipes="localSavedRecipes"
+        :searchQuery="searchQuery"
+        no-recipes-message="You don't have any saved recipes."
+        @update-save-state="handleSaveStateChange"
+      />
     </div>
   </div>
 </template>
@@ -115,9 +113,9 @@ export default {
       editing: false,
       usernameTaken: false,
       bioError: false,
-      recipeListKey: 0,
-      searchQuery: '',
       maxBioLength: 90,
+      searchQuery: '',
+      recipeListKey: 0,
       form: {
         username: this.auth.user.username,
         bio: this.auth.user.bio || '',
@@ -134,12 +132,15 @@ export default {
     this.localSavedRecipes = this.computeRecipeMatches(this.savedRecipes, fridgeIngredients);
   },
   methods: {
-    // UI Actions
     enableEditing() {
       this.editing = true;
     },
-    goBack() {
-      window.history.back();
+    handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.form.image = file;
+        this.previewUrl = URL.createObjectURL(file);
+      }
     },
     handleOutsideClick(event) {
       if (!this.$refs.modal.contains(event.target)) {
@@ -147,14 +148,8 @@ export default {
         this.editing = false;
       }
     },
-
-    // Profile Update
-    handleImageUpload(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.form.image = file;
-        this.previewUrl = URL.createObjectURL(file);
-      }
+    validateBioLength() {
+      this.bioError = this.form.bio.length > this.maxBioLength;
     },
     async checkUsername() {
       if (this.form.username !== this.auth.user.username) {
@@ -168,9 +163,6 @@ export default {
       } else {
         this.usernameTaken = false;
       }
-    },
-    validateBioLength() {
-      this.bioError = this.form.bio.length > this.maxBioLength;
     },
     async saveProfile() {
       if (this.usernameTaken) return;
@@ -186,10 +178,13 @@ export default {
         await axios.post('/profile/update', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
-        location.reload(); 
+        location.reload();
       } catch (err) {
-        if (err.response?.status === 422 && err.response.data.errors.username) {
-          this.usernameTaken = true;
+        if (err.response?.status === 422) {
+          const errors = err.response.data.errors;
+          if (errors.username) {
+            this.usernameTaken = true;
+          }
         } else {
           console.error('Failed to update profile:', err);
         }
@@ -203,13 +198,21 @@ export default {
         ? `/storage/${this.auth.user.profile_image}`
         : '/images/profile-placeholder-square.png';
     },
-
-    // Recipe Logic
+    goBack() {
+      window.history.back();
+    },
     handleSaveStateChange({ recipeId, isSaved }) {
       if (!isSaved) {
         this.localSavedRecipes = this.localSavedRecipes
           .filter(r => r.id !== recipeId)
-          .slice(); // trigger reactivity
+          .slice();
+
+        axios.post(`/recipes/${recipeId}/unsave`).catch(err =>
+          console.error('Failed to unsave recipe:', err)
+        );
+
+        // Notify global event
+        window.dispatchEvent(new CustomEvent('recipe-unsaved', { detail: recipeId }));
       }
     },
     computeRecipeMatches(recipes, fridgeIngredients) {
@@ -217,6 +220,7 @@ export default {
       return recipes.map(recipe => ({
         ...recipe,
         matchCount: recipe.ingredients?.filter(i => fridgeIds.includes(i.id)).length || 0,
+        saved: true,
       }));
     },
   },
@@ -478,9 +482,7 @@ export default {
     border-bottom:  2px solid #d4d4d4;
   }
 
-  .recipe-grid{
-    min-width: 50%;
-  }
+
   .nav-line p{
     color: #555555;
     font-size: 18px;
@@ -497,7 +499,10 @@ export default {
     margin: 0;
     font-size: 24px;
   }
-
+  .recipe-grid{
+    min-width: 50%;
+    width: 70%;
+  }
 
 
 /*------Responsivness----*/
@@ -507,9 +512,6 @@ export default {
     gap: 10px;
   }
 
-  .placeholder {
-    min-width: 60%;
-  }
 }
 
 @media (max-width: 768px) {
@@ -521,20 +523,12 @@ export default {
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
   }
-
-  .placeholder {
-    min-width: 30%;
-  }
 }
 
 @media (max-width: 480px) {
   .recipe-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 5px;
-  }
-
-  .placeholder {
-    min-width: 30%;
   }
 }
 

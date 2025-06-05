@@ -142,6 +142,13 @@ export default {
         this.recipes[index].saved = isSaved;
       }
     },
+    removeRecipeSavedFlag(event) {
+    const recipeId = event.detail;
+    const recipe = this.recipes.find(r => r.id === recipeId);
+    if (recipe) {
+      recipe.saved = false;
+    }
+  },
 
     toggleDropdown() {
       this.isOpen = !this.isOpen;
@@ -156,11 +163,10 @@ export default {
   },
 
   mounted() {
-    document.addEventListener('click', this.handleClickOutside);
+    window.addEventListener('recipe-unsaved', this.removeRecipeSavedFlag);
   },
-
   beforeUnmount() {
-    document.removeEventListener('click', this.handleClickOutside);
+    window.removeEventListener('recipe-unsaved', this.removeRecipeSavedFlag);
   },
 };
 </script>
