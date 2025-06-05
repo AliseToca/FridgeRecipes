@@ -1,56 +1,53 @@
 <template>
   <Link :href="`/recipes/${slug}`">
-  <div class="recipe-item">
-        <div class="image-container">
-          <img :src="img" alt="">
-          <!-- <img src="/images/profile-placeholder-square.png" alt=""> -->
+    <div class="recipe-item">
+      <div class="image-container">
+        <img :src="img" alt="">
+      </div>
+      <div class="text-container">
+        <div class="bookmark-container">
+          <span
+            class="material-symbols-outlined bookmark-icon"
+            :class="{ active: isSaved, animate: isAnimating }"
+            @click.stop.prevent="toggleSave"
+          >
+            bookmark
+          </span>
         </div>
-        <div class="text-container">
-          <div class="bookmark-container">
-            <span  class="material-symbols-outlined bookmark-icon" 
-              :class="{ active: isSaved, animate: isAnimating }" 
-              @click.stop.prevent="toggleSave"
-              >
-              bookmark
-            </span>
-          </div>
-          <div>
-            <h1>{{ name }}</h1>
-            <div class="recipe-info">
-              <div class="recipe-details">
-                  <span class="material-symbols-outlined">schedule</span>
-                  <p>{{ minutes }} min</p>
-                  <StarRatingDisplay :rating="rating" :font-size="'17px'"/>
-              </div>
-              <!-- <p class="ingredient-text">{{ ingredientsMissing }} missing ingredient{{ ingredientsMissing !== 1 ? 's' : '' }}...</p> -->
-              <p class="ingredient-text">{{userHasIngredients}} / {{ingredients}}  <span class="material-symbols-outlined">grocery</span></p>
+        <div>
+          <h1>{{ name }}</h1>
+          <div class="recipe-info">
+            <div class="recipe-details">
+              <span class="material-symbols-outlined">schedule</span>
+              <p>{{ minutes }} min</p>
+              <StarRatingDisplay :rating="rating" :font-size="'17px'" />
             </div>
+            <p class="ingredient-text">
+              {{ userHasIngredients }} / {{ ingredients }}
+              <span class="material-symbols-outlined">grocery</span>
+            </p>
           </div>
         </div>
-        <div class="relbar-container">
-          <RelBar :percentage="relbarPercentage" class="relbar"/>
-        </div>
-  </div>
-</Link>
-
+      </div>
+      <div class="relbar-container">
+        <RelBar :percentage="relbarPercentage" class="relbar" />
+      </div>
+    </div>
+  </Link>
 </template>
 
 <script>
-import { Link } from "@inertiajs/vue3";
+import { Link } from '@inertiajs/vue3';
 import StarRatingDisplay from './StarRatingDisplay.vue';
 import RelBar from './Relbar.vue';
 import axios from 'axios';
 
-
 export default {
-  data() {
-    return {
-      relbarPercentage: 0,
-      isSaved: this.saved, 
-      isAnimating: false,
-    };
+  components: {
+    Link,
+    StarRatingDisplay,
+    RelBar,
   },
-  
   props: {
     id: Number,
     name: String,
@@ -62,18 +59,29 @@ export default {
     userHasIngredients: Number,
     saved: Boolean,
   },
-  components: {
-    StarRatingDisplay,
-    RelBar,
-    Link
+  data() {
+    return {
+      isAnimating: false,
+      savedInternal: this.saved,
+    };
   },
   computed: {
+    isSaved: {
+      get() {
+        return this.savedInternal;
+      },
+      set(value) {
+        this.savedInternal = value;
+      }
+    },
     relbarPercentage() {
       return this.ingredients ? Math.min((this.userHasIngredients / this.ingredients) * 100, 100) : 0;
     },
-    ingredientsMissing() {
-      return Math.max(0, this.ingredients - this.userHasIngredients);
-    }
+  },
+  watch: {
+    saved(newVal) {
+      this.savedInternal = newVal;
+    },
   },
   methods: {
     async toggleSave() {
@@ -81,29 +89,24 @@ export default {
         const response = await axios.post('/saved-recipes/toggle', {
           recipe_id: this.id,
         });
-        console.log('Toggled:', response.data.status);
-        this.isSaved = response.data.status === 'saved'; // <--- NOT this.saved
-      } catch (error) {
-        console.error('Failed to save recipe:', error);
-      }
-    },
 
-    calculateBarPercentage(userHas) {
-      if (this.ingredients === 0) {
-        return;
+        this.isSaved = response.data.status === 'saved';
+        this.$emit('update-save-state', {
+          recipeId: this.id,
+          isSaved: this.isSaved,
+        });
+
+        this.isAnimating = true;
+        setTimeout(() => {
+          this.isAnimating = false;
+        }, 300);
+      } catch (error) {
+        console.error('Failed to toggle save state:', error);
       }
-      this.relbarPercentage = (userHas / this.ingredients) * 100;
-      if (this.relbarPercentage > 100) {
-        this.relbarPercentage = 100;
-      }
-    },
-    updateMissingIngredients(userHas) {
-      this.ingredientsMissing = Math.max(0, this.ingredients - userHas);
     },
   },
 };
 </script>
-
 <style scoped>
   .recipe-item {
     z-index: 0;

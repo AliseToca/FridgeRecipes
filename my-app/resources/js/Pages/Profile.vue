@@ -6,61 +6,6 @@
       <Link :href="route('logout')" method="post" class="logout-btn"> LOG OUT </Link>
     </div>
 
-    <!--Edit profile overlay -->
-    <div v-if="editing" class="modal-overlay"  @click="handleOutsideClick">
-      <div class="modal-content"  ref="modal">
-        <div class="modal-header">
-          <div>
-            <h2>Edit Profile</h2>
-            <button @click="editing = false" class="cancel-btn"><span class="material-symbols-outlined">close</span></button>
-          </div>
-        </div>
-     
-        <div class="modal-line">
-          <h3>Profile Image</h3>
-          <div>
-            <img v-if="previewUrl" :src="previewUrl" class="profile-preview" />
-            <input type="file" @change="handleImageUpload" />
-          </div>
-        </div>
-
-        <div class="modal-line">
-          <h3>Username</h3>
-          <div>
-            <input
-              class="edit-field"
-              v-model="form.username"
-              placeholder="Username"
-              @input="usernameTaken = false"
-              @blur="checkUsername"
-            />
-            <p v-if="usernameTaken" class="error">This username is already taken.</p>
-          </div>
-        </div>
-
-        <div class="modal-line">
-          <h3>Bio</h3>  
-          <div>
-            <textarea
-              class="edit-field"
-              v-model="form.bio"
-              placeholder="Write your bio..."
-              @input="validateBioLength"
-              maxlength="90"
-            />
-            <p class="char-count" :class="{ 'error': bioError }">
-              {{ form.bio.length }}/90 characters
-            </p>
-            <p v-if="bioError" class="error">Bio cannot exceed 90 characters.</p>
-          </div>
-        </div>
-        
-        <div class="modal-actions">
-          <button @click="saveProfile" class="save-btn" :disabled="usernameTaken">SAVE</button>
-        </div>
-      </div>
-    </div>
-    
     <!-- Profile card -->
     <div class="card">
       <img class="profile-image" :src="previewUrl" alt="Profile" />
@@ -69,27 +14,27 @@
         <button @click="enableEditing" class="edit-btn"><span class="material-symbols-outlined">edit</span></button>
       </div>
       <p class="bio">{{ auth.user.bio || 'No bio yet.' }}</p>
-     
     </div>
 
     <!-- Saved recipes -->
-    <div class="recipe-grid-container">
-      <div class="nav-line">
-        <!-- <p>My Recipes</p>
-        <p class="vertical-line">|</p>
-          <p>Favorites</p> 
-          <span class="material-symbols-outlined">bookmark</span>
-        <p class="vertical-line">|</p>
-        <p>Completed Recipes</p> -->
+    <div class="nav-line">
         <p>Saved Recipes</p> 
         <span class="material-symbols-outlined">bookmark</span>
-      </div>
-
-      <RecipeList :recipes="savedRecipes" no-recipes-message="You don't have any saved recipes"/>
     </div>
+
+    <div class="recipe-grid">
+        <RecipeList
+          :key="recipeListKey"
+          :recipes="localSavedRecipes"
+          :searchQuery="searchQuery"
+          no-recipes-message="You don't have any saved recipes."
+          @update-save-state="handleSaveStateChange"
+        />
+    </div>
+
   </div>
 </template>
-  
+
 <script>
 import { Link } from '@inertiajs/vue3';
 import Logo from '@/Components/Logo.vue';
@@ -104,98 +49,37 @@ export default {
   props: {
     auth: Object,
     savedRecipes: Array,
-    searchQuery: {
-      type: String,
-      default: '',
-    }, 
-  },
-  mounted() {
-    console.log('Saved Recipes:', this.savedRecipes);
-    if (Array.isArray(this.savedRecipes)) {
-      console.log('Saved recipes are an array!');
-    } else {
-      console.error('Saved recipes are not an array:', this.savedRecipes);
-    }
   },
   data() {
   return {
-    editing: false,
-    usernameTaken: false,
-    bioError: false, 
-    maxBioLength: 90,
-    form: {
-      username: this.auth.user.username,
-      bio: this.auth.user.bio || '',
-      image: null,
-    },
+    searchQuery: '',
     previewUrl: this.auth.user.profile_image
       ? `/storage/${this.auth.user.profile_image}`
       : '/images/profile-placeholder-square.png',
+    localSavedRecipes: this.savedRecipes.map(recipe => ({
+      ...recipe,
+      saved: true,
+    })),
+    recipeListKey: 0, // force re-render
   };
 },
-
 methods: {
   enableEditing() {
     this.editing = true;
-    this.usernameTaken = false;
   },
-  handleImageUpload(event) {
-    const file = event.target.files[0];
-    if (file) {
-      this.form.image = file;
-      this.previewUrl = URL.createObjectURL(file);
-    }
-  },
-  handleOutsideClick(event) {
-    if (!this.$refs.modal.contains(event.target)) {
-      this.editing = false;
-    }
-  },
-  validateBioLength() {
-    this.bioError = this.form.bio.length > this.maxBioLength;
-  },
-  async checkUsername() {
-    if (this.form.username !== this.auth.user.username) {
-      try {
-        const response = await axios.get(`/check-username?username=${this.form.username}`);
-        this.usernameTaken = response.data.taken;
-      } catch (err) {
-        console.error('Username check failed:', err);
-        this.usernameTaken = false;
-      }
-    } else {
-      this.usernameTaken = false;
-    }
-  },
-  async saveProfile() {
-    if (this.usernameTaken) return;
-
-    const formData = new FormData();
-    formData.append('username', this.form.username);
-    formData.append('bio', this.form.bio);
-    if (this.form.image) {
-      formData.append('profile_image', this.form.image);
-    }
-
-    try {
-      await axios.post('/profile/update', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      location.reload();
-    } catch (err) {
-      if (err.response?.status === 422) {
-        const errors = err.response.data.errors;
-        if (errors.username) {
-          this.usernameTaken = true;
-        }
-      } else {
-        console.error('Failed to update profile:', err);
-      }
-    }
-  }
+  handleSaveStateChange({ recipeId, isSaved }) {
+  if (!isSaved) {
+    this.localSavedRecipes = this.localSavedRecipes
+      .filter(r => r.id !== recipeId)
+      .slice(); // force new reference
   }
 }
+
+}
+
+};
 </script>
+
   
 <style scoped>
   .page-wrap{
@@ -427,12 +311,15 @@ methods: {
   /*-----Saved recipes----*/
   .nav-line{
     padding: 0 0px 10px 30px;
-    width: 90%;
+    width: 70%;
     display: flex;
     align-items: center;
-    border-bottom: #666666 2px solid;
+    border-bottom:  2px solid #d4d4d4;
   }
 
+  .recipe-grid{
+    min-width: 50%;
+  }
   .nav-line p{
     color: #555555;
     font-size: 18px;
@@ -450,25 +337,7 @@ methods: {
     font-size: 24px;
   }
 
-  .recipe-grid-container{
-    width: 90%;
-    max-width: 1000px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
 
-  .recipe-grid {
-    width: 100%;
-    border-top: 2px solid #d4d4d4;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    justify-items: center;
-    padding: 20px;
-    padding-left: 5px;
-    min-height: 500px;
-  }
 
 /*------Responsivness----*/
 @media (max-width: 1024px) {

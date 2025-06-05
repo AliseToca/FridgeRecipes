@@ -1,25 +1,24 @@
-<template >
-  <div class="recipe-container"  v-if="filteredRecipes.length > 0">
-      <RecipeItem
-        v-for="recipe in filteredRecipes"
-        :key="recipe.id"
-        :id="recipe.id"
-        :name="recipe.name"
-        :minutes="recipe.cookMinutes"
-        :rating="recipe.rating"
-        :ingredients="recipe.ingredients.length"
-        :userHasIngredients="recipe.matchCount || 0"
-        :img="recipe.img"
-        :slug="recipe.slug" 
-        :saved="recipe.saved"
-      />
+<template>
+  <div class="recipe-container" v-if="filteredRecipes.length > 0">
+    <RecipeItem
+      v-for="recipe in filteredRecipes"
+      :key="recipe.id"
+      :id="recipe.id"
+      :name="recipe.name"
+      :minutes="recipe.cookMinutes"
+      :rating="recipe.rating"
+      :ingredients="recipe.ingredients.length"
+      :userHasIngredients="recipe.matchCount || 0"
+      :img="recipe.img"
+      :slug="recipe.slug"
+      :saved="recipe.saved"
+      @update-save-state="updateSavedStatus"
+    />
   </div>
 
-  <div  v-else class="no-recipes-message">
+  <div v-else class="no-recipes-message">
     <img src="/images/no-content.png" alt="">
-    <p>
-      {{ noRecipesMessage }}
-    </p>
+    <p>{{ noRecipesMessage }}</p>
   </div>
 </template>
 
@@ -33,11 +32,11 @@ export default {
   props: {
     recipes: {
       type: Array,
-      default: () => [], 
+      default: () => [],
     },
     searchQuery: {
       type: String,
-      default: '',  
+      default: '',
     },
     noRecipesMessage: {
       type: String,
@@ -47,16 +46,21 @@ export default {
   computed: {
     filteredRecipes() {
       return this.recipes.filter((recipe) => {
-        if (recipe && recipe.name) {
-          return recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase());
-        }
-        return false;  
+        return recipe?.name?.toLowerCase().includes(this.searchQuery.toLowerCase());
       });
     },
   },
+  methods: {
 
+    updateSavedStatus(event) {
+      this.$emit('update-save-state', event); // pass up to Profile.vue
+    }
+  
+
+  }
 };
 </script>
+
 
 <style scoped>
 .recipe-container {
