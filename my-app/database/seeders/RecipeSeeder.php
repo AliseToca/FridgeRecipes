@@ -18,6 +18,7 @@ class RecipeSeeder extends Seeder
                 'img' => '/images/recipe/salad.jpg',
                 'bio' => 'This healthy salad is packed with vibrant greens, nuts, and a zesty vinaigrette. Perfect for a light lunch or side dish. It’s easy, fast, and incredibly nutritious!',
                 'cookMinutes' => 12,
+                'prepMinutes' => 10,
                 'instructions' => json_encode([
                     'Wash the lettuce, tomatoes, and cucumber thoroughly.',
                     'Slice the cucumber and tomatoes. Chop the lettuce into bite-sized pieces.',
@@ -33,6 +34,7 @@ class RecipeSeeder extends Seeder
                 'img' => '/images/recipe/butter-chicken-test.jpg',
                 'bio' => 'Butter Chicken is a rich and creamy Indian dish made with tender chicken in a spiced tomato sauce. Serve it with naan or basmati rice for a satisfying meal.',
                 'cookMinutes' => 15,
+                'prepMinutes' => 30,
                 'instructions' => json_encode([
                     'Start by marinating the chicken. In a bowl, mix the chicken with yogurt, garam masala, turmeric, cumin, and a pinch of salt. Let it marinate for at least 30 minutes.',
                     'Heat butter in a large pan over medium heat. Add chopped onions and sauté until golden brown.',
@@ -43,13 +45,13 @@ class RecipeSeeder extends Seeder
                     'Serve hot with basmati rice or naan bread.'
                 ]),
             ],
-            // New recipes
             [
                 'user_id' => 1,
                 'name' => 'Classic Spaghetti Bolognese',
                 'img' => '/images/recipe/spaghetti-bolognese.jpg',
                 'bio' => 'A comforting, rich pasta dish with a savory bolognese sauce made with ground beef and tomatoes, perfect for any occasion.',
                 'cookMinutes' => 30,
+                'prepMinutes' => 10,
                 'instructions' => json_encode([
                     'Bring a large pot of salted water to a boil. Cook spaghetti according to package instructions, then drain and set aside.',
                     'In a large pan, heat olive oil over medium heat. Add chopped onion and garlic and sauté until soft and translucent.',
@@ -65,6 +67,7 @@ class RecipeSeeder extends Seeder
                 'img' => '/images/recipe/mushroom-risotto.jpg',
                 'bio' => 'A rich, creamy risotto made with mushrooms and parmesan cheese, this dish is a comforting vegetarian delight.',
                 'cookMinutes' => 40,
+                'prepMinutes' => 10,
                 'instructions' => json_encode([
                     'In a large pot, heat butter over medium heat. Add chopped onion and garlic, cooking until softened.',
                     'Add sliced mushrooms to the pan and sauté until they release their moisture and begin to brown.',
@@ -81,6 +84,7 @@ class RecipeSeeder extends Seeder
                 'img' => '/images/recipe/vegeterian-stir-fry.jpg',
                 'bio' => 'A quick and healthy stir fry with a mix of colorful vegetables, served with rice or noodles for a balanced meal.',
                 'cookMinutes' => 15,
+                'prepMinutes' => 10,
                 'instructions' => json_encode([
                     'Start by preparing all the vegetables: chop the broccoli into florets, slice the bell peppers and carrots, and mince the garlic and ginger.',
                     'Heat sesame oil in a large pan or wok over medium-high heat.',
@@ -97,6 +101,7 @@ class RecipeSeeder extends Seeder
                 'img' => '/images/recipe/baked-salmon-with-veggies.jpeg',
                 'bio' => 'A light and healthy baked salmon dish served with roasted vegetables, making for an easy, nutritious dinner.',
                 'cookMinutes' => 20,
+                'prepMinutes' => 15,
                 'instructions' => json_encode([
                     'Preheat your oven to 375°F (190°C). Line a baking sheet with parchment paper.',
                     'Place the salmon fillets on the baking sheet. Drizzle them with olive oil and season with salt and pepper.',
@@ -111,6 +116,7 @@ class RecipeSeeder extends Seeder
                 'img' => '/images/recipe/avacado-toast-with-egg.jpg',
                 'bio' => 'A simple and healthy breakfast with creamy avocado spread over toasted bread, topped with a perfectly fried egg.',
                 'cookMinutes' => 10,
+                'prepMinutes' => 5,
                 'instructions' => json_encode([
                     'Toast the slices of bread to your preferred crispness.',
                     'While the bread is toasting, mash the avocado in a bowl with a pinch of salt and a squeeze of lemon juice.',
@@ -125,6 +131,7 @@ class RecipeSeeder extends Seeder
                 'img' => '/images/recipe/chickpea-curry-recipe.jpg',
                 'bio' => 'A flavorful and spicy chickpea curry served with rice or naan, perfect for a hearty vegetarian meal.',
                 'cookMinutes' => 30,
+                'prepMinutes' => 10,
                 'instructions' => json_encode([
                     'In a large pot, heat oil over medium heat. Add chopped onions, garlic, and ginger, sautéing until softened.',
                     'Add cumin, paprika, turmeric, and chili powder, cooking for 1-2 minutes to toast the spices.',
@@ -139,6 +146,7 @@ class RecipeSeeder extends Seeder
                 'img' => '/images/recipe/grilled-chicken-ceaser-salad.jpg',
                 'bio' => 'A classic Caesar salad topped with grilled chicken, crispy croutons, and a tangy homemade dressing.',
                 'cookMinutes' => 20,
+                'prepMinutes' => 10,
                 'instructions' => json_encode([
                     'Season the chicken breasts with salt, pepper, and olive oil. Grill over medium heat for 6-7 minutes per side until cooked through.',
                     'While the chicken cooks, chop the lettuce into bite-sized pieces and prepare the croutons.',
@@ -153,6 +161,7 @@ class RecipeSeeder extends Seeder
                 'img' => '/images/recipe/stuffed-belled-pepper.jpg',
                 'bio' => 'Colorful bell peppers stuffed with rice, ground beef, and a savory tomato sauce, then baked to perfection.',
                 'cookMinutes' => 45,
+                'prepMinutes' => 15,
                 'instructions' => json_encode([
                     'Preheat the oven to 375°F (190°C).',
                     'Cut the tops off the bell peppers and remove the seeds and membranes.',
@@ -168,6 +177,7 @@ class RecipeSeeder extends Seeder
                 'img' => '/images/recipe/peanut-butter-smoothie.jpg',
                 'bio' => 'A quick and creamy smoothie made with peanut butter, banana, and milk, perfect for a quick breakfast or snack.',
                 'cookMinutes' => 5,
+                'prepMinutes' => 5,
                 'instructions' => json_encode([
                     'Peel the banana and add it to a blender with peanut butter, milk, and ice.',
                     'Blend until smooth and creamy. Adjust sweetness with honey or maple syrup if needed.',
@@ -180,6 +190,7 @@ class RecipeSeeder extends Seeder
                 'img' => '/images/recipe/tomato-basil-soup.jpg',
                 'bio' => 'A classic, comforting tomato soup made with fresh tomatoes, garlic, and basil, served with crusty bread.',
                 'cookMinutes' => 30,
+                'prepMinutes' => 10,
                 'instructions' => json_encode([
                     'In a large pot, sauté chopped onions and garlic in olive oil until softened.',
                     'Add chopped tomatoes, vegetable broth, and fresh basil leaves.',
@@ -194,6 +205,7 @@ class RecipeSeeder extends Seeder
                 'img' => '/images/recipe/creamy-mushrooms-potatoes.png',
                 'bio' => 'A warm and creamy dish made with sautéed mushrooms, tender potatoes, and rich cheese spread, perfect as a side or comforting main.',
                 'cookMinutes' => 35,
+                'prepMinutes' => 15,
                 'instructions' => json_encode([
                     'Peel and dice the potatoes into small cubes. Boil them in salted water for about 10-12 minutes or until tender. Drain and set aside.',
                     'In a large pan, heat oil or butter over medium heat. Add chopped onions and cook until translucent.',
@@ -204,7 +216,6 @@ class RecipeSeeder extends Seeder
                     'Simmer for a few more minutes until heated through and creamy. Serve hot.'
                 ]),
             ],
-            
         ];
 
         foreach ($recipes as &$recipe) {

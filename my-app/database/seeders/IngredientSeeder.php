@@ -26,6 +26,7 @@ class IngredientSeeder extends Seeder
             ['name' => 'banana', 'ingredient_category_id' => 1],
             ['name' => 'garlic', 'ingredient_category_id' => 1],
             ['name' => 'potatoes', 'ingredient_category_id' => 1],
+            ['name' => 'lime', 'ingredient_category_id' => 1],
 
 
             // 2. Meat & Seafood

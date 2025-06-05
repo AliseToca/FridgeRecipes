@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('img');
             $table->tinyText('bio');
+            $table->integer('prepMinutes');
             $table->integer('cookMinutes');
-            $table->integer('rating')->default(0); //nevajag?
-            // $table->json('ingredients')->nullable(); 
+            $table->integer('rating')->default(0); 
             $table->json('instructions')->nullable();
 
             $table->unsignedBigInteger('user_id');

@@ -19,6 +19,7 @@ class RecipeIngredientSeeder extends Seeder
                 ['avocado', 1, 'whole'],
                 ['walnuts', 50, 'grams'],
                 ['feta', 100, 'grams'],
+                ['lime', 1, 'whole'],
             ],
             'butter-chicken' => [
                 ['chicken', 500, 'grams'],

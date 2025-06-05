@@ -17,11 +17,11 @@ class RecipeCategorySeeder extends Seeder
             'creamy-mushroom-risotto' => ['vegetarian'],
             'vegetarian-stir-fry' => ['vegetarian', 'quick'],
             'baked-salmon-with-veggies' => ['healthy', 'low-carb', 'meat'],
-            'avocado-toast-with-egg' => ['vegetarian', 'breakfast'],
+            'avocado-toast-with-egg' => ['vegetarian', 'breakfast','quick'],
             'spicy-chickpea-curry' => ['vegetarian', 'vegan'],
             'grilled-chicken-caesar-salad' => ['protein-rich', 'low-carb','meat'],
             'stuffed-bell-peppers' => ['gluten-free', 'meat'],
-            'peanut-butter-banana-smoothie' => ['vegetarian', 'breakfast'],
+            'peanut-butter-banana-smoothie' => ['vegetarian', 'breakfast', 'quick'],
             'tomato-basil-soup' => ['vegetarian', 'gluten-free'],
             'creamy-mushrooms-with-potatoes' => ['vegetarian'],
         ];

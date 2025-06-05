@@ -5,7 +5,7 @@
       :key="recipe.id"
       :id="recipe.id"
       :name="recipe.name"
-      :minutes="recipe.cookMinutes"
+      :minutes=" recipe.prepMinutes + recipe.cookMinutes"
       :rating="recipe.rating"
       :ingredients="recipe.ingredients.length"
       :userHasIngredients="recipe.matchCount || 0"
