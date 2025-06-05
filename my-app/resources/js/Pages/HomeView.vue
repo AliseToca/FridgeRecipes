@@ -119,11 +119,12 @@ export default {
   box-shadow: 11px 11px 0px rgba(244, 64, 64, 0.74);
   padding: 40px;
   max-width: 500px;
+  max-height: 900px;
   width: 100%;
-  height: 80%;
+
   display: flex;
   flex-direction: column;
-
+  justify-content: center;
 }
 
 .hero-title {
