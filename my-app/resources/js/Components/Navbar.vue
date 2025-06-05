@@ -6,8 +6,6 @@
       <ul class="nav-links" :class="{ active: menuActive }">
         <li><Link href="/">Home</Link></li>
         <li><Link href="/recipes">Recipes</Link></li>
-        <li><Link href="/about">About</Link></li>
-        <li><Link href="/services">Services</Link></li>
 
         <li v-if="user">
           <Link href="/profile">
@@ -30,22 +28,41 @@
   </nav>
 </template>
 
-<script setup>
-  import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-  import { usePage, Link } from '@inertiajs/vue3';
-  import Logo from './Logo.vue';
-  // import SearchBar from './SearchBar.vue'; 
+<script>
+import { computed } from 'vue';
+import { usePage, Link } from '@inertiajs/vue3';
+import Logo from './Logo.vue';
 
-  // // Global auth from Inertia shared props
-  const page = usePage();
-  const user = computed(() => page.props.auth?.user);
+export default {
+  components: {
+    Logo,
+    Link,
+  },
 
-  const menuActive = ref(false);
+  data() {
+    return {
+      menuActive: false,
+    };
+  },
 
-  function toggleMenu() {
-    menuActive.value = !menuActive.value;
-  }
+  computed: {
+    user() {
+      return usePage().props.auth?.user;
+    },
+  },
+
+  methods: {
+    toggleMenu() {
+      this.menuActive = !this.menuActive;
+    },
+  },
+
+  mounted() {
+    this.menuActive = false;
+  },
+};
 </script>
+
 
 
 <style scoped>

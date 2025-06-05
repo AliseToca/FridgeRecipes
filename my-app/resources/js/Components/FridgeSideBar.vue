@@ -1,12 +1,5 @@
 <template>
   <div :class="['fridge-sidebar', { collapsed: !isExpanded }]">
-
-    <!-- <button class="toggle-btn" @click="isExpanded = !isExpanded">
-      <span class="material-symbols-outlined">
-        {{ isExpanded ? 'chevron_left' : 'grocery' }}
-      </span>
-    </button> -->
-
     <div class="fridge-info" v-if="isExpanded && user">
       <h2><span class="material-symbols-outlined">grocery</span></h2>
       <div>
@@ -18,7 +11,6 @@
           />
           <span class="slider"></span>
         </label>
-
         <p>Sort by <span>fridge ingredients</span></p>
       </div>
     </div>
@@ -37,7 +29,9 @@
               <li v-for="ingredient in ingredients" :key="ingredient.id">
                 {{ ingredient.name }}
                 <span v-if="ingredient.amount">({{ ingredient.amount }})</span>
-                <button @click="removeIngredient(ingredient)" class="remove-btn"> <span class="material-symbols-outlined">close</span></button>
+                <button @click="removeIngredient(ingredient)" class="remove-btn">
+                  <span class="material-symbols-outlined">close</span>
+                </button>
               </li>
             </ul>
           </div>
@@ -57,17 +51,16 @@
         @keyup.enter="addIngredient"
         placeholder="Add an ingredient"
       />
-      <!-- <input
-        v-model.number="newAmount"
-        type="number"
-        min="0"
-        step="any"
-        placeholder="Amount (optional)"
-      /> -->
     </div>
   </div>
-</template>
 
+  <!-- Mobile toggle button (only visible on phones) -->
+  <button class="mobile-toggle-btn" @click="isExpanded = !isExpanded">
+    <span class="material-symbols-outlined">
+      {{ isExpanded ? 'close' : 'grocery' }}
+    </span>
+  </button>
+</template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
@@ -79,12 +72,12 @@ const user = computed(() => page.props.auth?.user);
 const fridgeId = computed(() => user.value?.fridge?.id);
 const isExpanded = ref(true);
 
-const fridgeIngredients = ref([]); 
+const fridgeIngredients = ref([]);
 const categories = ref([]);
 
 const newIngredient = ref('');
-const newAmount = ref(null); 
-const error = ref(null); 
+const newAmount = ref(null);
+const error = ref(null);
 
 const emits = defineEmits(['toggle-fridge-filter', 'ingredient-changed']);
 
@@ -122,7 +115,7 @@ function getFridgeIngredients() {
       console.error('Failed to fetch ingredients:', err);
     });
 
-    emits('ingredient-changed');
+  emits('ingredient-changed');
 }
 
 function addIngredient() {
@@ -137,7 +130,6 @@ function addIngredient() {
   })
   .then(() => {
     getFridgeIngredients();
-
     emits('ingredient-changed');
     newIngredient.value = '';
     newAmount.value = null;
@@ -153,7 +145,6 @@ function removeIngredient(ingredient) {
     .delete(`/fridges/${fridgeId.value}/ingredient/${ingredient.id}`)
     .then(() => {
       getFridgeIngredients();
-
       emits('ingredient-changed');
     })
     .catch((err) => {
@@ -161,17 +152,14 @@ function removeIngredient(ingredient) {
     });
 }
 
-
 onMounted(() => {
-
   getFridgeIngredients();
-  
 });
 </script>
 
 <style scoped>
 .fridge-sidebar {
-  transition: width 0.3s ease;
+  transition: width 0.3s ease, transform 0.3s ease;
   position: sticky;
   top: 85px;
   width: 30%;
@@ -192,51 +180,13 @@ onMounted(() => {
   padding: 30px 10px;
 }
 
-.toggle-btn {
-  position: absolute;
-  top: 15%;
-  right: -20px;
-  background-color: #ffffff;
-  border: 1px solid #3a3a3a;
-  color: #3a3a3a;
-  border-radius: 2px;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.toggle-btn .material-symbols-outlined {
-  font-size: 20px;
-}
-
-
-/* .fridge-info,
-.fridge-container,
-.add-ingredient {
-  transition: opacity 0.3s ease;
-}
-
-.fridge-sidebar.collapsed .fridge-info,
-.fridge-sidebar.collapsed .fridge-container,
-.fridge-sidebar.collapsed .add-ingredient {
-  opacity: 0;
-  pointer-events: none;
-  height: 0;
-  overflow: hidden;
-} */
-
-/*---------------FRIDGE INFO----------------- */
-.fridge-info{
+.fridge-info {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
 }
 
-h2 span{
+h2 span {
   font-size: 90px;
   font-weight: 300;
   padding-left: 10px;
@@ -245,30 +195,28 @@ h2 span{
   text-wrap: wrap;
 }
 
-.fridge-info div{
+.fridge-info div {
   display: flex;
   flex-direction: column;
   align-items: end;
-  /* align-items: center; */
 }
 
-.fridge-info div p{
+.fridge-info div p {
   color: #3a3a3a;
   font-size: 13px;
 }
 
-.fridge-info div span{
+.fridge-info div span {
   font-weight: 500;
 }
 
-/*----TOGLE SWITCH---*/
+/* Switch */
 .switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;
 }
-
 
 .switch input {
   opacity: 0;
@@ -285,7 +233,6 @@ h2 span{
   bottom: 0;
   border-radius: 34px;
   background-color: #ccc;
-  -webkit-transition: .4s;
   transition: .4s;
 }
 
@@ -297,7 +244,6 @@ h2 span{
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
   transition: .4s;
   border-radius: 50%;
 }
@@ -311,23 +257,8 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
-
-.slider .material-symbols-outlined{
-  color: #f44040;
-  font-size: 32px;
-
-  font-variation-settings:
-    'FILL' 1,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 24
-}
-
-/*---------------FRIDGE CONTENT--------------------- */
 
 .fridge-container {
   overflow-y: auto;
@@ -345,31 +276,23 @@ input:checked + .slider:before {
 }
 
 .category-title {
-  /* font-size: 16px;
-  font-weight: 600;
-  color: #f44040;
-  border-bottom: 1px solid #fd5e5ed7;
-  margin-bottom: 10px;
-  padding-bottom: 5px; */
-
-  width: 100%; 
-  text-align: left; 
-  border-bottom: 1px solid #f44040; 
+  width: 100%;
+  text-align: left;
+  border-bottom: 1px solid #f44040;
   color: #f44040;
   line-height: 0.1em;
-  margin: 10px 0 20px; 
+  margin: 10px 0 20px;
 }
 
-.category-title span{
+.category-title span {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 10px;
-  background:#fff; 
-  padding:0 10px;
-  margin-left: 7px; 
+  background: #fff;
+  padding: 0 10px;
+  margin-left: 7px;
   text-transform: uppercase;
 }
-
 
 .ingredient-list ul {
   list-style-type: square;
@@ -389,8 +312,8 @@ input:checked + .slider:before {
 }
 
 .empty-category {
-  margin-bottom: 20px; 
-  min-height: 30px; 
+  margin-bottom: 20px;
+  min-height: 30px;
 }
 
 .remove-btn {
@@ -402,12 +325,10 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
-/*-----------ADD INGREDIENT---------*/
 .add-ingredient {
   display: flex;
   align-items: center;
   margin-top: 30px;
-
 }
 
 .add-ingredient button {
@@ -420,18 +341,61 @@ input:checked + .slider:before {
   width: 10%;
 }
 
-.add-ingredient input:nth-child(2){
+.add-ingredient input:nth-child(2) {
   width: 40%;
 }
 
-.add-ingredient .material-symbols-outlined{
+.add-ingredient .material-symbols-outlined {
   color: #f44040;
   font-size: 32px;
-
-  font-variation-settings:
-    'FILL' 1,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 24
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
+
+/* --- MOBILE STYLES --- */
+/* --- SMALL AND MEDIUM DEVICES (phones + iPads) --- */
+.mobile-toggle-btn {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .fridge-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    z-index: 1001;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    border-right: 2px solid #f44040;
+    background-color: white;
+  }
+
+  .fridge-sidebar:not(.collapsed) {
+    transform: translateX(0);
+  }
+
+  .mobile-toggle-btn {
+    display: flex;
+    position: fixed;
+    top: 60px; /* moved lower */
+    left: 5px;
+    z-index: 1002;
+    background-color: #ffffff;
+    border: 2px solid #f44040;
+    border-radius: 4px; /* square corners */
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+
+  .mobile-toggle-btn .material-symbols-outlined {
+    font-size: 28px;
+    color: #f44040;
+  }
+}
+
 </style>

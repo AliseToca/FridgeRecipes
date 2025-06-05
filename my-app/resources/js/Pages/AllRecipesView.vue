@@ -186,6 +186,7 @@ export default {
   padding: 20px;
   display: flex;
   justify-content: space-between;
+
   align-items: center;
 }
 
@@ -245,5 +246,24 @@ export default {
 
 .material-symbols-outlined.icon {
   font-size: 20px;
+}
+
+@media (max-width: 768px) {
+  .content-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .multi-select-dropdown,
+  .dropdown-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1024px){
+  .multi-select-dropdown{
+    margin-left: 15px;
+  }
 }
 </style>

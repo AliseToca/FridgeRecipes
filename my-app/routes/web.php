@@ -22,17 +22,6 @@ Route::get('/recipes', [AllRecipesController::class, 'index']);
 // RecipeView
 Route::get('/recipes/{slug}', [RecipeController::class, 'show'])->name('recipes.show');
 
-// Fridge 
-Route::get('/fridge', function () {
-    return Inertia::render('Fridge');
-})->name('fridge');
-
-Route::get('/about', function () {
-    return Inertia::render('About');
-})->name('about');
-
-
-
 Route::middleware('auth')->group(function () {
     // Profile
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
