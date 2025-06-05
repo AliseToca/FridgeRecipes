@@ -8,9 +8,7 @@
 
       <nav class="footer-links">
         <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/contact">Contact</a>
-        <a href="/terms">Terms</a>
+        <a href="/recipes">Recipes</a>
       </nav>
     </div>
   </footer>
