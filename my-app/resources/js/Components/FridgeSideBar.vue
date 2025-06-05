@@ -374,10 +374,13 @@ input:checked + .slider:before {
 .ingredient-list ul {
   list-style-type: square;
   margin: 0;
-  padding-left: 30px;
+  padding-left: 15px;
 }
 
 .ingredient-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 6px 10px;
   background-color: #fff;
   margin-bottom: 6px;
