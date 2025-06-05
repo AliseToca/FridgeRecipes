@@ -2,9 +2,13 @@
   <div class="page-wrap">
     <!-- Navbar -->
     <div class="nav-bar">
-      <Logo></Logo>
+      <button @click="goBack" class="back-arrow">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+
       <Link :href="route('logout')" method="post" class="logout-btn"> LOG OUT </Link>
     </div>
+
 
     <!-- Profile card -->
     <div class="card">
@@ -23,13 +27,13 @@
     </div>
 
     <div class="recipe-grid">
-        <RecipeList
-          :key="recipeListKey"
-          :recipes="localSavedRecipes"
-          :searchQuery="searchQuery"
-          no-recipes-message="You don't have any saved recipes."
-          @update-save-state="handleSaveStateChange"
-        />
+      <RecipeList
+        :key="recipeListKey"
+        :recipes="localSavedRecipes"
+        :searchQuery="searchQuery"
+        no-recipes-message="You don't have any saved recipes."
+        @update-save-state="handleSaveStateChange"
+      />
     </div>
 
   </div>
@@ -51,33 +55,43 @@ export default {
     savedRecipes: Array,
   },
   data() {
-  return {
-    searchQuery: '',
-    previewUrl: this.auth.user.profile_image
-      ? `/storage/${this.auth.user.profile_image}`
-      : '/images/profile-placeholder-square.png',
-    localSavedRecipes: this.savedRecipes.map(recipe => ({
-      ...recipe,
-      saved: true,
-    })),
-    recipeListKey: 0, // force re-render
-  };
-},
-methods: {
-  enableEditing() {
-    this.editing = true;
+    return {
+      searchQuery: '',
+      previewUrl: this.auth.user.profile_image
+        ? `/storage/${this.auth.user.profile_image}`
+        : '/images/profile-placeholder-square.png',
+      localSavedRecipes: [], // init empty
+      recipeListKey: 0,
+    };
   },
-  handleSaveStateChange({ recipeId, isSaved }) {
-  if (!isSaved) {
-    this.localSavedRecipes = this.localSavedRecipes
-      .filter(r => r.id !== recipeId)
-      .slice(); // force new reference
-  }
-}
-
-}
-
+  mounted() {
+    const fridgeIngredients = this.auth.user.fridge?.ingredients || [];
+    this.localSavedRecipes = this.computeRecipeMatches(this.savedRecipes, fridgeIngredients);
+  },
+  methods: {
+    enableEditing() {
+      this.editing = true;
+    },
+    handleSaveStateChange({ recipeId, isSaved }) {
+      if (!isSaved) {
+        this.localSavedRecipes = this.localSavedRecipes
+          .filter(r => r.id !== recipeId)
+          .slice(); // force new reference
+      }
+    },
+    computeRecipeMatches(recipes, fridgeIngredients) {
+      const fridgeIds = fridgeIngredients.map(i => i.id);
+      return recipes.map(recipe => ({
+        ...recipe,
+        matchCount: recipe.ingredients?.filter(i => fridgeIds.includes(i.id)).length || 0,
+      }));
+    },
+    goBack() {
+      window.history.back();
+    },
+  },
 };
+
 </script>
 
   
@@ -126,6 +140,22 @@ methods: {
 
     transition: 0.3s;
   }
+
+  .back-arrow {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .back-arrow span {
+    font-size: 32px;
+    color: #444;
+  }
+
   
   /*----Profile card-----*/
   .card {
@@ -135,7 +165,9 @@ methods: {
     background-color: #ffffff;
     border-radius: 16px;
 
+    margin-top: 20px;
     padding: 30px;
+    padding-bottom: 0;
     max-width: 400px;
     width: 100%;
     text-align: center;
@@ -310,7 +342,7 @@ methods: {
 
   /*-----Saved recipes----*/
   .nav-line{
-    padding: 0 0px 10px 30px;
+    padding: 0 0px 10px 5px;
     width: 70%;
     display: flex;
     align-items: center;
@@ -326,9 +358,9 @@ methods: {
     margin-right: 5px;
   }
 
-  .vertical-line{
+  /* .vertical-line{
     margin-inline: 15px;  
-  }
+  } */
 
   .material-symbols-outlined {
     color: #666666;

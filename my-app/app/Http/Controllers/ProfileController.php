@@ -12,21 +12,25 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\SavedRecipe;
 use App\Models\Recipe;
+use App\Models\Fridge;
 
 class ProfileController extends Controller
 {  public function index()
     {
-        $user = auth()->user();
-    
-        $savedRecipes = Recipe::with(['ingredients'])
-            ->whereHas('savedByUsers', function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            })
-            ->get();
+       
+        $user = auth()->user()?->load('fridge.ingredients');
+
+        $savedRecipes = Recipe::with(['ingredients', 'categories'])
+            ->whereHas('savedByUsers', fn ($query) => $query->where('user_id', $user->id))
+            ->get()
+            ->map(function ($recipe) {
+                $recipe->saved = true;
+                return $recipe;
+            });
     
         return Inertia::render('Profile', [
             'auth' => [
-                'user' => $user,
+                'user' => $user, 
             ],
             'savedRecipes' => $savedRecipes,
         ]);
@@ -34,25 +38,7 @@ class ProfileController extends Controller
     
     
     
-    /**
-     * Display the user's profile form.
-     */
-    // public function edit(Request $request): Response
-    // {
-    //     return Inertia::render('Profile/Edit', [
-    //         'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-    //         'status' => session('status'),
-    //     ]);
-    // }
-
-    // public function edit()
-    // {
-    //     return Inertia::render('Profile', [
-    //         'auth' => [
-    //             'user' => Auth::user(),
-    //         ],
-    //     ]);
-    // }
+    
     
     public function update(Request $request)
     {
