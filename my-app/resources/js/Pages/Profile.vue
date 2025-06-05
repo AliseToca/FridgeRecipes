@@ -38,7 +38,9 @@
               @input="usernameTaken = false"
               @blur="checkUsername"
             />
-            <p v-if="usernameTaken" class="error">This username is already taken.</p>
+            <p class="error" :style="{ visibility: usernameTaken ? 'visible' : 'hidden' }">
+              This username is already taken.
+            </p>
           </div>
         </div>
 
@@ -419,8 +421,16 @@ export default {
     border-bottom: #ccc 2px solid;
   }
 
+  .modal-line div{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+  }
+
   .modal-line h3{
     width: 30%;
+    padding-right: 15px;
   }
 
   .input-wrap {
@@ -435,12 +445,12 @@ export default {
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 2px;
-    width: 250px;
+    width: 100%;
     resize: vertical;
   }
 
   .save-btn{
-    width: 17%;
+    width: 100px;
     margin-top: 10px;
     padding: 10px;
     background-color: #f44040;
@@ -529,6 +539,7 @@ export default {
   .recipe-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 5px;
+    width: 100%;
   }
 }
 

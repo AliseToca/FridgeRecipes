@@ -155,6 +155,10 @@ nav .nav-content {
 
 /*---Responsive design---*/
 @media (max-width: 900px) {
+  nav{
+    padding-inline: 10px;
+  }
+
   .nav-content .nav-links {
     display: none;
     width: 100%;
@@ -182,7 +186,7 @@ nav .nav-content {
 }
 
 .login-btn {
-  padding: 8px 15px;
+  padding: 8px;
   background: #f44040;
   color: white;
   border-radius: 5px;
