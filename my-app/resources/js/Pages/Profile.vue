@@ -5,49 +5,105 @@
       <button @click="goBack" class="back-arrow">
         <span class="material-symbols-outlined">arrow_back</span>
       </button>
-
       <Link :href="route('logout')" method="post" class="logout-btn"> LOG OUT </Link>
     </div>
 
+    <!-- Edit Profile Modal -->
+    <div v-if="editing" class="modal-overlay" @click="handleOutsideClick">
+      <div class="modal-content" ref="modal">
+        <div class="modal-header">
+          <div>
+            <h2>Edit Profile</h2>
+            <button @click="editing = false" class="cancel-btn">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+        </div>
 
-    <!-- Profile card -->
+        <div class="modal-line">
+          <h3>Profile Image</h3>
+          <div>
+            <img v-if="previewUrl" :src="previewUrl" class="profile-preview" />
+            <input type="file" @change="handleImageUpload" />
+          </div>
+        </div>
+
+        <div class="modal-line">
+          <h3>Username</h3>
+          <div>
+            <input
+              class="edit-field"
+              v-model="form.username"
+              placeholder="Username"
+              @input="usernameTaken = false"
+              @blur="checkUsername"
+            />
+            <p v-if="usernameTaken" class="error">This username is already taken.</p>
+          </div>
+        </div>
+
+        <div class="modal-line">
+          <h3>Bio</h3>
+          <div>
+            <textarea
+              class="edit-field"
+              v-model="form.bio"
+              placeholder="Write your bio..."
+              @input="validateBioLength"
+              maxlength="90"
+            />
+            <p class="char-count" :class="{ 'error': bioError }">
+              {{ form.bio.length }}/90 characters
+            </p>
+            <p v-if="bioError" class="error">Bio cannot exceed 90 characters.</p>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button @click="saveProfile" class="save-btn" :disabled="usernameTaken">SAVE</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Card -->
     <div class="card">
       <img class="profile-image" :src="previewUrl" alt="Profile" />
       <div class="profile-info-container">
         <h2 class="name">{{ auth.user.username }}</h2>
-        <button @click="enableEditing" class="edit-btn"><span class="material-symbols-outlined">edit</span></button>
+        <button @click="enableEditing" class="edit-btn">
+          <span class="material-symbols-outlined">edit</span>
+        </button>
       </div>
       <p class="bio">{{ auth.user.bio || 'No bio yet.' }}</p>
     </div>
 
-    <!-- Saved recipes -->
-    <div class="nav-line">
-        <p>Saved Recipes</p> 
+    <!-- Saved Recipes -->
+    <div class="recipe-grid-container">
+      <div class="nav-line">
+        <p>Saved Recipes</p>
         <span class="material-symbols-outlined">bookmark</span>
-    </div>
+      </div>
 
-    <div class="recipe-grid">
       <RecipeList
-        :key="recipeListKey"
-        :recipes="localSavedRecipes"
-        :searchQuery="searchQuery"
-        no-recipes-message="You don't have any saved recipes."
-        @update-save-state="handleSaveStateChange"
-      />
-    </div>
+          :key="recipeListKey"
+          :recipes="localSavedRecipes"
+          :searchQuery="searchQuery"
+          no-recipes-message="You don't have any saved recipes."
+          @update-save-state="handleSaveStateChange"
+        />
 
+    </div>
   </div>
 </template>
 
 <script>
 import { Link } from '@inertiajs/vue3';
-import Logo from '@/Components/Logo.vue';
 import RecipeList from '@/Components/RecipeList.vue';
+import axios from 'axios';
 
 export default {
   components: {
     Link,
-    Logo,
     RecipeList,
   },
   props: {
@@ -56,12 +112,21 @@ export default {
   },
   data() {
     return {
+      editing: false,
+      usernameTaken: false,
+      bioError: false,
+      recipeListKey: 0,
       searchQuery: '',
+      maxBioLength: 90,
+      form: {
+        username: this.auth.user.username,
+        bio: this.auth.user.bio || '',
+        image: null,
+      },
       previewUrl: this.auth.user.profile_image
         ? `/storage/${this.auth.user.profile_image}`
         : '/images/profile-placeholder-square.png',
-      localSavedRecipes: [], // init empty
-      recipeListKey: 0,
+      localSavedRecipes: [],
     };
   },
   mounted() {
@@ -69,14 +134,82 @@ export default {
     this.localSavedRecipes = this.computeRecipeMatches(this.savedRecipes, fridgeIngredients);
   },
   methods: {
+    // UI Actions
     enableEditing() {
       this.editing = true;
     },
+    goBack() {
+      window.history.back();
+    },
+    handleOutsideClick(event) {
+      if (!this.$refs.modal.contains(event.target)) {
+        this.resetForm();
+        this.editing = false;
+      }
+    },
+
+    // Profile Update
+    handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.form.image = file;
+        this.previewUrl = URL.createObjectURL(file);
+      }
+    },
+    async checkUsername() {
+      if (this.form.username !== this.auth.user.username) {
+        try {
+          const response = await axios.get(`/check-username?username=${this.form.username}`);
+          this.usernameTaken = response.data.taken;
+        } catch (err) {
+          console.error('Username check failed:', err);
+          this.usernameTaken = false;
+        }
+      } else {
+        this.usernameTaken = false;
+      }
+    },
+    validateBioLength() {
+      this.bioError = this.form.bio.length > this.maxBioLength;
+    },
+    async saveProfile() {
+      if (this.usernameTaken) return;
+
+      const formData = new FormData();
+      formData.append('username', this.form.username);
+      formData.append('bio', this.form.bio);
+      if (this.form.image) {
+        formData.append('profile_image', this.form.image);
+      }
+
+      try {
+        await axios.post('/profile/update', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        location.reload(); 
+      } catch (err) {
+        if (err.response?.status === 422 && err.response.data.errors.username) {
+          this.usernameTaken = true;
+        } else {
+          console.error('Failed to update profile:', err);
+        }
+      }
+    },
+    resetForm() {
+      this.form.username = this.auth.user.username;
+      this.form.bio = this.auth.user.bio || '';
+      this.form.image = null;
+      this.previewUrl = this.auth.user.profile_image
+        ? `/storage/${this.auth.user.profile_image}`
+        : '/images/profile-placeholder-square.png';
+    },
+
+    // Recipe Logic
     handleSaveStateChange({ recipeId, isSaved }) {
       if (!isSaved) {
         this.localSavedRecipes = this.localSavedRecipes
           .filter(r => r.id !== recipeId)
-          .slice(); // force new reference
+          .slice(); // trigger reactivity
       }
     },
     computeRecipeMatches(recipes, fridgeIngredients) {
@@ -86,12 +219,8 @@ export default {
         matchCount: recipe.ingredients?.filter(i => fridgeIds.includes(i.id)).length || 0,
       }));
     },
-    goBack() {
-      window.history.back();
-    },
   },
 };
-
 </script>
 
   
