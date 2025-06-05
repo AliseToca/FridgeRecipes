@@ -1,236 +1,175 @@
 <template>
-  <DefaultLayout>
-      <LoadingOverlay :show="isLoading" message="Updating fridge..." />
-
-      <div class="main-container">
-        <FridgeSidebar
-          @toggle-fridge-filter="handleFridgeFilterToggle"
-          @ingredient-changed="handleIngredientChanged"
-        />
-
-        <div class="main-content">
-          <div class="content-actions">
-            <SearchBar @search="handleSearch" />
-
-            <div class="multi-select-dropdown">
-              <button @click="toggleDropdown" class="dropdown-button">
-                Filter by
-                <span class="material-symbols-outlined">
-                  {{ isOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}
-                </span>
-              </button>
-
-              <div v-if="isOpen" class="dropdown-menu">
-                <label
-                  v-for="category in categories"
-                  :key="category.id"
-                  class="dropdown-item"
-                >
-                  <input
-                    type="checkbox"
-                    :value="category.name"
-                    v-model="selectedCategories"
-                  />
-                  {{ category.name }}
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <RecipeList :recipes="filteredRecipes" :searchQuery="searchQuery" />
-        </div>
+  <div class="home-wrapper">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-content-box">
+        <h1 class="hero-title">Smarter cooking starts here.</h1>
+        <p class="hero-description">
+          No fancy groceries. No food waste. Just real meals based on what’s in your kitchen.<br>
+          Punch in your ingredients and we’ll show you recipes that work.
+        </p>
+        <Link href="/recipes" class="cta-button">Find recipes</Link>
       </div>
-  </DefaultLayout>
+    </section>
+
+    <!-- Features -->
+    <section class="feature-section">
+      <h2>Why this works</h2>
+      <ul class="features">
+        <li>No signup needed</li>
+        <li>Zero food waste</li>
+        <li>Ingredient-based discovery</li>
+        <li>Clean, fast UI</li>
+      </ul>
+    </section>
+
+    <!-- How it works -->
+    <section class="how-it-works">
+      <h2>How it works</h2>
+      <ol>
+        <li>Type in the ingredients you already have.</li>
+        <li>We match them with real recipes.</li>
+        <li>You cook. You eat. You win.</li>
+      </ol>
+    </section>
+
+  </div>
 </template>
 
 <script>
-import axios from 'axios';
-import SearchBar from '@/Components/SearchBar.vue';
-import RecipeList from '@/Components/RecipeList.vue';
-import FridgeSidebar from '@/Components/FridgeSideBar.vue';
 import DefaultLayout from '../Layouts/DefaultLayout.vue';
-import LoadingOverlay from '@/Components/LoadingOverlay.vue';
+import { Link } from '@inertiajs/vue3';
 
 export default {
   layout: DefaultLayout,
-
-  components: {
-    SearchBar,
-    RecipeList,
-    FridgeSidebar,
-    LoadingOverlay,
-  },
-
-  props: {
-    auth: Object,
-    recipes: Array,
-    categories: Array,
-  },
-
-  data() {
-    return {
-      searchQuery: '',
-      selectedCategories: [],
-      fridgeFilterEnabled: false,
-      isOpen: false,
-      isLoading: false, 
-    };
-  },
-
-  computed: {
-    filteredRecipes() {
-      let recipes = [...this.recipes];
-
-      const fridgeIngredientIds = this.auth?.user?.fridge?.ingredients?.map(i => i.id) || [];
-
-      recipes.forEach(recipe => {
-        recipe.matchCount = recipe.ingredients?.filter(ing =>
-          fridgeIngredientIds.includes(ing.id)
-        ).length || 0;
-      });
-
-      // Search filter
-      if (this.searchQuery.trim()) {
-        recipes = recipes.filter(recipe =>
-          recipe.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-        );
-      }
-
-      // Category filter
-      if (this.selectedCategories.length > 0) {
-        recipes = recipes.filter(recipe => {
-          const recipeCategoryNames = recipe.categories?.map(cat => cat.name) || [];
-          return this.selectedCategories.every(selected =>
-            recipeCategoryNames.includes(selected)
-          );
-        });
-      }
-
-      // Sort by match count
-      if (this.fridgeFilterEnabled) {
-        recipes.sort((a, b) => b.matchCount - a.matchCount);
-      }
-
-      return recipes;
-    },
-  },
-
-  methods: {
-    handleSearch(query) {
-      this.searchQuery = query;
-    },
-
-    handleFridgeFilterToggle(enabled) {
-      this.fridgeFilterEnabled = enabled;
-    },
-
-    async handleIngredientChanged() {
-      this.isLoading = true;
-      try {
-        const response = await axios.get(`/fridges/${this.auth.user.fridge.id}/ingredients`);
-        this.auth.user.fridge.ingredients = response.data.ingredients;
-      } catch (error) {
-        console.error('Failed to refresh fridge ingredients:', error);
-      } finally {
-        this.isLoading = false;
-      }
-    },
-
-    toggleDropdown() {
-      this.isOpen = !this.isOpen;
-    },
-
-    handleClickOutside(event) {
-      const dropdown = this.$el.querySelector('.multi-select-dropdown');
-      if (dropdown && !dropdown.contains(event.target)) {
-        this.isOpen = false;
-      }
-    },
-  },
-
-  mounted() {
-    document.addEventListener('click', this.handleClickOutside);
-  },
-
-  beforeUnmount() {
-    document.removeEventListener('click', this.handleClickOutside);
-  },
+  components: { Link },
 };
 </script>
 
 <style scoped>
-
-.main-container {
-  display: flex;
-  align-items: flex-start;
-}
-
-.main-content {
-  flex: 1;
-}
-
-.content-actions {
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.multi-select-dropdown {
-  position: relative;
-  width: 200px;
-  font-family: sans-serif;
-}
-
-.dropdown-button {
+.home-wrapper {
   width: 100%;
-  height: 50px;
+  margin: 0;
+  padding: 0;
+}
+
+.hero-section {
+  min-height: 100vh;
+  background-image: url('/images/background-food4.jpg');
+  background-size: cover;
+  background-position: center;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 10px 12px;
-  font-size: 16px;
-  color: #5c5b5b;
-  background-color: #fff;
-  border: 1px solid #585858;
-  border-radius: 1px;
-  cursor: pointer;
+  padding: 2rem 5vw;
+}
+
+.hero-content-box {
+  background: #fff;
+  border: 1px solid #3a3a3a;
+  box-shadow: 11px 11px 0px rgba(244, 64, 64, 0.74);
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #1d1d1d;
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  color: #3a3a3a;
+}
+
+.cta-button {
+  background-color: #f44040;
+  color: white;
+  padding: 0.75rem 2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0;
+  text-decoration: none;
+  box-shadow: 3px 3px 0 black;
   transition: background-color 0.2s ease;
+  display: inline-block;
+  width: fit-content;
 }
 
-.dropdown-button:hover {
-  background-color: #f5f5f5;
+.cta-button:hover {
+  background-color: #d32e2e;
 }
 
-.dropdown-menu {
-  position: absolute;
-  width: 100%;
-  margin-top: 4px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-height: 180px;
-  overflow-y: auto;
-  z-index: 1000;
+/* Feature Section */
+.feature-section {
+  background: #fff;
+  padding: 60px 5vw;
+  border-top: 1px solid #3a3a3a;
 }
 
-.dropdown-item {
-  display: flex;
-  align-items: center;
-  padding: 8px 12px;
-  font-size: 14px;
-  cursor: pointer;
+.feature-section h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #1d1d1d;
 }
 
-.dropdown-item:hover {
-  background-color: #f0f0f0;
+.features {
+  list-style: square;
+  padding-left: 1rem;
+  font-size: 1rem;
+  line-height: 1.8;
 }
 
-.dropdown-item input[type="checkbox"] {
-  margin-right: 8px;
+/* How It Works */
+.how-it-works {
+  background: #f9f9f9;
+  padding: 60px 5vw;
+  border-top: 1px solid #3a3a3a;
 }
 
-.material-symbols-outlined.icon {
-  font-size: 20px;
+.how-it-works h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #1d1d1d;
+}
+
+.how-it-works ol {
+  padding-left: 1.2rem;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 2rem;
+  }
+
+  .hero-content-box {
+    padding: 20px;
+    box-shadow: 8px 8px 0px rgba(244, 64, 64, 0.74);
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+  }
+
+  .feature-section,
+  .how-it-works,
+  .footer-note {
+    padding: 40px 2rem;
+  }
 }
 </style>

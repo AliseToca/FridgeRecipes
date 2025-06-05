@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Models\Recipe;
 use App\Models\User;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AllRecipesController;
 use App\Http\Controllers\SavedRecipeController;
 use App\Http\Controllers\FridgeController;
 use App\Http\Controllers\CommentController;
@@ -14,6 +15,9 @@ use App\Http\Controllers\RecipeController;
 
 // Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+//AllRecipesView
+Route::get('/recipes', [AllRecipesController::class, 'index']);
 
 // RecipeView
 Route::get('/recipes/{slug}', [RecipeController::class, 'show'])->name('recipes.show');

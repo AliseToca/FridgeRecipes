@@ -4,8 +4,8 @@
       <Logo />
 
       <ul class="nav-links" :class="{ active: menuActive }">
-        <li><Link href="/Homeview">Recipes</Link></li>
-        <li><Link href="/fridge">Fridge</Link></li>
+        <li><Link href="/">Home</Link></li>
+        <li><Link href="/recipes">Recipes</Link></li>
         <li><Link href="/about">About</Link></li>
         <li><Link href="/services">Services</Link></li>
 
@@ -41,7 +41,6 @@
   const user = computed(() => page.props.auth?.user);
 
   const menuActive = ref(false);
-  const isSticky = ref(false);
 
   function toggleMenu() {
     menuActive.value = !menuActive.value;
@@ -55,7 +54,7 @@
   padding: 0;
   box-sizing: border-box;
   text-decoration: none;
-  z-index: 1;
+  z-index: 4;
 }
 
 nav {
@@ -68,7 +67,6 @@ nav {
   background-color: #ffffff;
   border-bottom: 2px solid #f05c5c;
 }
-
 
 
 nav .nav-content {
