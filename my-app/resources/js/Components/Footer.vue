@@ -25,7 +25,6 @@ footer {
   padding: 25px;
   font-size: 14px;
   color: #333;
-  margin-top: 40px;
 }
 
 .footer-container {
