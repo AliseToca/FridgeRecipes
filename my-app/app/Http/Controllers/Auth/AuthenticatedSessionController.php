@@ -37,7 +37,7 @@ class AuthenticatedSessionController extends Controller
             return response()->json(['redirect' => route('home')]);
         }
     
-        return redirect()->intended(route('home'));
+        return redirect()->intended(route('recipes'));
     }
     
     

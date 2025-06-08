@@ -17,7 +17,7 @@ use App\Http\Controllers\RecipeController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 //AllRecipesView
-Route::get('/recipes', [AllRecipesController::class, 'index']);
+Route::get('/recipes', [AllRecipesController::class, 'index'])->name('recipes');
 
 // RecipeView
 Route::get('/recipes/{slug}', [RecipeController::class, 'show'])->name('recipes.show');
