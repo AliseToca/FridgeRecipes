@@ -38,6 +38,7 @@
         </div>
 
         <RecipeList
+          :key="recipes.length"
           :recipes="filteredRecipes"
           :searchQuery="searchQuery"
           @update-save-state="handleSaveStateChange"
@@ -144,10 +145,9 @@ export default {
     },
     removeRecipeSavedFlag(event) {
     const recipeId = event.detail;
-    const recipe = this.recipes.find(r => r.id === recipeId);
-    if (recipe) {
-      recipe.saved = false;
-    }
+    this.recipes = this.recipes.map(recipe =>
+      recipe.id === recipeId ? { ...recipe, saved: false } : recipe
+    );
   },
 
     toggleDropdown() {

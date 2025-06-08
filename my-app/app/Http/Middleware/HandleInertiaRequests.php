@@ -13,7 +13,7 @@ class HandleInertiaRequests extends Middleware
         $user = $request->user();
 
         if ($user) {
-            $user->load('fridge');
+            $user->load('fridge.ingredients'); 
         }
 
         return array_merge(parent::share($request), [
@@ -22,10 +22,13 @@ class HandleInertiaRequests extends Middleware
                     'id' => $user->id,
                     'name' => $user->name,
                     'username' => $user->username,
+                    'bio' => $user->bio,
+                    'profile_image' => $user->profile_image,
                     'email' => $user->email,
                     'fridge' => $user->fridge, 
                 ] : null,
             ],
         ]);
+
     }
 }

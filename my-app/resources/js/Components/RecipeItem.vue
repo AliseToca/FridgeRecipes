@@ -62,25 +62,16 @@ export default {
   data() {
     return {
       isAnimating: false,
-      savedInternal: this.saved,
     };
   },
   computed: {
-    isSaved: {
-      get() {
-        return this.savedInternal;
-      },
-      set(value) {
-        this.savedInternal = value;
-      }
+    isSaved() {
+      return this.saved;
     },
     relbarPercentage() {
-      return this.ingredients ? Math.min((this.userHasIngredients / this.ingredients) * 100, 100) : 0;
-    },
-  },
-  watch: {
-    saved(newVal) {
-      this.savedInternal = newVal;
+      return this.ingredients
+        ? Math.min((this.userHasIngredients / this.ingredients) * 100, 100)
+        : 0;
     },
   },
   methods: {
@@ -90,10 +81,11 @@ export default {
           recipe_id: this.id,
         });
 
-        this.isSaved = response.data.status === 'saved';
+        const newState = response.data.status === 'saved';
+
         this.$emit('update-save-state', {
           recipeId: this.id,
-          isSaved: this.isSaved,
+          isSaved: newState,
         });
 
         this.isAnimating = true;
@@ -107,6 +99,8 @@ export default {
   },
 };
 </script>
+
+
 <style scoped>
   .recipe-item {
     z-index: 0;

@@ -14,7 +14,7 @@ class RecipeController extends Controller
             'ingredients' => fn($q) => $q->withPivot('amount', 'unit'),
             'user',
             'comments.user',
-            'categories' // 👈 Add this line
+            'categories' 
         ])->where('slug', $slug)->first();
 
         if (!$recipe) {

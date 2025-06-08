@@ -86,12 +86,12 @@
     </div>
     <div class="recipe-grid">
       <RecipeList
-        :key="recipeListKey"
-        :recipes="localSavedRecipes"
+        :recipes="processedSavedRecipes"
         :searchQuery="searchQuery"
         no-recipes-message="You don't have any saved recipes."
         @update-save-state="handleSaveStateChange"
       />
+
     </div>
   </div>
 </template>
@@ -117,7 +117,6 @@ export default {
       bioError: false,
       maxBioLength: 90,
       searchQuery: '',
-      recipeListKey: 0,
       form: {
         username: this.auth.user.username,
         bio: this.auth.user.bio || '',
@@ -126,12 +125,23 @@ export default {
       previewUrl: this.auth.user.profile_image
         ? `/storage/${this.auth.user.profile_image}`
         : '/images/profile-placeholder-square.png',
-      localSavedRecipes: [],
     };
   },
-  mounted() {
-    const fridgeIngredients = this.auth.user.fridge?.ingredients || [];
-    this.localSavedRecipes = this.computeRecipeMatches(this.savedRecipes, fridgeIngredients);
+  computed: {
+    fridgeIngredientIds() {
+      return this.auth?.user?.fridge?.ingredients?.map(i => i.id) || [];
+    },
+    processedSavedRecipes() {
+      return this.savedRecipes.map(recipe => {
+        const matchCount = recipe.ingredients?.filter(ing =>
+          this.fridgeIngredientIds.includes(ing.id)
+        ).length || 0;
+        return {
+          ...recipe,
+          matchCount,
+        };
+      });
+    },
   },
   methods: {
     enableEditing() {
@@ -205,29 +215,22 @@ export default {
     },
     handleSaveStateChange({ recipeId, isSaved }) {
       if (!isSaved) {
-        this.localSavedRecipes = this.localSavedRecipes
-          .filter(r => r.id !== recipeId)
-          .slice();
+        const index = this.savedRecipes.findIndex(r => r.id === recipeId);
+        if (index !== -1) {
+          this.savedRecipes.splice(index, 1);
+        }
 
         axios.post(`/recipes/${recipeId}/unsave`).catch(err =>
           console.error('Failed to unsave recipe:', err)
         );
 
-        // Notify global event
         window.dispatchEvent(new CustomEvent('recipe-unsaved', { detail: recipeId }));
       }
-    },
-    computeRecipeMatches(recipes, fridgeIngredients) {
-      const fridgeIds = fridgeIngredients.map(i => i.id);
-      return recipes.map(recipe => ({
-        ...recipe,
-        matchCount: recipe.ingredients?.filter(i => fridgeIds.includes(i.id)).length || 0,
-        saved: true,
-      }));
     },
   },
 };
 </script>
+
 
   
 <style scoped>

@@ -28,17 +28,11 @@ class ProfileController extends Controller
                 return $recipe;
             });
     
-        return Inertia::render('Profile', [
-            'auth' => [
-                'user' => $user, 
-            ],
-            'savedRecipes' => $savedRecipes,
-        ]);
+            return Inertia::render('Profile', [
+                'savedRecipes' => $savedRecipes,
+            ]);
+            
     }
-    
-    
-    
-    
     
     public function update(Request $request)
     {
@@ -60,8 +54,11 @@ class ProfileController extends Controller
     
         $user->save();
     
-        return response()->json(['message' => 'Profile updated']);
+        // 👉 Force Inertia to re-render Profile page with fresh data
+        return redirect()->route('profile.index');
     }
+    
+    
     
 
     /**
