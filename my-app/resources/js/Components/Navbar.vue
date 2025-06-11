@@ -6,7 +6,10 @@
       <ul class="nav-links" :class="{ active: menuActive }">
         <li><Link href="/">Home</Link></li>
         <li><Link href="/recipes">Recipes</Link></li>
-
+        <li v-if="$page.props.auth.user && $page.props.auth.user.role === 'admin'">
+            <Link href="/users">Users</Link>
+        </li>
+        
         <li v-if="user">
           <Link href="/profile">
             <span class="material-icons">account_circle</span>
