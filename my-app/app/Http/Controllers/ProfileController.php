@@ -54,11 +54,8 @@ class ProfileController extends Controller
     
         $user->save();
     
-        // 👉 Force Inertia to re-render Profile page with fresh data
         return redirect()->route('profile.index');
     }
-    
-    
     
 
     /**

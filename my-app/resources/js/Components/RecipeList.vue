@@ -51,12 +51,9 @@ export default {
     },
   },
   methods: {
-
     updateSavedStatus(event) {
       this.$emit('update-save-state', event); // pass up to Profile.vue
     }
-  
-
   }
 };
 </script>

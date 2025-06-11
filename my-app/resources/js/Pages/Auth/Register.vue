@@ -174,7 +174,7 @@ export default {
     }
 
     .input-group {
-        margin-bottom: 16px;
+        margin-bottom: 7px;
     }
 
     .label {

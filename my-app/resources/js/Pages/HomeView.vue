@@ -6,7 +6,7 @@
         <h1 class="hero-title">SEARCH WITH YOUR <span>FRIDGE INGREDIENTS</span></h1>
         <p class="hero-description">
           Stock your virtual fridge with ingredients you already have, and we'll serve up recipes that match!
-          Save money, cut waste, and discover what you can cook right now—no extra shopping needed.
+          Save money, cut waste, and discover what you can cook right now - no extra shopping needed.
         </p>
         <Link href="/recipes" class="cta-button">FIND RECIPES</Link>
       </div>

@@ -15,7 +15,7 @@ class SavedRecipeController extends Controller
         // Check if already saved
         $saved = SavedRecipe::where('user_id', $user->id)
             ->where('recipes_id', $recipeId)
-            ->exists(); // <- only check if exists, not fetch full model
+            ->exists();
 
         if ($saved) {
             // If exists, delete (unsave) manually
