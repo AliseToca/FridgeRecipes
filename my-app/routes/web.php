@@ -46,6 +46,9 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'is.admin'])->group(function () {
     Route::get('/users', [UsersController::class, 'index'])->name('admin.users.index');
+    Route::delete('/users/{user}', [UsersController::class, 'destroy']);
+
+
 });
 
 Route::get('/check-username', function (Request $request) {

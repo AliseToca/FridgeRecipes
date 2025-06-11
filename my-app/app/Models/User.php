@@ -13,9 +13,11 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'created_at' => 'datetime',
         'role' => UserRole::class,
     ];
-    
     // Optional helper
     public function isAdmin(): bool
     {
@@ -38,6 +40,8 @@ class User extends Authenticatable
         'profile_image',
         'username',
         'role',
+        'email',
+        'formatted_created_at',
     ];
     
     protected $hidden = [
@@ -45,13 +49,13 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected function casts(): array
+    protected $appends = ['formatted_created_at'];
+    
+    public function getFormattedCreatedAtAttribute()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->created_at->format('d M Y');
     }
+    
 
     protected static function booted()
     {

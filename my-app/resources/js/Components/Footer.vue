@@ -9,11 +9,24 @@
       <nav class="footer-links">
         <a href="/">Home</a>
         <a href="/recipes">Recipes</a>
+        <div v-if="$page.props.auth.user && $page.props.auth.user.role === 'admin'">
+            <Link href="/users">Users</Link>
+        </div>
       </nav>
     </div>
   </footer>
 </template>
 
+<script>
+import { usePage, Link } from '@inertiajs/vue3';
+
+
+export default {
+  components: {
+    Link,
+  },
+}
+</script>
 
 <style scoped>
 footer {

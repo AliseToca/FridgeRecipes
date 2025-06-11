@@ -10,10 +10,24 @@ class UsersController extends Controller
 {
     public function index()
     {
-        $users = User::all(); // Fetch all users
+        $users = User::all();
 
         return Inertia::render('UsersView', [
             'users' => $users,
         ]);
     }
+
+    public function destroy(User $user)
+    {
+        if (auth()->id() === $user->id) {
+            return response()->json(['error' => 'You cannot delete your own account.'], 403);
+        }
+    
+        $user->delete();
+    
+        return response()->json(['message' => 'User deleted successfully.']);
+    }
+    
+    
+
 }

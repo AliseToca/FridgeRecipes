@@ -29,6 +29,7 @@ export default {
 <style scoped>
 main {
   margin: 85px 0 0 0;
+
 }
 
 .footer-wrapper {
