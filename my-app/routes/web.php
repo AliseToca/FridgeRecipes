@@ -11,6 +11,7 @@ use App\Http\Controllers\SavedRecipeController;
 use App\Http\Controllers\FridgeController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\UsersController;
 
 
 // Home
@@ -43,9 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
 });
 
-// Route::middleware(['auth', 'is.admin'])->group(function () {
-//     Route::get('/users', [UsersController::class, 'index'])->name('admin.users.index');
-// });
+Route::middleware(['auth', 'is.admin'])->group(function () {
+    Route::get('/users', [UsersController::class, 'index'])->name('admin.users.index');
+});
 
 Route::get('/check-username', function (Request $request) {
     $taken = User::where('username', $request->username)
