@@ -26,6 +26,7 @@ class HandleInertiaRequests extends Middleware
                     'profile_image' => $user->profile_image,
                     'email' => $user->email,
                     'fridge' => $user->fridge, 
+                    'role' => $user->role,
                 ] : null,
             ],
         ]);

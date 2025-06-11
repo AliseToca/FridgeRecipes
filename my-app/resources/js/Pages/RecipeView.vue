@@ -1,7 +1,6 @@
 <template>
   <div class="page-wrapper">
     <LoadingOverlay :show="isLoading" message="Loading..." />
-
     <div class="recipe-container">
       <div class="short-info">
         <div>
@@ -86,6 +85,7 @@
                 :content="comment.content"
                 :date="comment.created_at"
                 :auth-user-id="auth.user?.id"
+                :auth-user-role="auth.user?.role"
                 :comment-user-id="comment.user?.id"
                 @delete="handleCommentDelete"
               />

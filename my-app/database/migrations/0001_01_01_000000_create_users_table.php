@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->text('bio')->nullable(); 
             $table->string('profile_image')->nullable(); 
+            $table->string('role')->default('user');
             $table->rememberToken();
             $table->timestamps();
             

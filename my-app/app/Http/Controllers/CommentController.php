@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Comment;
 use App\Models\Recipe;
-
+use App\Enums\UserRole;
 class CommentController extends Controller
 {
     public function store(Request $request)
@@ -32,9 +32,10 @@ class CommentController extends Controller
     public function destroy($id)
     {
         $comment = Comment::findOrFail($id);
+        $user = auth()->user();
 
-        if (auth()->id() !== $comment->user_id) {
-            abort(403);
+        if ($user->id !== $comment->user_id && $user->role !== UserRole::ADMIN) {
+            return response()->json(['message' => 'Forbidden'], 403);
         }
 
         $recipeId = $comment->recipes_id; 

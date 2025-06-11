@@ -8,13 +8,14 @@
       </div>
 
       <button
-        v-if="authUserId === commentUserId"
+        v-if="canDelete"
         @click="$emit('delete', id)"
         class="delete-button"
         title="Delete Comment"
       >
         <span class="material-symbols-outlined">delete</span>
       </button>
+
     </div>
 
     <div class="content-container">
@@ -43,6 +44,7 @@ export default {
     date: String,
     authUserId: Number,
     commentUserId: Number,
+    authUserRole: String, 
   },
   components: {
     StarRatingDisplay,
@@ -56,6 +58,11 @@ export default {
         ? `/storage/${this.image}`
         : '/images/profile-placeholder-square.png';
     },
+    canDelete() {
+      const isOwner = this.authUserId === this.commentUserId;
+      const isAdmin = this.authUserRole === 'admin';
+      return isOwner || isAdmin;
+    }
   },
 };
 </script>

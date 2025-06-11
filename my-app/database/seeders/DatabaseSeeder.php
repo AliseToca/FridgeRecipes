@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Comment;
 use App\Models\Recipe;
 use Illuminate\Database\Seeder;
+use App\Enums\UserRole;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,7 +15,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
+        // User::factory()->create([
+        //     'name' => 'Fridge Recipes',
+        //     'username' => 'FridgeRecipes',
+        //     'email' => 'fridgeRecipes@gmail.com',
+        // ]);
+
+        User::factory()->admin()->create([
             'name' => 'Fridge Recipes',
             'username' => 'FridgeRecipes',
             'email' => 'fridgeRecipes@gmail.com',
