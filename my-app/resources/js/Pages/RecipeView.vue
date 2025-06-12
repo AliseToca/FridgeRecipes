@@ -95,6 +95,30 @@
       </div>
     </div>
   </div>
+  <div
+  v-if="showDeleteModal"
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+>
+  <div class="bg-white p-6 rounded-lg shadow-lg w-80 text-center">
+    <h3 class="text-lg font-semibold mb-4">Delete Comment</h3>
+    <p class="mb-6">Are you sure you want to delete this comment?</p>
+    <div class="flex justify-around">
+      <button
+        @click="confirmDelete"
+        class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+      >
+        Delete
+      </button>
+      <button
+        @click="cancelDelete"
+        class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
 </template>
 
 <script>
@@ -123,6 +147,8 @@ export default {
       newComment: '',
       userRating: 0,
       isLoading: false,
+      showDeleteModal: false,
+      commentToDelete: null,
     };
   },
   mounted() {
@@ -131,48 +157,58 @@ export default {
     }
   },
   methods: {
-    submitComment() {
-      this.isLoading = true;
-      router.post(
-        '/comments',
-        {
-          content: this.newComment,
-          recipes_id: this.recipe.id,
-          rating: this.userRating,
+  submitComment() {
+    this.isLoading = true;
+    router.post(
+      '/comments',
+      {
+        content: this.newComment,
+        recipes_id: this.recipe.id,
+        rating: this.userRating,
+      },
+      {
+        preserveScroll: true,
+        onSuccess: () => {
+          this.newComment = '';
+          this.userRating = 0;
+          this.isLoading = false;
         },
-        {
+        onError: () => {
+          this.isLoading = false;
+        },
+      }
+    );
+  },
+  handleCommentDelete(commentId) {
+    this.commentToDelete = commentId;
+    this.showDeleteModal = true;
+  },
+  confirmDelete() {
+    this.isLoading = true;
+    router.delete(`/comments/${this.commentToDelete}`, {
+      preserveScroll: true,
+      onSuccess: () => {
+        this.showDeleteModal = false;
+        this.commentToDelete = null;
+        router.visit(window.location.pathname, {
           preserveScroll: true,
-          onSuccess: () => {
-            this.newComment = '';
-            this.userRating = 0;
-            this.isLoading = false;
-          },
-          onError: () => {
-            this.isLoading = false;
-          },
-        }
-      );
-    },
-    handleCommentDelete(commentId) {
-      if (confirm('Are you sure you want to delete this comment?')) {
-        this.isLoading = true;
-        router.delete(`/comments/${commentId}`, {
-          preserveScroll: true,
-          onSuccess: () => {
-            router.visit(window.location.pathname, {
-              preserveScroll: true,
-              onFinish: () => {
-                this.isLoading = false;
-              },
-            });
-          },
-          onError: () => {
+          onFinish: () => {
             this.isLoading = false;
           },
         });
-      }
-    },
+      },
+      onError: () => {
+        this.isLoading = false;
+        this.showDeleteModal = false;
+        this.commentToDelete = null;
+      },
+    });
   },
+  cancelDelete() {
+    this.showDeleteModal = false;
+    this.commentToDelete = null;
+  },
+}
 };
 </script>
 

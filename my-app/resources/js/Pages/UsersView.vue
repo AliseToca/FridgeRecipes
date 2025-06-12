@@ -57,8 +57,30 @@
                 </tbody>
             </table>
             </div>
-
       </div>
+  <div
+  v-if="showDeleteModal"
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+>
+  <div class="bg-white p-6 rounded-lg shadow-lg w-80 text-center">
+    <h3 class="text-lg font-semibold mb-4">Delete User</h3>
+    <p class="mb-6">Are you sure you want to delete this user?</p>
+    <div class="flex justify-around">
+      <button
+        @click="confirmUserDelete"
+        class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+      >
+        Delete
+      </button>
+      <button
+        @click="cancelUserDelete"
+        class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
 </template>
   
 <script>
@@ -72,50 +94,63 @@ export default {
     auth: Object,
   },
   data() {
-    return {
-      sortKey: 'id',
-      sortAsc: true,
-      localUsers: [...this.users],
-    };
-  },
-  methods: {
-    sortBy(key) {
-      if (this.sortKey === key) {
-        this.sortAsc = !this.sortAsc;
-      } else {
-        this.sortKey = key;
-        this.sortAsc = true;
-      }
+  return {
+    sortKey: 'id',
+    sortAsc: true,
+    localUsers: [...this.users],
+    showDeleteModal: false,
+    userToDelete: null,
+  };
+},
 
-      this.localUsers.sort((a, b) => {
-        let valA = a[key];
-        let valB = b[key];
-
-        if (typeof valA === 'string') valA = valA.toLowerCase();
-        if (typeof valB === 'string') valB = valB.toLowerCase();
-
-        if (valA < valB) return this.sortAsc ? -1 : 1;
-        if (valA > valB) return this.sortAsc ? 1 : -1;
-        return 0;
-      });
-    },
-    async deleteUser(id) {
-      if (id === this.auth.user.id) {
-        alert("You cannot delete your own account.");
-        return;
-      }
-
-      if (confirm('Are you sure you want to delete this user?')) {
-        try {
-          await axios.delete(`/users/${id}`);
-          this.localUsers = this.localUsers.filter(user => user.id !== id);
-        } catch (error) {
-          console.error("Failed to delete user:", error);
-          alert("Something went wrong.");
-        }
-      }
+methods: {
+  sortBy(key) {
+    if (this.sortKey === key) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortKey = key;
+      this.sortAsc = true;
     }
+
+    this.localUsers.sort((a, b) => {
+      let valA = a[key];
+      let valB = b[key];
+
+      if (typeof valA === 'string') valA = valA.toLowerCase();
+      if (typeof valB === 'string') valB = valB.toLowerCase();
+
+      if (valA < valB) return this.sortAsc ? -1 : 1;
+      if (valA > valB) return this.sortAsc ? 1 : -1;
+      return 0;
+    });
+  },
+  deleteUser(id) {
+  // Prevent self-deletion silently or show a disabled button
+  if (id === this.auth.user.id) return;
+
+  this.userToDelete = id;
+  this.showDeleteModal = true;
+},
+
+async confirmUserDelete() {
+  try {
+    await axios.delete(`/users/${this.userToDelete}`);
+    this.localUsers = this.localUsers.filter(user => user.id !== this.userToDelete);
+  } catch (error) {
+    console.error("Failed to delete user:", error);
+  } finally {
+    this.showDeleteModal = false;
+    this.userToDelete = null;
   }
+},
+cancelUserDelete() {
+  this.showDeleteModal = false;
+  this.userToDelete = null;
+},
+
+  
+}
+
 }
 </script>
 
