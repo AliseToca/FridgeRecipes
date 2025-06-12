@@ -27,6 +27,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'fridgeRecipes@gmail.com',
         ]);
 
+        User::factory()->create([
+            'name' => 'Job Steve',
+            'username' => 'Test',
+            'email' => 'test@gmail.com',
+        ]);
+
         $this->call([
             RecipeSeeder::class,
             FridgeSeeder::class,

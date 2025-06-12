@@ -43,6 +43,7 @@ export default {
   border-radius: 3px;
   height: 50px;
   overflow: hidden; /* Makes button flush with input */
+  margin-right: 40px;
 }
 
 .search-bar input {

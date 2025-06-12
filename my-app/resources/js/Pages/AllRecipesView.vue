@@ -4,9 +4,12 @@
 
     <div class="main-container">
       <FridgeSidebar
+        v-if="user"
         @toggle-fridge-filter="handleFridgeFilterToggle"
         @ingredient-changed="handleIngredientChanged"
       />
+
+      <GuestFridge v-else />
 
       <div class="main-content">
         <div class="content-actions">
@@ -55,6 +58,7 @@ import RecipeList from '@/Components/RecipeList.vue';
 import FridgeSidebar from '@/Components/FridgeSideBar.vue';
 import DefaultLayout from '../Layouts/DefaultLayout.vue';
 import LoadingOverlay from '@/Components/LoadingOverlay.vue';
+import GuestFridge from '@/Components/GuestFridge.vue';
 
 export default {
   layout: DefaultLayout,
@@ -64,6 +68,7 @@ export default {
     RecipeList,
     FridgeSidebar,
     LoadingOverlay,
+    GuestFridge,
   },
 
   props: {
@@ -83,6 +88,9 @@ export default {
   },
 
   computed: {
+    user() {
+      return this.auth?.user;
+    },
     filteredRecipes() {
       let recipes = [...this.recipes];
       const fridgeIngredientIds = this.auth?.user?.fridge?.ingredients?.map(i => i.id) || [];
@@ -176,6 +184,7 @@ export default {
 .main-container {
   display: flex;
   align-items: flex-start;
+  padding-right: 50px;
 }
 
 .main-content {
@@ -185,7 +194,6 @@ export default {
 .content-actions {
   padding: 20px;
   display: flex;
-  justify-content: space-between;
 
   align-items: center;
 }

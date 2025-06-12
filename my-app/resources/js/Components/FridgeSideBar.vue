@@ -1,6 +1,6 @@
 <template>
   <div :class="['fridge-sidebar', { collapsed: !isExpanded }]">
-    <div class="fridge-info" v-if="isExpanded && user">
+    <div class="fridge-info" v-if="isExpanded">
       <h2><span class="material-symbols-outlined">grocery</span></h2>
       <div>
         <label class="switch">
@@ -36,9 +36,6 @@
             </ul>
           </div>
         </div>
-      </div>
-      <div v-else>
-        <p>Please <a href="/login" class="text-red-500 underline">log in</a> to manage your fridge.</p>
       </div>
     </div>
 
