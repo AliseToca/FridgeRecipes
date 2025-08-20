@@ -13,6 +13,11 @@ Technologies used:
  - Database: MySQL 
 
 ![](mainpage.png)
+![](profilepage.png)
+![](recipepage.png)
+![](deletepage.png)
+![](editpage.png)
+![](userpage.png)
 ## How to use
  - Clone repo to xampp/htdocs/..
  - Install npm and composer
