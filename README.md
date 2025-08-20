@@ -14,9 +14,9 @@ Technologies used:
 
 ![](mainpage.png)
 ![](profilepage.png)
+![](editpage.png)
 ![](recipepage.png)
 ![](deletepage.png)
-![](editpage.png)
 ![](userpage.png)
 ## How to use
  - Clone repo to xampp/htdocs/..
