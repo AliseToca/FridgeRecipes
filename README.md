@@ -20,4 +20,5 @@ Technologies used:
  - Install other needed packages if needed (ex. vue)
  - Run php artisan migrate
  - Run php artisan serve
+ 
 (You need to open xampp and run apache and mesql servers, then create new db in the phpmyadmin and connect it in the env file)
