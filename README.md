@@ -12,7 +12,7 @@ Technologies used:
  - Backend: Laravel with Laravel Breeze for authentication
  - Database: MySQL 
 
-
+![](mainpage.png)
 ## How to use
  - Clone repo to xampp/htdocs/..
  - Install npm and composer
