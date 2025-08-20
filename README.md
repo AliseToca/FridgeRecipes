@@ -1,7 +1,6 @@
 # FridgeRecipes
-
 ## About
-FridgeRecipes is a web-based application designed to reduce food waste by helping users create meals with ingredients they already have at home. The system allows users to:
+FridgeRecipes is a web-based application designed to reduce food waste by helping users create meals with ingredients they already have at home. Each user has their own virtual fridge where they can add or remove their ingredients, in turn the web-page will show recipes whose ingredient match the most with the user ingredeints. The system allows users to:
 - Add and manage fridge ingredients
 - Get personalized recipe suggestions based on available ingredients
 - Browse and search for recipes by category, name, or missing ingredients
